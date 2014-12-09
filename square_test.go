@@ -12,11 +12,4 @@ func TestSquareIsValid(t *testing.T) {
 			t.Errorf("%d, %d is a valid square", i, i)
 		}
 	}
-
-	/*s := Square{x: -1, y: -1}
-	if s.isValid() {
-		t.Error("Expected invalid.")
-	}
-
-	s := Square(x:*/
 }
