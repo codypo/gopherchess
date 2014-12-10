@@ -5,9 +5,8 @@ import (
 )
 
 type Square struct {
-	backgroundColor Color
-	x               int
-	y               int
+	x int
+	y int
 }
 
 func (s Square) isValid() bool {

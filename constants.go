@@ -1,5 +1,6 @@
 package main
 
+const startSquareIndex = 1
 const numSquaresWide = 8
 const numSquaresTall = numSquaresWide
 const numPlayers = 2
