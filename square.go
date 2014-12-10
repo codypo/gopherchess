@@ -7,5 +7,5 @@ type Square struct {
 }
 
 func (s Square) isValid() bool {
-	return (s.x >= 0 && s.x < numSquaresWide) && (s.y >= 0 && s.y < numSquaresTall)
+	return (s.x >= 1 && s.x <= numSquaresWide) && (s.y >= 1 && s.y <= numSquaresTall)
 }
