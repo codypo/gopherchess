@@ -10,4 +10,5 @@ type Color int
 const (
 	White Color = 1 << iota
 	Black
+	Undefined
 )
