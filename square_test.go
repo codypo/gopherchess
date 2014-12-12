@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func TestSquareIsValid(t *testing.T) {
+func TestPawnsPopulatedCorrectly(t *testing.T) {
 	for i := -10; i < 10; i++ {
 		s := Square{x: i, y: i}
 		shouldBeValid := i >= 1 && i <= 8

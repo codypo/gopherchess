@@ -7,3 +7,7 @@ type Pawn struct {
 func (p Pawn) move() bool {
 	return false
 }
+
+func (p Pawn) pieceData() PieceData {
+	return p.data
+}

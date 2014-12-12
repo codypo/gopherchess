@@ -8,8 +8,6 @@ type Board struct {
 func NewBoard() *Board {
 	b := new(Board)
 
-	// TODO: is all this startSquare business actually useful?
-
 	// This feels gross, but it's a way to ensure that 0-indexed array
 	// lines up with silly 1-indexed squares.
 	offset := startSquare - 0

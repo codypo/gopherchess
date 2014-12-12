@@ -2,6 +2,7 @@ package main
 
 type Piece interface {
 	move() bool
+	pieceData() PieceData
 }
 
 type PieceData struct {
