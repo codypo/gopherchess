@@ -2,19 +2,19 @@ package main
 
 type Board struct {
 	players [numPlayers]Player
-	squares [numSquaresWide][numSquaresTall]Square
+	squares [endSquare][endSquare]Square
 }
 
 func NewBoard() *Board {
 	b := new(Board)
 
-	// TODO: is all this startSquareIndex business actually useful?
+	// TODO: is all this startSquare business actually useful?
 
 	// This feels gross, but it's a way to ensure that 0-indexed array
 	// lines up with silly 1-indexed squares.
-	offset := startSquareIndex - 0
-	for x := startSquareIndex; x < startSquareIndex+numSquaresWide; x++ {
-		for y := startSquareIndex; y < startSquareIndex+numSquaresWide; y++ {
+	offset := startSquare - 0
+	for x := startSquare; x <= endSquare; x++ {
+		for y := startSquare; y <= endSquare; y++ {
 			s := Square{x: x, y: y}
 			b.squares[x-offset][y-offset] = s
 		}

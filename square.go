@@ -10,7 +10,7 @@ type Square struct {
 }
 
 func (s Square) isValid() bool {
-	return (s.x >= 1 && s.x <= numSquaresWide) && (s.y >= 1 && s.y <= numSquaresTall)
+	return (s.x >= startSquare && s.x <= endSquare) && (s.y >= startSquare && s.y <= endSquare)
 }
 
 func (s Square) color() (color Color, err error) {

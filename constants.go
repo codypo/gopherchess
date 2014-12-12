@@ -1,8 +1,7 @@
 package main
 
-const startSquareIndex = 1
-const numSquaresWide = 8
-const numSquaresTall = numSquaresWide
+const startSquare = 1
+const endSquare = 8
 const numPlayers = 2
 const numPiecesPerPlayer = 16
 
