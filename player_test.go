@@ -43,3 +43,20 @@ func TestPlayerNewPopulatesRooks(t *testing.T) {
 		t.Errorf("Rook 2 located at %d, %d", r2_loc.x, r2_loc.y)
 	}
 }
+
+func TestPlayerNewPopulatesKnights(t *testing.T) {
+	p := NewPlayer(White)
+
+	// First 8 pieces are pawns.  Then rooks, then knights.
+	knight1 := p.pieces[10]
+	k1_loc := knight1.pieceData().square
+	if k1_loc.x != 2 || k1_loc.y != 1 {
+		t.Errorf("Knight 1 is located at %d, %d", k1_loc.x, k1_loc.y)
+	}
+
+	knight2 := p.pieces[11]
+	k2_loc := knight2.pieceData().square
+	if k2_loc.x != 7 || k2_loc.y != 1 {
+		t.Errorf("Knight 2 located at %d, %d", k2_loc.x, k2_loc.y)
+	}
+}

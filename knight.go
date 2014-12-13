@@ -7,3 +7,7 @@ type Knight struct {
 func (k Knight) move() bool {
 	return false
 }
+
+func (k Knight) pieceData() PieceData {
+	return k.data
+}

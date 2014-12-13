@@ -45,5 +45,18 @@ func NewPlayer(color Color) *Player {
 	p.pieces[pieceIndex] = rook2
 	pieceIndex++
 
+	// Populate knights.
+	knight_square1 := Square{x: startSquare + 1, y: rookRow}
+	knight_data1 := PieceData{color: color, square: knight_square1, captured: false}
+	knight1 := Knight{data: knight_data1}
+	p.pieces[pieceIndex] = knight1
+	pieceIndex++
+
+	knight_square2 := Square{x: endSquare - 1, y: rookRow}
+	knight_data2 := PieceData{color: color, square: knight_square2, captured: false}
+	knight2 := Knight{data: knight_data2}
+	p.pieces[pieceIndex] = knight2
+	pieceIndex++
+
 	return p
 }
