@@ -32,13 +32,14 @@ func TestPlayerNewPopulatesRooks(t *testing.T) {
 	p := NewPlayer(White)
 
 	// First 8 pieces are pawns.  2 immediately subsequent rooks.
-	rook := p.pieces[8]
+	rookIndex := 8
+	rook := p.pieces[rookIndex]
 	r_loc := rook.pieceData().square
 	if r_loc.x != 1 || r_loc.y != 1 {
 		t.Errorf("Rook 1 is located at %d, %d", r_loc.x, r_loc.y)
 	}
 
-	rook = p.pieces[9]
+	rook = p.pieces[rookIndex+1]
 	r_loc = rook.pieceData().square
 	if r_loc.x != 8 || r_loc.y != 1 {
 		t.Errorf("Rook 2 located at %d, %d", r_loc.x, r_loc.y)
@@ -47,13 +48,13 @@ func TestPlayerNewPopulatesRooks(t *testing.T) {
 	// Now verify that the black player's rooks exist.
 	p = NewPlayer(Black)
 
-	rook = p.pieces[8]
+	rook = p.pieces[rookIndex]
 	r_loc = rook.pieceData().square
 	if r_loc.x != 1 || r_loc.y != 8 {
 		t.Errorf("Rook 3 is located at %d, %d", r_loc.x, r_loc.y)
 	}
 
-	rook = p.pieces[9]
+	rook = p.pieces[rookIndex+1]
 	r_loc = rook.pieceData().square
 	if r_loc.x != 8 || r_loc.y != 8 {
 		t.Errorf("Rook 4 located at %d, %d", r_loc.x, r_loc.y)
@@ -64,13 +65,14 @@ func TestPlayerNewPopulatesKnights(t *testing.T) {
 	p := NewPlayer(White)
 
 	// First 8 pieces are pawns.  Then rooks, then knights.
-	knight := p.pieces[10]
+	knightIndex := 10
+	knight := p.pieces[knightIndex]
 	k_loc := knight.pieceData().square
 	if k_loc.x != 2 || k_loc.y != 1 {
 		t.Errorf("Knight 1 is located at %d, %d", k_loc.x, k_loc.y)
 	}
 
-	knight = p.pieces[11]
+	knight = p.pieces[knightIndex+1]
 	k_loc = knight.pieceData().square
 	if k_loc.x != 7 || k_loc.y != 1 {
 		t.Errorf("Knight 2 located at %d, %d", k_loc.x, k_loc.y)
@@ -79,13 +81,13 @@ func TestPlayerNewPopulatesKnights(t *testing.T) {
 	// Now verify the existence of the black knights.
 	p = NewPlayer(Black)
 
-	knight = p.pieces[10]
+	knight = p.pieces[knightIndex]
 	k_loc = knight.pieceData().square
 	if k_loc.x != 2 || k_loc.y != 8 {
 		t.Errorf("Knight 1 is located at %d, %d", k_loc.x, k_loc.y)
 	}
 
-	knight = p.pieces[11]
+	knight = p.pieces[knightIndex+1]
 	k_loc = knight.pieceData().square
 	if k_loc.x != 7 || k_loc.y != 8 {
 		t.Errorf("Knight 2 located at %d, %d", k_loc.x, k_loc.y)
@@ -96,13 +98,14 @@ func TestPlayerNewPopulatesBishops(t *testing.T) {
 	p := NewPlayer(White)
 
 	// First 8 pieces are pawns.  Then rooks, then knights, then bishops.
-	bishop := p.pieces[12]
+	bishopIndex := 12
+	bishop := p.pieces[bishopIndex]
 	b_loc := bishop.pieceData().square
 	if b_loc.x != 3 || b_loc.y != 1 {
 		t.Errorf("Bishop 1 is located at %d, %d", b_loc.x, b_loc.y)
 	}
 
-	bishop = p.pieces[13]
+	bishop = p.pieces[bishopIndex+1]
 	b_loc = bishop.pieceData().square
 	if b_loc.x != 6 || b_loc.y != 1 {
 		t.Errorf("Bishop 2 located at %d, %d", b_loc.x, b_loc.y)
@@ -111,13 +114,13 @@ func TestPlayerNewPopulatesBishops(t *testing.T) {
 	// Now verify the existence of the black bishops.
 	p = NewPlayer(Black)
 
-	bishop = p.pieces[12]
+	bishop = p.pieces[bishopIndex]
 	b_loc = bishop.pieceData().square
 	if b_loc.x != 3 || b_loc.y != 8 {
 		t.Errorf("Bishop 1 is located at %d, %d", b_loc.x, b_loc.y)
 	}
 
-	bishop = p.pieces[13]
+	bishop = p.pieces[bishopIndex+1]
 	b_loc = bishop.pieceData().square
 	if b_loc.x != 6 || b_loc.y != 8 {
 		t.Errorf("Bishop 2 located at %d, %d", b_loc.x, b_loc.y)
@@ -128,7 +131,8 @@ func TestPlayerNewPopulatesQueen(t *testing.T) {
 	p := NewPlayer(White)
 
 	// First 8 pieces are pawns.  Then rooks, then knights, then bishops, then queen.
-	queen := p.pieces[14]
+	queenIndex := 14
+	queen := p.pieces[queenIndex]
 	q_loc := queen.pieceData().square
 	if q_loc.x != 4 || q_loc.y != 1 {
 		t.Errorf("Queen is located at %d, %d", q_loc.x, q_loc.y)
@@ -137,7 +141,7 @@ func TestPlayerNewPopulatesQueen(t *testing.T) {
 	// Now verify the existence of the black queen.
 	p = NewPlayer(Black)
 
-	queen = p.pieces[14]
+	queen = p.pieces[queenIndex]
 	q_loc = queen.pieceData().square
 	if q_loc.x != 4 || q_loc.y != 8 {
 		t.Errorf("Queen is located at %d, %d", q_loc.x, q_loc.y)
@@ -148,7 +152,8 @@ func TestPlayerNewPopulatesKing(t *testing.T) {
 	p := NewPlayer(White)
 
 	// First 8 pieces are pawns.  Then rooks, then knights, then bishops, then queen, then king.
-	king := p.pieces[15]
+	kingIndex := 15
+	king := p.pieces[kingIndex]
 	k_loc := king.pieceData().square
 	if k_loc.x != 5 || k_loc.y != 1 {
 		t.Errorf("King is located at %d, %d", k_loc.x, k_loc.y)
@@ -157,7 +162,7 @@ func TestPlayerNewPopulatesKing(t *testing.T) {
 	// Now verify the existence of the black king.
 	p = NewPlayer(Black)
 
-	king = p.pieces[15]
+	king = p.pieces[kingIndex]
 	k_loc = king.pieceData().square
 	if k_loc.x != 5 || k_loc.y != 8 {
 		t.Errorf("King is located at %d, %d", k_loc.x, k_loc.y)
