@@ -70,10 +70,24 @@ func TestPlayerNewPopulatesKnights(t *testing.T) {
 		t.Errorf("Knight 1 is located at %d, %d", k_loc.x, k_loc.y)
 	}
 
-	// TODO: We're missing black tests, you rascist.
 	knight = p.pieces[11]
 	k_loc = knight.pieceData().square
 	if k_loc.x != 7 || k_loc.y != 1 {
+		t.Errorf("Knight 2 located at %d, %d", k_loc.x, k_loc.y)
+	}
+
+	// Now verify the existence of the black knights.
+	p = NewPlayer(Black)
+
+	knight = p.pieces[10]
+	k_loc = knight.pieceData().square
+	if k_loc.x != 2 || k_loc.y != 8 {
+		t.Errorf("Knight 1 is located at %d, %d", k_loc.x, k_loc.y)
+	}
+
+	knight = p.pieces[11]
+	k_loc = knight.pieceData().square
+	if k_loc.x != 7 || k_loc.y != 8 {
 		t.Errorf("Knight 2 located at %d, %d", k_loc.x, k_loc.y)
 	}
 }
