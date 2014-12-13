@@ -30,7 +30,7 @@ func TestPlayerNewPopulatesPawns(t *testing.T) {
 func TestPlayerNewPopulatesRooks(t *testing.T) {
 	p := NewPlayer(White)
 
-	// First 8 pieces are pawns.  Only 2 pawns.
+	// First 8 pieces are pawns.  2 immediately subsequent rooks.
 	rook1 := p.pieces[8]
 	r1_loc := rook1.pieceData().square
 	if r1_loc.x != 1 || r1_loc.y != 1 {
