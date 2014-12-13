@@ -7,3 +7,7 @@ type Queen struct {
 func (q Queen) move() bool {
 	return false
 }
+
+func (q Queen) pieceData() PieceData {
+	return q.data
+}

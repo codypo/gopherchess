@@ -98,13 +98,13 @@ func TestPlayerNewPopulatesBishops(t *testing.T) {
 	// First 8 pieces are pawns.  Then rooks, then knights, then bishops.
 	bishop := p.pieces[12]
 	b_loc := bishop.pieceData().square
-	if b_loc.x != 2 || b_loc.y != 1 {
+	if b_loc.x != 3 || b_loc.y != 1 {
 		t.Errorf("Bishop 1 is located at %d, %d", b_loc.x, b_loc.y)
 	}
 
 	bishop = p.pieces[13]
 	b_loc = bishop.pieceData().square
-	if b_loc.x != 7 || b_loc.y != 1 {
+	if b_loc.x != 6 || b_loc.y != 1 {
 		t.Errorf("Bishop 2 located at %d, %d", b_loc.x, b_loc.y)
 	}
 
@@ -113,14 +113,54 @@ func TestPlayerNewPopulatesBishops(t *testing.T) {
 
 	bishop = p.pieces[12]
 	b_loc = bishop.pieceData().square
-	if b_loc.x != 2 || b_loc.y != 8 {
+	if b_loc.x != 3 || b_loc.y != 8 {
 		t.Errorf("Bishop 1 is located at %d, %d", b_loc.x, b_loc.y)
 	}
 
 	bishop = p.pieces[13]
 	b_loc = bishop.pieceData().square
-	if b_loc.x != 7 || b_loc.y != 8 {
+	if b_loc.x != 6 || b_loc.y != 8 {
 		t.Errorf("Bishop 2 located at %d, %d", b_loc.x, b_loc.y)
+	}
+}
+
+func TestPlayerNewPopulatesQueen(t *testing.T) {
+	p := NewPlayer(White)
+
+	// First 8 pieces are pawns.  Then rooks, then knights, then bishops, then queen.
+	queen := p.pieces[14]
+	q_loc := queen.pieceData().square
+	if q_loc.x != 4 || q_loc.y != 1 {
+		t.Errorf("Queen is located at %d, %d", q_loc.x, q_loc.y)
+	}
+
+	// Now verify the existence of the black queen.
+	p = NewPlayer(Black)
+
+	queen = p.pieces[14]
+	q_loc = queen.pieceData().square
+	if q_loc.x != 4 || q_loc.y != 8 {
+		t.Errorf("Queen is located at %d, %d", q_loc.x, q_loc.y)
+	}
+}
+
+func TestPlayerNewPopulatesKing(t *testing.T) {
+	p := NewPlayer(White)
+
+	// First 8 pieces are pawns.  Then rooks, then knights, then bishops, then queen, then king.
+	king := p.pieces[15]
+	k_loc := king.pieceData().square
+	if k_loc.x != 5 || k_loc.y != 1 {
+		t.Errorf("King is located at %d, %d", k_loc.x, k_loc.y)
+	}
+
+	// Now verify the existence of the black king.
+	p = NewPlayer(Black)
+
+	king = p.pieces[15]
+	k_loc = king.pieceData().square
+	if k_loc.x != 5 || k_loc.y != 8 {
+		t.Errorf("King is located at %d, %d", k_loc.x, k_loc.y)
 	}
 }
 

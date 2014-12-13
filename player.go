@@ -64,16 +64,30 @@ func NewPlayer(color Color) *Player {
 	pieceIndex++
 
 	// Populate bishops.
-	s = Square{x: startSquare + 1, y: rookRow}
+	s = Square{x: startSquare + 2, y: rookRow}
 	pd = PieceData{color: color, square: s, captured: false}
 	bishop := Bishop{data: pd}
 	p.pieces[pieceIndex] = bishop
 	pieceIndex++
 
-	s = Square{x: endSquare - 1, y: rookRow}
+	s = Square{x: endSquare - 2, y: rookRow}
 	pd = PieceData{color: color, square: s, captured: false}
 	bishop = Bishop{data: pd}
 	p.pieces[pieceIndex] = bishop
+	pieceIndex++
+
+	// Populate the queen.
+	s = Square{x: startSquare + 3, y: rookRow}
+	pd = PieceData{color: color, square: s, captured: false}
+	queen := Queen{data: pd}
+	p.pieces[pieceIndex] = queen
+	pieceIndex++
+
+	// Populate the king.
+	s = Square{x: startSquare + 4, y: rookRow}
+	pd = PieceData{color: color, square: s, captured: false}
+	king := King{data: pd}
+	p.pieces[pieceIndex] = king
 	pieceIndex++
 
 	return p
