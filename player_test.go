@@ -91,3 +91,35 @@ func TestPlayerNewPopulatesKnights(t *testing.T) {
 		t.Errorf("Knight 2 located at %d, %d", k_loc.x, k_loc.y)
 	}
 }
+
+func TestPlayerNewPopulatesBishops(t *testing.T) {
+	p := NewPlayer(White)
+
+	// First 8 pieces are pawns.  Then rooks, then knights, then bishops.
+	bishop := p.pieces[12]
+	b_loc := bishop.pieceData().square
+	if b_loc.x != 2 || b_loc.y != 1 {
+		t.Errorf("Bishop 1 is located at %d, %d", b_loc.x, b_loc.y)
+	}
+
+	bishop = p.pieces[13]
+	b_loc = bishop.pieceData().square
+	if b_loc.x != 7 || b_loc.y != 1 {
+		t.Errorf("Bishop 2 located at %d, %d", b_loc.x, b_loc.y)
+	}
+
+	// Now verify the existence of the black bishops.
+	p = NewPlayer(Black)
+
+	bishop = p.pieces[12]
+	b_loc = bishop.pieceData().square
+	if b_loc.x != 2 || b_loc.y != 8 {
+		t.Errorf("Bishop 1 is located at %d, %d", b_loc.x, b_loc.y)
+	}
+
+	bishop = p.pieces[13]
+	b_loc = bishop.pieceData().square
+	if b_loc.x != 7 || b_loc.y != 8 {
+		t.Errorf("Bishop 2 located at %d, %d", b_loc.x, b_loc.y)
+	}
+}

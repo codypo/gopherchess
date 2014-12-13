@@ -58,5 +58,18 @@ func NewPlayer(color Color) *Player {
 	p.pieces[pieceIndex] = knight2
 	pieceIndex++
 
+	// Populate bishops.
+	bishop_square1 := Square{x: startSquare + 1, y: rookRow}
+	bishop_data1 := PieceData{color: color, square: bishop_square1, captured: false}
+	bishop1 := Bishop{data: bishop_data1}
+	p.pieces[pieceIndex] = bishop1
+	pieceIndex++
+
+	bishop_square2 := Square{x: endSquare - 1, y: rookRow}
+	bishop_data2 := PieceData{color: color, square: bishop_square2, captured: false}
+	bishop2 := Bishop{data: bishop_data2}
+	p.pieces[pieceIndex] = bishop2
+	pieceIndex++
+
 	return p
 }
