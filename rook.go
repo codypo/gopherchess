@@ -7,3 +7,7 @@ type Rook struct {
 func (r Rook) move() bool {
 	return false
 }
+
+func (r Rook) pieceData() PieceData {
+	return r.data
+}
