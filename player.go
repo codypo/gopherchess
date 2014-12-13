@@ -22,53 +22,58 @@ func NewPlayer(color Color) *Player {
 		rookRow = endSquare
 	}
 
+	// Initialize a square and piece data instance we can reuse.
+	s := Square{x: startSquare, y: startSquare}
+	pd := PieceData{color: color, square: s, captured: false}
+	pawn := Pawn{data: pd}
+
 	// Populate pawns.
 	for x := startSquare; x <= endSquare; x++ {
-		s := Square{x: x, y: pawnRow}
-		data := PieceData{color: color, square: s, captured: false}
-		pawn := Pawn{data: data}
+		s = Square{x: x, y: pawnRow}
+		pd = PieceData{color: color, square: s, captured: false}
+		pawn = Pawn{data: pd}
 		p.pieces[pieceIndex] = pawn
 		pieceIndex++
 	}
 
 	// Populate rooks.
-	rook_square1 := Square{x: startSquare, y: rookRow}
-	rook_data1 := PieceData{color: color, square: rook_square1, captured: false}
-	rook1 := Rook{data: rook_data1}
-	p.pieces[pieceIndex] = rook1
+	s = Square{x: startSquare, y: rookRow}
+	pd = PieceData{color: color, square: s, captured: false}
+	rook := Rook{data: pd}
+	p.pieces[pieceIndex] = rook
 	pieceIndex++
 
 	// TODO: This pieceIndex part is silly.
-	rook_square2 := Square{x: endSquare, y: rookRow}
-	rook_data2 := PieceData{color: color, square: rook_square2, captured: false}
-	rook2 := Rook{data: rook_data2}
-	p.pieces[pieceIndex] = rook2
+	s = Square{x: endSquare, y: rookRow}
+	pd = PieceData{color: color, square: s, captured: false}
+	rook = Rook{data: pd}
+	p.pieces[pieceIndex] = rook
 	pieceIndex++
 
 	// Populate knights.
-	knight_square1 := Square{x: startSquare + 1, y: rookRow}
-	knight_data1 := PieceData{color: color, square: knight_square1, captured: false}
-	knight1 := Knight{data: knight_data1}
-	p.pieces[pieceIndex] = knight1
+	s = Square{x: startSquare + 1, y: rookRow}
+	pd = PieceData{color: color, square: s, captured: false}
+	knight := Knight{data: pd}
+	p.pieces[pieceIndex] = knight
 	pieceIndex++
 
-	knight_square2 := Square{x: endSquare - 1, y: rookRow}
-	knight_data2 := PieceData{color: color, square: knight_square2, captured: false}
-	knight2 := Knight{data: knight_data2}
-	p.pieces[pieceIndex] = knight2
+	s = Square{x: endSquare - 1, y: rookRow}
+	pd = PieceData{color: color, square: s, captured: false}
+	knight = Knight{data: pd}
+	p.pieces[pieceIndex] = knight
 	pieceIndex++
 
 	// Populate bishops.
-	bishop_square1 := Square{x: startSquare + 1, y: rookRow}
-	bishop_data1 := PieceData{color: color, square: bishop_square1, captured: false}
-	bishop1 := Bishop{data: bishop_data1}
-	p.pieces[pieceIndex] = bishop1
+	s = Square{x: startSquare + 1, y: rookRow}
+	pd = PieceData{color: color, square: s, captured: false}
+	bishop := Bishop{data: pd}
+	p.pieces[pieceIndex] = bishop
 	pieceIndex++
 
-	bishop_square2 := Square{x: endSquare - 1, y: rookRow}
-	bishop_data2 := PieceData{color: color, square: bishop_square2, captured: false}
-	bishop2 := Bishop{data: bishop_data2}
-	p.pieces[pieceIndex] = bishop2
+	s = Square{x: endSquare - 1, y: rookRow}
+	pd = PieceData{color: color, square: s, captured: false}
+	bishop = Bishop{data: pd}
+	p.pieces[pieceIndex] = bishop
 	pieceIndex++
 
 	return p

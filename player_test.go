@@ -123,3 +123,12 @@ func TestPlayerNewPopulatesBishops(t *testing.T) {
 		t.Errorf("Bishop 2 located at %d, %d", b_loc.x, b_loc.y)
 	}
 }
+
+func BenchmarkNewPlayer(b *testing.B) {
+	// Benchmark the performance of creating a new player, which can be
+	// an allocation-heavy event.
+	for n := 0; n < b.N; n++ {
+		NewPlayer(White)
+		NewPlayer(Black)
+	}
+}
