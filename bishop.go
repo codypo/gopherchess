@@ -1,13 +1,13 @@
 package main
 
 type Bishop struct {
-	data PieceData
+	data *PieceData
 }
 
 func (b Bishop) move() bool {
 	return false
 }
 
-func (b Bishop) pieceData() PieceData {
+func (b Bishop) pieceData() *PieceData {
 	return b.data
 }
