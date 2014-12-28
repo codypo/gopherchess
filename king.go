@@ -12,3 +12,7 @@ func (k King) move(newSquare Square) bool {
 func (k King) pieceData() *PieceData {
 	return k.data
 }
+
+func (k King) generateValidMoves() []*Square {
+	return make([]*Square, 10, 10)
+}

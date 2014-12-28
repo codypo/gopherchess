@@ -11,3 +11,7 @@ func (p Pawn) move(newSquare Square) bool {
 func (p Pawn) pieceData() *PieceData {
 	return p.data
 }
+
+func (p Pawn) generateValidMoves() []*Square {
+	return make([]*Square, 10, 10)
+}

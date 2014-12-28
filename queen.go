@@ -11,3 +11,7 @@ func (q Queen) move(newSquare Square) bool {
 func (q Queen) pieceData() *PieceData {
 	return q.data
 }
+
+func (q Queen) generateValidMoves() []*Square {
+	return make([]*Square, 10, 10)
+}

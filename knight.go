@@ -11,3 +11,7 @@ func (k Knight) move(newSquare Square) bool {
 func (k Knight) pieceData() *PieceData {
 	return k.data
 }
+
+func (k Knight) generateValidMoves() []*Square {
+	return make([]*Square, 10, 10)
+}
