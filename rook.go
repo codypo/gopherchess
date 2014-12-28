@@ -4,7 +4,7 @@ type Rook struct {
 	data *PieceData
 }
 
-func (r Rook) move() bool {
+func (r Rook) move(newSquare Square) bool {
 	return false
 }
 

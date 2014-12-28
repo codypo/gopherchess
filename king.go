@@ -5,7 +5,7 @@ type King struct {
 	data *PieceData
 }
 
-func (k King) move() bool {
+func (k King) move(newSquare Square) bool {
 	return false
 }
 

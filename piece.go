@@ -1,7 +1,7 @@
 package main
 
 type Piece interface {
-	move() bool
+	move(newSquare Square) bool
 	pieceData() *PieceData
 }
 

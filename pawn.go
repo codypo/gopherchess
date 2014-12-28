@@ -4,7 +4,7 @@ type Pawn struct {
 	data *PieceData
 }
 
-func (p Pawn) move() bool {
+func (p Pawn) move(newSquare Square) bool {
 	return false
 }
 

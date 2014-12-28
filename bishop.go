@@ -4,7 +4,7 @@ type Bishop struct {
 	data *PieceData
 }
 
-func (b Bishop) move() bool {
+func (b Bishop) move(newSquare Square) bool {
 	return false
 }
 

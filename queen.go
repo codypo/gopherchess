@@ -4,7 +4,7 @@ type Queen struct {
 	data *PieceData
 }
 
-func (q Queen) move() bool {
+func (q Queen) move(newSquare Square) bool {
 	return false
 }
 

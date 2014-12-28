@@ -4,7 +4,7 @@ type Knight struct {
 	data *PieceData
 }
 
-func (k Knight) move() bool {
+func (k Knight) move(newSquare Square) bool {
 	return false
 }
 
