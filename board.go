@@ -18,11 +18,22 @@ func NewBoard() *Board {
 		}
 	}
 
-	p0 := NewPlayer(White)
+	p0 := NewPlayer(White, b)
 	b.players[0] = *p0
 
-	p1 := NewPlayer(Black)
+	p1 := NewPlayer(Black, b)
 	b.players[1] = *p1
 
 	return b
+}
+
+func (b Board) getPlayer(color Color) Player {
+	for _, p := range b.players {
+		if p.color == color {
+			return p
+		}
+	}
+
+	// HAAAAAAAAAAAACK
+	return b.players[0]
 }

@@ -13,13 +13,15 @@ type PieceData struct {
 	square   Square
 	captured bool
 	moves    []Square
+	board    *Board
 }
 
-func NewPieceData(color Color, square Square) *PieceData {
+func NewPieceData(color Color, square Square, board *Board) *PieceData {
 	pd := new(PieceData)
 	pd.color = color
 	pd.square = square
 	pd.captured = false
 	pd.moves = make([]Square, 10, 10)
+	pd.board = board
 	return pd
 }

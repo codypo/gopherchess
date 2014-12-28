@@ -2,8 +2,12 @@ package main
 
 import "testing"
 
+// TODO: All thsi needs to go through new board.
+
 func TestPlayerNewPopulatesPawns(t *testing.T) {
-	p := NewPlayer(White)
+	b := NewBoard()
+
+	p := b.getPlayer(White)
 	if len(p.pieces) != 16 {
 		t.Errorf("Player has %d pieces.", len(p.pieces))
 	}
@@ -17,7 +21,7 @@ func TestPlayerNewPopulatesPawns(t *testing.T) {
 	}
 
 	// Verify that the black player's pawns exist.
-	p = NewPlayer(Black)
+	p = b.getPlayer(Black)
 
 	for i := 0; i < 8; i++ {
 		pawn := p.pieces[i]
@@ -29,7 +33,8 @@ func TestPlayerNewPopulatesPawns(t *testing.T) {
 }
 
 func TestPlayerNewPopulatesRooks(t *testing.T) {
-	p := NewPlayer(White)
+	b := NewBoard()
+	p := b.getPlayer(White)
 
 	// First 8 pieces are pawns.  2 immediately subsequent rooks.
 	rookIndex := 8
@@ -46,7 +51,7 @@ func TestPlayerNewPopulatesRooks(t *testing.T) {
 	}
 
 	// Now verify that the black player's rooks exist.
-	p = NewPlayer(Black)
+	p = b.getPlayer(Black)
 
 	rook = p.pieces[rookIndex]
 	r_loc = rook.pieceData().square
@@ -62,7 +67,8 @@ func TestPlayerNewPopulatesRooks(t *testing.T) {
 }
 
 func TestPlayerNewPopulatesKnights(t *testing.T) {
-	p := NewPlayer(White)
+	b := NewBoard()
+	p := b.getPlayer(White)
 
 	// First 8 pieces are pawns.  Then rooks, then knights.
 	knightIndex := 10
@@ -79,7 +85,7 @@ func TestPlayerNewPopulatesKnights(t *testing.T) {
 	}
 
 	// Now verify the existence of the black knights.
-	p = NewPlayer(Black)
+	p = b.getPlayer(Black)
 
 	knight = p.pieces[knightIndex]
 	k_loc = knight.pieceData().square
@@ -95,7 +101,8 @@ func TestPlayerNewPopulatesKnights(t *testing.T) {
 }
 
 func TestPlayerNewPopulatesBishops(t *testing.T) {
-	p := NewPlayer(White)
+	b := NewBoard()
+	p := b.getPlayer(White)
 
 	// First 8 pieces are pawns.  Then rooks, then knights, then bishops.
 	bishopIndex := 12
@@ -112,7 +119,7 @@ func TestPlayerNewPopulatesBishops(t *testing.T) {
 	}
 
 	// Now verify the existence of the black bishops.
-	p = NewPlayer(Black)
+	p = b.getPlayer(Black)
 
 	bishop = p.pieces[bishopIndex]
 	b_loc = bishop.pieceData().square
@@ -128,7 +135,8 @@ func TestPlayerNewPopulatesBishops(t *testing.T) {
 }
 
 func TestPlayerNewPopulatesQueen(t *testing.T) {
-	p := NewPlayer(White)
+	b := NewBoard()
+	p := b.getPlayer(White)
 
 	// First 8 pieces are pawns.  Then rooks, then knights, then bishops, then queen.
 	queenIndex := 14
@@ -139,7 +147,7 @@ func TestPlayerNewPopulatesQueen(t *testing.T) {
 	}
 
 	// Now verify the existence of the black queen.
-	p = NewPlayer(Black)
+	p = b.getPlayer(Black)
 
 	queen = p.pieces[queenIndex]
 	q_loc = queen.pieceData().square
@@ -149,7 +157,8 @@ func TestPlayerNewPopulatesQueen(t *testing.T) {
 }
 
 func TestPlayerNewPopulatesKing(t *testing.T) {
-	p := NewPlayer(White)
+	b := NewBoard()
+	p := b.getPlayer(White)
 
 	// First 8 pieces are pawns.  Then rooks, then knights, then bishops, then queen, then king.
 	kingIndex := 15
@@ -160,7 +169,7 @@ func TestPlayerNewPopulatesKing(t *testing.T) {
 	}
 
 	// Now verify the existence of the black king.
-	p = NewPlayer(Black)
+	p = b.getPlayer(Black)
 
 	king = p.pieces[kingIndex]
 	k_loc = king.pieceData().square
@@ -170,10 +179,11 @@ func TestPlayerNewPopulatesKing(t *testing.T) {
 }
 
 func BenchmarkNewPlayer(b *testing.B) {
+	board := NewBoard()
 	// Benchmark the performance of creating a new player, which can be
 	// an allocation-heavy event.
 	for n := 0; n < b.N; n++ {
-		NewPlayer(White)
-		NewPlayer(Black)
+		NewPlayer(White, board)
+		NewPlayer(Black, board)
 	}
 }
