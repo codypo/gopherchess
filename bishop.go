@@ -12,6 +12,6 @@ func (b Bishop) pieceData() *PieceData {
 	return b.data
 }
 
-func (b Bishop) generateValidMoves() []*Square {
+func (b Bishop) generateValidMoves(start Square) []*Square {
 	return make([]*Square, 10, 10)
 }

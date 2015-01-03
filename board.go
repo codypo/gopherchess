@@ -37,3 +37,34 @@ func (b Board) getPlayer(color Color) Player {
 	// HAAAAAAAAAAAACK
 	return b.players[0]
 }
+
+func (b Board) evaluateSquare(c Color, s *Square) int {
+	if !s.isValid() {
+		return squareInvalid
+	}
+	status := squareVacant
+	var me Player
+	var opponent Player
+
+	if c == White {
+		me = b.getPlayer(White)
+		opponent = b.getPlayer(Black)
+	} else {
+		me = b.getPlayer(Black)
+		opponent = b.getPlayer(White)
+	}
+
+	// Does either side have a piece on this square?
+	myPiece := me.getPieceByCoordinate(s.x, s.y)
+	if myPiece != nil {
+		status = squareOccupiedByMe
+	}
+
+	oppoPiece := opponent.getPieceByCoordinate(s.x, s.y)
+	if oppoPiece != nil {
+		status = squareOccupiedByOpponent
+	}
+
+	// Eventually, we'll want more stuff for check and such.
+	return status
+}

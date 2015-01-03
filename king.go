@@ -13,6 +13,6 @@ func (k King) pieceData() *PieceData {
 	return k.data
 }
 
-func (k King) generateValidMoves() []*Square {
+func (k King) generateValidMoves(start Square) []*Square {
 	return make([]*Square, 10, 10)
 }

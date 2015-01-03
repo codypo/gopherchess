@@ -92,3 +92,12 @@ func NewPlayer(color Color, board *Board) *Player {
 
 	return p
 }
+
+func (player Player) getPieceByCoordinate(x int, y int) Piece {
+	for _, piece := range player.pieces {
+		if piece.pieceData().matchesCoordinates(x, y) {
+			return piece
+		}
+	}
+	return nil
+}

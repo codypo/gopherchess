@@ -12,6 +12,6 @@ func (p Pawn) pieceData() *PieceData {
 	return p.data
 }
 
-func (p Pawn) generateValidMoves() []*Square {
+func (p Pawn) generateValidMoves(start Square) []*Square {
 	return make([]*Square, 10, 10)
 }

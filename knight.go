@@ -12,6 +12,6 @@ func (k Knight) pieceData() *PieceData {
 	return k.data
 }
 
-func (k Knight) generateValidMoves() []*Square {
+func (k Knight) generateValidMoves(start Square) []*Square {
 	return make([]*Square, 10, 10)
 }
