@@ -31,9 +31,10 @@ func (r Rook) generateValidMoves(start Square) []*Square {
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 				fmt.Printf("Adding valid move %d, %d\n", move.x, move.y)
-			} else {
-				proceedUp = false
 			}
+
+			// You can only proceed onward if you're looking at a vacant square.
+			proceedUp = (status == squareVacant)
 		}
 
 		// Evaluate the next move down.
@@ -43,9 +44,9 @@ func (r Rook) generateValidMoves(start Square) []*Square {
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 				fmt.Printf("Adding valid move %d, %d\n", move.x, move.y)
-			} else {
-				proceedDown = false
 			}
+
+			proceedDown = (status == squareVacant)
 		}
 
 		// Evaluate the next move right.
@@ -55,9 +56,8 @@ func (r Rook) generateValidMoves(start Square) []*Square {
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 				fmt.Printf("Adding valid move %d, %d\n", move.x, move.y)
-			} else {
-				proceedRight = false
 			}
+			proceedRight = (status == squareVacant)
 		}
 
 		// Evaluate the next move left.
@@ -67,9 +67,8 @@ func (r Rook) generateValidMoves(start Square) []*Square {
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 				fmt.Printf("Adding valid move %d, %d\n", move.x, move.y)
-			} else {
-				proceedLeft = false
 			}
+			proceedLeft = (status == squareVacant)
 		}
 
 		fmt.Printf("Length of moves is %d\n", len(moves))

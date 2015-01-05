@@ -23,3 +23,7 @@ func (s Square) color() (color Color, err error) {
 	}
 	return Black, nil
 }
+
+func (s1 Square) equals(s2 Square) bool {
+	return (s1.x == s2.x) && (s2.y == s2.y)
+}
