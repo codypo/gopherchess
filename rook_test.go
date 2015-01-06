@@ -37,23 +37,8 @@ func TestRookGeneratesValidMoves(t *testing.T) {
 	expMoves[9] = &Square{x: 7, y: 3}
 	expMoves[10] = &Square{x: 8, y: 3}
 
-	if len(genMoves) != len(expMoves) {
-		t.Errorf("Generated moves are of length %d, while expected moves are of length %d", len(genMoves), len(expMoves))
+	arraysMatch, err := squareArraysMatch(genMoves, expMoves[0:])
+	if !arraysMatch {
+		t.Errorf(err.Error())
 	}
-
-	// Certainly a better way to do this, but here we are.
-	for _, expMove := range expMoves {
-		foundMatch := false
-		for _, genMove := range genMoves {
-			if expMove.equals(*genMove) {
-				foundMatch = true
-				break
-			}
-		}
-
-		if !foundMatch {
-			t.Errorf("Expected to find %d, %d in list of generated moves, but did not.", expMove.x, expMove.y)
-		}
-	}
-
 }
