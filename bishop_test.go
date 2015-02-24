@@ -18,15 +18,16 @@ func TestBishopGeneratesValidMoves(t *testing.T) {
 	// Sneakiness to force a move without validation.
 	genMoves := bishop1.generateValidMoves(Square{x: 3, y: 4})
 
-	var expMoves [7]*Square
 	// We selected a starting square so we can move up left, up right, down left, down right.
-	expMoves[0] = &Square{x: 2, y: 5}
-	expMoves[1] = &Square{x: 1, y: 6}
-	expMoves[2] = &Square{x: 4, y: 5}
-	expMoves[3] = &Square{x: 5, y: 6}
-	expMoves[4] = &Square{x: 2, y: 3}
-	expMoves[5] = &Square{x: 4, y: 3}
-	expMoves[6] = &Square{x: 6, y: 7}
+	expMoves := []*Square{
+		&Square{x: 2, y: 5},
+		&Square{x: 1, y: 6},
+		&Square{x: 4, y: 5},
+		&Square{x: 5, y: 6},
+		&Square{x: 2, y: 3},
+		&Square{x: 4, y: 3},
+		&Square{x: 6, y: 7},
+	}
 
 	arraysMatch, err := squareArraysMatch(genMoves, expMoves[0:])
 	if !arraysMatch {
