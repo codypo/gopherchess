@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Rook struct {
 	data *PieceData
 }
@@ -15,7 +13,6 @@ func (r Rook) pieceData() *PieceData {
 }
 
 func (r Rook) generateValidMoves(start Square) []*Square {
-	fmt.Printf("I am in %d, %d...\n", start.x, start.y)
 	moves := make([]*Square, 0)
 
 	proceedUp := true
@@ -30,7 +27,6 @@ func (r Rook) generateValidMoves(start Square) []*Square {
 			status := r.pieceData().evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
-				fmt.Printf("Adding valid move %d, %d\n", move.x, move.y)
 			}
 
 			// You can only proceed onward if you're looking at a vacant square.
@@ -43,7 +39,6 @@ func (r Rook) generateValidMoves(start Square) []*Square {
 			status := r.pieceData().evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
-				fmt.Printf("Adding valid move %d, %d\n", move.x, move.y)
 			}
 
 			proceedDown = (status == squareVacant)
@@ -55,7 +50,6 @@ func (r Rook) generateValidMoves(start Square) []*Square {
 			status := r.pieceData().evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
-				fmt.Printf("Adding valid move %d, %d\n", move.x, move.y)
 			}
 			proceedRight = (status == squareVacant)
 		}
@@ -66,12 +60,9 @@ func (r Rook) generateValidMoves(start Square) []*Square {
 			status := r.pieceData().evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
-				fmt.Printf("Adding valid move %d, %d\n", move.x, move.y)
 			}
 			proceedLeft = (status == squareVacant)
 		}
-
-		fmt.Printf("Length of moves is %d\n", len(moves))
 	}
 
 	return moves

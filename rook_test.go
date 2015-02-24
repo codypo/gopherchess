@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -15,8 +14,6 @@ func TestRookGeneratesValidMoves(t *testing.T) {
 	if len(moves) > 0 {
 		t.Errorf("Rook in starting position has valid moves.")
 	}
-
-	fmt.Println("Done checking the starting position.")
 
 	// Sneakiness to force a move without validation.
 	genMoves := rook1.generateValidMoves(Square{x: 4, y: 4})

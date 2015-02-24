@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Bishop struct {
 	data *PieceData
 }
@@ -15,7 +13,6 @@ func (b Bishop) pieceData() *PieceData {
 }
 
 func (b Bishop) generateValidMoves(start Square) []*Square {
-	fmt.Printf("Bishop - I am in %d, %d...\n", start.x, start.y)
 	moves := make([]*Square, 0)
 
 	proceedUpLeft := true
@@ -30,7 +27,6 @@ func (b Bishop) generateValidMoves(start Square) []*Square {
 			status := b.pieceData().evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
-				fmt.Printf("1 Bishop - Adding valid move %d, %d\n", move.x, move.y)
 			}
 
 			// You can only proceed onward if you're looking at a vacant square.
@@ -43,7 +39,6 @@ func (b Bishop) generateValidMoves(start Square) []*Square {
 			status := b.pieceData().evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
-				fmt.Printf("2 Bishop - Adding valid move %d, %d\n", move.x, move.y)
 			}
 
 			proceedDownLeft = (status == squareVacant)
@@ -55,7 +50,6 @@ func (b Bishop) generateValidMoves(start Square) []*Square {
 			status := b.pieceData().evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
-				fmt.Printf("3 Bishop - Adding valid move %d, %d\n", move.x, move.y)
 			}
 			proceedUpRight = (status == squareVacant)
 		}
@@ -66,12 +60,9 @@ func (b Bishop) generateValidMoves(start Square) []*Square {
 			status := b.pieceData().evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
-				fmt.Printf("4 Bishop - Adding valid move %d, %d\n", move.x, move.y)
 			}
 			proceedDownRight = (status == squareVacant)
 		}
-
-		fmt.Printf("Length of moves is %d\n", len(moves))
 	}
 
 	return moves

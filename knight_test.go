@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -20,8 +19,6 @@ func TestKnightGeneratesValidMoves(t *testing.T) {
 	if !arraysMatch {
 		t.Errorf(err.Error())
 	}
-
-	fmt.Println("Knight - Done checking the starting position.")
 
 	// Sneakiness to force a move without validation.
 	genMoves = knight1.generateValidMoves(Square{x: 4, y: 4})

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -15,8 +14,6 @@ func TestBishopGeneratesValidMoves(t *testing.T) {
 	if len(moves) > 0 {
 		t.Errorf("Bishop in starting position has valid moves.")
 	}
-
-	fmt.Println("Done checking the starting position.")
 
 	// Sneakiness to force a move without validation.
 	genMoves := bishop1.generateValidMoves(Square{x: 3, y: 4})

@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Knight struct {
 	data *PieceData
 }
@@ -41,7 +39,6 @@ func (k Knight) generateValidMoves(start Square) []*Square {
 		status := k.pieceData().evaluateSquare(move)
 		if status == squareVacant || status == squareOccupiedByOpponent {
 			validMoves = append(validMoves, move)
-			fmt.Printf("Knight - Adding valid move %d, %d\n", move.x, move.y)
 		}
 	}
 
