@@ -18,20 +18,19 @@ func TestQueenGeneratesValidMoves(t *testing.T) {
 	// Sneakiness to force a move without validation.
 	genMoves := queen1.generateValidMoves(Square{x: 4, y: 4})
 
-	// Queen can move vertically up to the first opponent piece.
-	// Queen can move horizontally across the board.
+	// Queen can move vertically, horizontally, and diagonally.  So regal!
 	expMoves := []*Square{
 		&Square{x: 4, y: 3},
 		&Square{x: 4, y: 5},
 		&Square{x: 4, y: 6},
 		&Square{x: 4, y: 7},
-		&Square{x: 1, y: 3},
-		&Square{x: 2, y: 3},
-		&Square{x: 3, y: 3},
-		&Square{x: 5, y: 3},
-		&Square{x: 6, y: 3},
-		&Square{x: 7, y: 3},
-		&Square{x: 8, y: 3},
+		&Square{x: 1, y: 4},
+		&Square{x: 2, y: 4},
+		&Square{x: 3, y: 4},
+		&Square{x: 5, y: 4},
+		&Square{x: 6, y: 4},
+		&Square{x: 7, y: 4},
+		&Square{x: 8, y: 4},
 		&Square{x: 5, y: 5},
 		&Square{x: 6, y: 6},
 		&Square{x: 5, y: 3},

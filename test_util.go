@@ -10,8 +10,11 @@ func squareArraysMatch(s1 []*Square, s2 []*Square) (bool, error) {
 	// Certainly a better way to do this, but here we are.
 	for _, b := range s2 {
 		foundMatch := false
+		fmt.Printf("\nEvaluating %d, %d... %T", b.x, b.y, *b)
 		for _, a := range s1 {
-			if b.equals(*a) {
+			fmt.Printf("\n  Checking against %d, %d... %T", a.x, a.y, *a)
+			if *b == *a {
+				fmt.Printf("    MATCH")
 				foundMatch = true
 				break
 			}
