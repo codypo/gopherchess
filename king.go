@@ -17,7 +17,7 @@ func (k King) generateValidMoves(start Square) []*Square {
 	// King moves one square in any direction, which seems unkingly.
 	moves := []*Square{
 		&Square{x: start.x + 1, y: start.y},
-		&Square{x: start.x + 1, y: start.y},
+		&Square{x: start.x - 1, y: start.y},
 		&Square{x: start.x, y: start.y + 1},
 		&Square{x: start.x, y: start.y - 1},
 		&Square{x: start.x + 1, y: start.y + 1},

@@ -34,10 +34,10 @@ func TestQueenGeneratesValidMoves(t *testing.T) {
 		&Square{x: 5, y: 5},
 		&Square{x: 6, y: 6},
 		&Square{x: 5, y: 3},
-		&Square{x: 6, y: 2},
+		&Square{x: 2, y: 6},
 		&Square{x: 3, y: 3},
-		&Square{x: 5, y: 3},
-		&Square{x: 7, y: 1},
+		&Square{x: 3, y: 5},
+		&Square{x: 1, y: 7},
 		&Square{x: 7, y: 7},
 	}
 

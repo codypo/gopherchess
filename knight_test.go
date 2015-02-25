@@ -30,8 +30,8 @@ func TestKnightGeneratesValidMoves(t *testing.T) {
 		&Square{x: 5, y: 6},
 		&Square{x: 6, y: 5},
 		&Square{x: 6, y: 3},
-		&Square{x: 3, y: 2},
-		&Square{x: 5, y: 2},
+		&Square{x: 2, y: 5},
+		&Square{x: 2, y: 3},
 	}
 
 	arraysMatch, err = squareArraysMatch(genMoves, expMoves[0:])
