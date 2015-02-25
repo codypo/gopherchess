@@ -15,3 +15,7 @@ func (r Rook) pieceData() *PieceData {
 func (r Rook) generateValidMoves(start Square) []*Square {
 	return r.pieceData().generateStraightMoves(start)
 }
+
+func (r Rook) getShorthand() string {
+	return "r"
+}

@@ -44,3 +44,7 @@ func (k Knight) generateValidMoves(start Square) []*Square {
 
 	return validMoves
 }
+
+func (k Knight) getShorthand() string {
+	return "k"
+}

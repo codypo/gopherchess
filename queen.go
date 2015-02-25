@@ -17,3 +17,7 @@ func (q Queen) generateValidMoves(start Square) []*Square {
 	straightMoves := q.pieceData().generateStraightMoves(start)
 	return append(diagMoves, straightMoves...)
 }
+
+func (q Queen) getShorthand() string {
+	return "q"
+}

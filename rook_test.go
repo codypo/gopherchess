@@ -7,7 +7,7 @@ import (
 func TestRookGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
 	white := b.getPlayer(White)
-	rook1 := white.getPieceByCoordinate(1, 1)
+	rook1, _ := white.getPieceByCoordinate(1, 1)
 
 	// Initially, the white rook can't move because it's boxed in.
 	moves := rook1.generateValidMoves(Square{x: 1, y: 1})

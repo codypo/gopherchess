@@ -4,6 +4,7 @@ type Piece interface {
 	move(newSquare Square) bool
 	pieceData() *PieceData
 	generateValidMoves(start Square) []*Square
+	getShorthand() string
 }
 
 // Piece data exists because there's no concept of an abstract

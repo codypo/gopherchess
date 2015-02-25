@@ -15,3 +15,7 @@ func (p Pawn) pieceData() *PieceData {
 func (p Pawn) generateValidMoves(start Square) []*Square {
 	return make([]*Square, 10, 10)
 }
+
+func (p Pawn) getShorthand() string {
+	return "p"
+}

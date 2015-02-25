@@ -7,7 +7,7 @@ import (
 func TestBishopGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
 	white := b.getPlayer(White)
-	bishop1 := white.getPieceByCoordinate(3, 1)
+	bishop1, _ := white.getPieceByCoordinate(3, 1)
 
 	// Initially, the white bishop can't move because it's boxed in.
 	moves := bishop1.generateValidMoves(Square{x: 3, y: 1})

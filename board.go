@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Board struct {
 	players [numPlayers]Player
 	squares [endSquare][endSquare]Square
@@ -55,16 +57,36 @@ func (b Board) evaluateSquare(c Color, s *Square) int {
 	}
 
 	// Does either side have a piece on this square?
-	myPiece := me.getPieceByCoordinate(s.x, s.y)
-	if myPiece != nil {
+	if myPiece, _ := me.getPieceByCoordinate(s.x, s.y); myPiece != nil {
 		status = squareOccupiedByMe
 	}
 
-	oppoPiece := opponent.getPieceByCoordinate(s.x, s.y)
-	if oppoPiece != nil {
+	if oppoPiece, _ := opponent.getPieceByCoordinate(s.x, s.y); oppoPiece != nil {
 		status = squareOccupiedByOpponent
 	}
 
 	// Eventually, we'll want more stuff for check and such.
 	return status
+}
+
+// Print out the current state of the board.  Useful in the event
+// this thing can ever play a game.
+func (b Board) prettyPrint() {
+	white := b.getPlayer(White)
+	black := b.getPlayer(Black)
+
+	// TODO: should also print out row and column designations,
+	// and distinguish pieces by color.
+	for y := startSquare; y <= endSquare; y++ {
+		for x := startSquare; x <= endSquare; x++ {
+			if wp, _ := white.getPieceByCoordinate(x, y); wp != nil {
+				fmt.Printf(" %s ", wp.getShorthand())
+			} else if bp, _ := black.getPieceByCoordinate(x, y); bp != nil {
+				fmt.Printf(" %s ", bp.getShorthand())
+			} else {
+				fmt.Printf("   ")
+			}
+		}
+		fmt.Printf("\n")
+	}
 }

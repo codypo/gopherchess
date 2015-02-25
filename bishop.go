@@ -15,3 +15,7 @@ func (b Bishop) pieceData() *PieceData {
 func (b Bishop) generateValidMoves(start Square) []*Square {
 	return b.pieceData().generateDiagonalMoves(start)
 }
+
+func (b Bishop) getShorthand() string {
+	return "b"
+}

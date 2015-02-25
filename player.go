@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Player struct {
 	name   string
 	color  Color
@@ -93,11 +95,12 @@ func NewPlayer(color Color, board *Board) *Player {
 	return p
 }
 
-func (player Player) getPieceByCoordinate(x int, y int) Piece {
+func (player Player) getPieceByCoordinate(x int, y int) (Piece, error) {
 	for _, piece := range player.pieces {
 		if piece.pieceData().matchesCoordinates(x, y) {
-			return piece
+			return piece, nil
 		}
 	}
-	return nil
+
+	return nil, fmt.Errorf("No piece found at %d, %d", x, y)
 }

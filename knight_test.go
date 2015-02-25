@@ -7,7 +7,7 @@ import (
 func TestKnightGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
 	white := b.getPlayer(White)
-	knight1 := white.getPieceByCoordinate(2, 1)
+	knight1, _ := white.getPieceByCoordinate(2, 1)
 
 	// Knights are tricksy and can move immediately.
 	genMoves := knight1.generateValidMoves(Square{x: 2, y: 1})

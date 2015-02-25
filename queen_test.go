@@ -7,7 +7,7 @@ import (
 func TestQueenGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
 	white := b.getPlayer(White)
-	queen1 := white.getPieceByCoordinate(4, 1)
+	queen1, _ := white.getPieceByCoordinate(4, 1)
 
 	// Initially, the white queen can't move because it's boxed in.
 	moves := queen1.generateValidMoves(Square{x: 1, y: 1})
@@ -18,6 +18,8 @@ func TestQueenGeneratesValidMoves(t *testing.T) {
 	// Sneakiness to force a move without validation.
 	genMoves := queen1.generateValidMoves(Square{x: 4, y: 4})
 
+	// Queen can move vertically up to the first opponent piece.
+	// Queen can move horizontally across the board.
 	expMoves := []*Square{
 		&Square{x: 4, y: 3},
 		&Square{x: 4, y: 5},
@@ -39,9 +41,6 @@ func TestQueenGeneratesValidMoves(t *testing.T) {
 		&Square{x: 7, y: 1},
 		&Square{x: 7, y: 7},
 	}
-
-	// Queen can move vertically up to the first opponent piece.
-	// Queen can move horizontally across the board.
 
 	arraysMatch, err := squareArraysMatch(genMoves, expMoves[0:])
 	if !arraysMatch {
