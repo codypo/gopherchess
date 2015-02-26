@@ -10,13 +10,13 @@ func TestQueenGeneratesValidMoves(t *testing.T) {
 	queen1, _ := white.getPieceByCoordinate(4, 1)
 
 	// Initially, the white queen can't move because it's boxed in.
-	moves := queen1.generateValidMoves(Square{x: 1, y: 1})
+	moves := queen1.generateMoves(Square{x: 1, y: 1})
 	if len(moves) > 0 {
 		t.Errorf("Queen in starting position has valid moves.")
 	}
 
 	// Sneakiness to force a move without validation.
-	genMoves := queen1.generateValidMoves(Square{x: 4, y: 4})
+	genMoves := queen1.generateMoves(Square{x: 4, y: 4})
 
 	// Queen can move vertically, horizontally, and diagonally.  So regal!
 	expMoves := []*Square{
@@ -41,7 +41,7 @@ func TestQueenGeneratesValidMoves(t *testing.T) {
 		&Square{x: 7, y: 7},
 	}
 
-	arraysMatch, err := squareArraysMatch(genMoves, expMoves[0:])
+	arraysMatch, err := squaresMatch(genMoves, expMoves[0:])
 	if !arraysMatch {
 		t.Errorf(err.Error())
 	}

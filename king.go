@@ -13,7 +13,9 @@ func (k King) pieceData() *PieceData {
 	return k.data
 }
 
-func (k King) generateValidMoves(start Square) []*Square {
+func (k King) generateMoves(start Square) []*Square {
+	// TODO: Castling!
+
 	// King moves one square in any direction, which seems unkingly.
 	moves := []*Square{
 		&Square{x: start.x + 1, y: start.y},

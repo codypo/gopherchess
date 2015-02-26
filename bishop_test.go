@@ -10,13 +10,13 @@ func TestBishopGeneratesValidMoves(t *testing.T) {
 	bishop1, _ := white.getPieceByCoordinate(3, 1)
 
 	// Initially, the white bishop can't move because it's boxed in.
-	moves := bishop1.generateValidMoves(Square{x: 3, y: 1})
+	moves := bishop1.generateMoves(Square{x: 3, y: 1})
 	if len(moves) > 0 {
 		t.Errorf("Bishop in starting position has valid moves.")
 	}
 
 	// Sneakiness to force a move without validation.
-	genMoves := bishop1.generateValidMoves(Square{x: 3, y: 4})
+	genMoves := bishop1.generateMoves(Square{x: 3, y: 4})
 
 	// We selected a starting square so we can move up left, up right, down left, down right.
 	expMoves := []*Square{
@@ -29,7 +29,7 @@ func TestBishopGeneratesValidMoves(t *testing.T) {
 		&Square{x: 6, y: 7},
 	}
 
-	arraysMatch, err := squareArraysMatch(genMoves, expMoves[0:])
+	arraysMatch, err := squaresMatch(genMoves, expMoves[0:])
 	if !arraysMatch {
 		t.Errorf(err.Error())
 	}

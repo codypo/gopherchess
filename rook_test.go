@@ -10,13 +10,13 @@ func TestRookGeneratesValidMoves(t *testing.T) {
 	rook1, _ := white.getPieceByCoordinate(1, 1)
 
 	// Initially, the white rook can't move because it's boxed in.
-	moves := rook1.generateValidMoves(Square{x: 1, y: 1})
+	moves := rook1.generateMoves(Square{x: 1, y: 1})
 	if len(moves) > 0 {
 		t.Errorf("Rook in starting position has valid moves.")
 	}
 
 	// Sneakiness to force a move without validation.
-	genMoves := rook1.generateValidMoves(Square{x: 4, y: 4})
+	genMoves := rook1.generateMoves(Square{x: 4, y: 4})
 
 	// Rook can move vertically up to the first opponent piece.
 	// Rook can move horizontally across the board.
@@ -34,7 +34,7 @@ func TestRookGeneratesValidMoves(t *testing.T) {
 		&Square{x: 8, y: 4},
 	}
 
-	arraysMatch, err := squareArraysMatch(genMoves, expMoves[0:])
+	arraysMatch, err := squaresMatch(genMoves, expMoves[0:])
 	if !arraysMatch {
 		t.Errorf(err.Error())
 	}

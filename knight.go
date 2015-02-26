@@ -12,7 +12,7 @@ func (k Knight) pieceData() *PieceData {
 	return k.data
 }
 
-func (k Knight) generateValidMoves(start Square) []*Square {
+func (k Knight) generateMoves(start Square) []*Square {
 	moves := make([]*Square, 0)
 
 	move := &Square{x: start.x + 2, y: start.y + 1}

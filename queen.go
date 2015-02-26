@@ -12,7 +12,7 @@ func (q Queen) pieceData() *PieceData {
 	return q.data
 }
 
-func (q Queen) generateValidMoves(start Square) []*Square {
+func (q Queen) generateMoves(start Square) []*Square {
 	diagMoves := q.pieceData().generateDiagonalMoves(start)
 	straightMoves := q.pieceData().generateStraightMoves(start)
 	return append(diagMoves, straightMoves...)

@@ -2,12 +2,13 @@ package main
 
 import "fmt"
 
-func squareArraysMatch(s1 []*Square, s2 []*Square) (bool, error) {
+func squaresMatch(s1 []*Square, s2 []*Square) (bool, error) {
 	if len(s1) != len(s2) {
 		return false, fmt.Errorf("s1 of length %d, while s2 of length %d", len(s1), len(s2))
 	}
 
 	// Certainly a better way to do this, but here we are.
+	// TODO: Sort both arrays, then the index of each item should match.
 	for _, b := range s2 {
 		foundMatch := false
 		//fmt.Printf("\nEvaluating %d, %d... %T", b.x, b.y, *b)

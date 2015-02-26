@@ -1,9 +1,10 @@
 package main
 
+import "fmt"
+
 type Piece interface {
-	move(newSquare Square) bool
 	pieceData() *PieceData
-	generateValidMoves(start Square) []*Square
+	generateMoves(start Square) []*Square
 	getShorthand() string
 }
 
@@ -21,8 +22,10 @@ func (p PieceData) getSquare() *Square {
 	return p.moves[len(p.moves)-1]
 }
 
-func (p PieceData) addMove(square *Square) {
+func (p PieceData) move(square *Square) {
+	fmt.Printf("\nAdding... Length of moves is %d\n", len(p.moves))
 	p.moves = append(p.moves, square)
+	fmt.Printf("Added!  Length of moves is now %d\n\n", len(p.moves))
 }
 
 func (p PieceData) matchesCoordinates(x int, y int) bool {
@@ -41,112 +44,116 @@ func (p PieceData) evaluateSquare(square *Square) int {
 	return p.board.evaluateSquare(p.color, square)
 }
 
+// Generate all valid moves on the board for a given piece in only
+// the diagonal directions.
 func (p PieceData) generateDiagonalMoves(start Square) []*Square {
 	moves := make([]*Square, 0)
 
-	proceedUpLeft := true
-	proceedDownLeft := true
-	proceedUpRight := true
-	proceedDownRight := true
+	goUpLeft := true
+	goDownLeft := true
+	goUpRight := true
+	goDownRight := true
 
 	for i := startSquare; i <= endSquare; i++ {
 		// Evaluate the next move up and to the left.
-		if proceedUpLeft {
+		if goUpLeft {
 			move := &Square{x: start.x - i, y: start.y + i}
 			status := p.evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
 
-			// You can only proceed onward if you're looking at a vacant square.
-			proceedUpLeft = (status == squareVacant)
+			// You can only go onward if you're looking at a vacant square.
+			goUpLeft = (status == squareVacant)
 		}
 
 		// Evaluate the next move down and to the left.
-		if proceedDownLeft {
+		if goDownLeft {
 			move := &Square{x: start.x - i, y: start.y - i}
 			status := p.evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
 
-			proceedDownLeft = (status == squareVacant)
+			goDownLeft = (status == squareVacant)
 		}
 
 		// Evaluate the next move up and to the right.
-		if proceedUpRight {
+		if goUpRight {
 			move := &Square{x: start.x + i, y: start.y + i}
 			status := p.evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
-			proceedUpRight = (status == squareVacant)
+			goUpRight = (status == squareVacant)
 		}
 
 		// Evaluate the next move down and to the right
-		if proceedDownRight {
+		if goDownRight {
 			move := &Square{x: start.x + i, y: start.y - i}
 			status := p.evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
-			proceedDownRight = (status == squareVacant)
+			goDownRight = (status == squareVacant)
 		}
 	}
 
 	return moves
 }
 
+// Generate all valid moves on the board for a given piece in only
+// the verticl and horizontal directions directions.
 func (p PieceData) generateStraightMoves(start Square) []*Square {
 	moves := make([]*Square, 0)
 
-	proceedUp := true
-	proceedDown := true
-	proceedLeft := true
-	proceedRight := true
+	goUp := true
+	goDown := true
+	goLeft := true
+	goRight := true
 
 	for i := startSquare; i <= endSquare; i++ {
 		// Evaluate the next move up.
-		if proceedUp {
+		if goUp {
 			move := &Square{x: start.x, y: start.y + i}
 			status := p.evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
 
-			// You can only proceed onward if you're looking at a vacant square.
-			proceedUp = (status == squareVacant)
+			// You can only go onward if you're looking at a vacant square.
+			goUp = (status == squareVacant)
 		}
 
 		// Evaluate the next move down.
-		if proceedDown {
+		if goDown {
 			move := &Square{x: start.x, y: start.y - i}
 			status := p.evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
 
-			proceedDown = (status == squareVacant)
+			goDown = (status == squareVacant)
 		}
 
 		// Evaluate the next move right.
-		if proceedRight {
+		if goRight {
 			move := &Square{x: start.x + i, y: start.y}
 			status := p.evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
-			proceedRight = (status == squareVacant)
+			goRight = (status == squareVacant)
 		}
 
 		// Evaluate the next move left.
-		if proceedLeft {
+		if goLeft {
 			move := &Square{x: start.x - i, y: start.y}
 			status := p.evaluateSquare(move)
 			if status == squareVacant || status == squareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
-			proceedLeft = (status == squareVacant)
+			goLeft = (status == squareVacant)
 		}
 	}
 

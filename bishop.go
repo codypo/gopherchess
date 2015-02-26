@@ -12,7 +12,7 @@ func (b Bishop) pieceData() *PieceData {
 	return b.data
 }
 
-func (b Bishop) generateValidMoves(start Square) []*Square {
+func (b Bishop) generateMoves(start Square) []*Square {
 	return b.pieceData().generateDiagonalMoves(start)
 }
 

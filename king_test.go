@@ -10,13 +10,13 @@ func TestKingGeneratesValidMoves(t *testing.T) {
 	king1, _ := white.getPieceByCoordinate(5, 1)
 
 	// Initially, the white king can't move because it's boxed in.
-	moves := king1.generateValidMoves(Square{x: 5, y: 1})
+	moves := king1.generateMoves(Square{x: 5, y: 1})
 	if len(moves) > 0 {
 		t.Errorf("King in starting position has valid moves.")
 	}
 
 	// Sneakiness to force a move without validation.
-	moves = king1.generateValidMoves(Square{x: 4, y: 4})
+	moves = king1.generateMoves(Square{x: 4, y: 4})
 
 	// We selected a starting square so we can move in all directions.
 	expMoves := []*Square{
@@ -30,7 +30,7 @@ func TestKingGeneratesValidMoves(t *testing.T) {
 		&Square{x: 3, y: 3},
 	}
 
-	arraysMatch, err := squareArraysMatch(moves, expMoves[0:])
+	arraysMatch, err := squaresMatch(moves, expMoves[0:])
 	if !arraysMatch {
 		t.Errorf(err.Error())
 	}

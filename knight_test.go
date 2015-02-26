@@ -10,19 +10,19 @@ func TestKnightGeneratesValidMoves(t *testing.T) {
 	knight1, _ := white.getPieceByCoordinate(2, 1)
 
 	// Knights are tricksy and can move immediately.
-	genMoves := knight1.generateValidMoves(Square{x: 2, y: 1})
+	genMoves := knight1.generateMoves(Square{x: 2, y: 1})
 	startMoves := []*Square{
 		&Square{x: 1, y: 3},
 		&Square{x: 3, y: 3},
 	}
 
-	arraysMatch, err := squareArraysMatch(genMoves, startMoves[0:])
+	arraysMatch, err := squaresMatch(genMoves, startMoves[0:])
 	if !arraysMatch {
 		t.Errorf(err.Error())
 	}
 
 	// Sneakiness to force a move without validation.
-	genMoves = knight1.generateValidMoves(Square{x: 4, y: 4})
+	genMoves = knight1.generateMoves(Square{x: 4, y: 4})
 
 	// We selected a starting square so we can move up left, up right, down left, down right.
 	expMoves := []*Square{
@@ -34,7 +34,7 @@ func TestKnightGeneratesValidMoves(t *testing.T) {
 		&Square{x: 2, y: 3},
 	}
 
-	arraysMatch, err = squareArraysMatch(genMoves, expMoves[0:])
+	arraysMatch, err = squaresMatch(genMoves, expMoves[0:])
 	if !arraysMatch {
 		t.Errorf(err.Error())
 	}

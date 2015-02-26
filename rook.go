@@ -12,7 +12,7 @@ func (r Rook) pieceData() *PieceData {
 	return r.data
 }
 
-func (r Rook) generateValidMoves(start Square) []*Square {
+func (r Rook) generateMoves(start Square) []*Square {
 	return r.pieceData().generateStraightMoves(start)
 }
 
