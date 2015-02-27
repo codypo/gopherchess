@@ -100,7 +100,14 @@ func (player Player) getPieceByCoordinate(x int, y int) (Piece, error) {
 		if piece.pieceData().matchesCoordinates(x, y) {
 			return piece, nil
 		}
+		//fmt.Printf("   Piece coords %d, %d does not match %d, %d\n", piece.pieceData().getSquare().x, piece.pieceData().getSquare().y, x, y)
 	}
 
 	return nil, fmt.Errorf("No piece found at %d, %d", x, y)
+}
+
+func (p Player) printPieces() {
+	for _, piece := range p.pieces {
+		fmt.Printf("Piece coords %d, %d\n", piece.pieceData().getSquare().x, piece.pieceData().getSquare().y)
+	}
 }

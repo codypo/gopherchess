@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Piece interface {
 	pieceData() *PieceData
 	generateMoves(start Square) []*Square
@@ -22,10 +20,8 @@ func (p PieceData) getSquare() *Square {
 	return p.moves[len(p.moves)-1]
 }
 
-func (p PieceData) move(square *Square) {
-	fmt.Printf("\nAdding... Length of moves is %d\n", len(p.moves))
+func (p *PieceData) move(square *Square) {
 	p.moves = append(p.moves, square)
-	fmt.Printf("Added!  Length of moves is now %d\n\n", len(p.moves))
 }
 
 func (p PieceData) matchesCoordinates(x int, y int) bool {

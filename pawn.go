@@ -1,13 +1,7 @@
 package main
 
-import "fmt"
-
 type Pawn struct {
 	data *PieceData
-}
-
-func (p Pawn) move(newSquare Square) bool {
-	return false
 }
 
 func (p Pawn) pieceData() *PieceData {
@@ -21,11 +15,8 @@ func (p Pawn) generateMoves(start Square) []*Square {
 	// TODO: en passant
 	moves := make([]*Square, 1)
 	moves[0] = &Square{x: start.x, y: start.y + 1}
-	fmt.Printf("GM Added first move.\n")
-	fmt.Printf("GM Len of moves is %d.\n", len(p.data.moves))
 
 	if len(p.data.moves) == 1 {
-		fmt.Printf("Added second move.\n")
 		moves = append(moves, &Square{x: start.x, y: start.y + 2})
 	}
 
