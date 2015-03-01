@@ -1,5 +1,7 @@
 package main
 
+//import "fmt"
+
 // The ability to generate moves (e.g., a bishop's moves vs. a
 // knight's moves) is really the only difference between pieces.
 // Encapsulate this in an interface that each piece type can
@@ -194,6 +196,8 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 
 	}
 	p.mover.setPiece(p)
+
+	//fmt.Printf(" 3 my piece is %s ???\n", p)
 
 	return p
 }

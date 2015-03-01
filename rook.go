@@ -4,7 +4,7 @@ type Rook struct {
 	piece *Piece
 }
 
-func (r Rook) setPiece(piece *Piece) {
+func (r *Rook) setPiece(piece *Piece) {
 	r.piece = piece
 }
 

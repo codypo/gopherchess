@@ -4,7 +4,7 @@ type Pawn struct {
 	piece *Piece
 }
 
-func (p Pawn) setPiece(piece *Piece) {
+func (p *Pawn) setPiece(piece *Piece) {
 	p.piece = piece
 }
 

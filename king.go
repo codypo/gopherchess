@@ -5,7 +5,7 @@ type King struct {
 	piece *Piece
 }
 
-func (k King) setPiece(piece *Piece) {
+func (k *King) setPiece(piece *Piece) {
 	k.piece = piece
 }
 

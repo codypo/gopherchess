@@ -4,8 +4,8 @@ type Bishop struct {
 	piece *Piece
 }
 
-func (b Bishop) setPiece(piece *Piece) {
-	b.piece = piece
+func (b *Bishop) setPiece(myPiece *Piece) {
+	b.piece = myPiece
 }
 
 func (b Bishop) getPiece() *Piece {

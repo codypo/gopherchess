@@ -4,7 +4,7 @@ type Knight struct {
 	piece *Piece
 }
 
-func (k Knight) setPiece(piece *Piece) {
+func (k *Knight) setPiece(piece *Piece) {
 	k.piece = piece
 }
 

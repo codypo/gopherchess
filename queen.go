@@ -4,7 +4,7 @@ type Queen struct {
 	piece *Piece
 }
 
-func (q Queen) setPiece(piece *Piece) {
+func (q *Queen) setPiece(piece *Piece) {
 	q.piece = piece
 }
 
