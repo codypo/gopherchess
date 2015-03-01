@@ -8,6 +8,7 @@ type PieceMover interface {
 	generateMoves(start Square) []*Square
 	getShorthand() string
 	getPiece() *Piece
+	setPiece(piece *Piece)
 }
 
 // Piece struct encapsulates all of the common data that's
@@ -192,6 +193,7 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 		p.mover = new(King)
 
 	}
+	p.mover.setPiece(p)
 
 	return p
 }

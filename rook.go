@@ -4,6 +4,10 @@ type Rook struct {
 	piece *Piece
 }
 
+func (r Rook) setPiece(piece *Piece) {
+	r.piece = piece
+}
+
 func (r Rook) getPiece() *Piece {
 	return r.piece
 }

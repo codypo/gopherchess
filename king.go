@@ -5,6 +5,10 @@ type King struct {
 	piece *Piece
 }
 
+func (k King) setPiece(piece *Piece) {
+	k.piece = piece
+}
+
 func (k King) getPiece() *Piece {
 	return k.piece
 }

@@ -4,6 +4,10 @@ type Pawn struct {
 	piece *Piece
 }
 
+func (p Pawn) setPiece(piece *Piece) {
+	p.piece = piece
+}
+
 func (p Pawn) getPiece() *Piece {
 	return p.piece
 }

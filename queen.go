@@ -4,6 +4,10 @@ type Queen struct {
 	piece *Piece
 }
 
+func (q Queen) setPiece(piece *Piece) {
+	q.piece = piece
+}
+
 func (q Queen) getPiece() *Piece {
 	return q.piece
 }

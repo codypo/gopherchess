@@ -4,6 +4,10 @@ type Knight struct {
 	piece *Piece
 }
 
+func (k Knight) setPiece(piece *Piece) {
+	k.piece = piece
+}
+
 func (k Knight) getPiece() *Piece {
 	return k.piece
 }
