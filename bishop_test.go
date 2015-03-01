@@ -42,7 +42,7 @@ func TestBishopCanCapture(t *testing.T) {
 	wBishop, _ := white.getPieceByCoordinate(3, 1)
 	bPawn, _ := black.getPieceByCoordinate(1, 7)
 
-	// Set the pieces up so that bishop can immediatley capture.
+	// Set the pieces up so that bishop can immediately capture.
 	bPawn.move(&Square{x: 1, y: 5})
 	if bPawn.captured {
 		t.Errorf("Pawn started out in captured state.")

@@ -34,7 +34,6 @@ func (p *Piece) getSquare() *Square {
 
 func (p *Piece) setCaptured() {
 	p.captured = true
-	// Do we need to null out their spot?
 }
 
 // Moves a piece to a square, if allowed.  If that square is
@@ -50,7 +49,6 @@ func (p *Piece) move(square *Square) error {
 		break
 	default:
 		return fmt.Errorf("Specified move is not valid.")
-
 	}
 
 	return nil
