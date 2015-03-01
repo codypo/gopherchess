@@ -2,15 +2,11 @@ package main
 
 // You come at the king, you best not miss.
 type King struct {
-	data *PieceData
+	piece *Piece
 }
 
-func (k King) move(newSquare Square) bool {
-	return false
-}
-
-func (k King) pieceData() *PieceData {
-	return k.data
+func (k King) getPiece() *Piece {
+	return k.piece
 }
 
 func (k King) generateMoves(start Square) []*Square {
@@ -33,7 +29,7 @@ func (k King) generateMoves(start Square) []*Square {
 		if !move.isValid() {
 			continue
 		}
-		status := k.pieceData().evaluateSquare(move)
+		status := k.getPiece().evaluateSquare(move)
 		if status == squareVacant || status == squareOccupiedByOpponent {
 			validMoves = append(validMoves, move)
 		}

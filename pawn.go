@@ -1,11 +1,11 @@
 package main
 
 type Pawn struct {
-	data *PieceData
+	piece *Piece
 }
 
-func (p Pawn) pieceData() *PieceData {
-	return p.data
+func (p Pawn) getPiece() *Piece {
+	return p.piece
 }
 
 func (p Pawn) generateMoves(start Square) []*Square {
@@ -16,7 +16,7 @@ func (p Pawn) generateMoves(start Square) []*Square {
 	moves := make([]*Square, 1)
 	moves[0] = &Square{x: start.x, y: start.y + 1}
 
-	if len(p.data.moves) == 1 {
+	if len(p.piece.moves) == 1 {
 		moves = append(moves, &Square{x: start.x, y: start.y + 2})
 	}
 
@@ -28,7 +28,7 @@ func (p Pawn) generateMoves(start Square) []*Square {
 		if !move.isValid() {
 			continue
 		}
-		status := p.pieceData().evaluateSquare(move)
+		status := p.getPiece().evaluateSquare(move)
 		if status == squareVacant || status == squareOccupiedByOpponent {
 			validMoves = append(validMoves, move)
 		}

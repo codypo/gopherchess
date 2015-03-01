@@ -1,19 +1,16 @@
 package main
 
 type Bishop struct {
-	data *PieceData
+	piece *Piece
 }
 
-func (b Bishop) move(newSquare Square) bool {
-	return false
-}
-
-func (b Bishop) pieceData() *PieceData {
-	return b.data
+func (b Bishop) getPiece() *Piece {
+	return b.piece
 }
 
 func (b Bishop) generateMoves(start Square) []*Square {
-	return b.pieceData().generateDiagonalMoves(start)
+	// Bishops can only move diagonally.
+	return b.getPiece().generateDiagonalMoves(start)
 }
 
 func (b Bishop) getShorthand() string {

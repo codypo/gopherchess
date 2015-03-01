@@ -23,10 +23,10 @@ func TestPawnGeneratesValidMoves(t *testing.T) {
 
 	// Go ahead and move the pawn one spot forward.  With its first move made,
 	// it can no longer move forward 2 spots.
-	pawn1.pieceData().move(startMoves[0])
+	pawn1.move(startMoves[0])
 
 	secondMoves := []*Square{&Square{x: 2, y: 4}}
-	genMoves = pawn1.generateMoves(*pawn1.pieceData().getSquare())
+	genMoves = pawn1.generateMoves(*pawn1.getSquare())
 
 	arraysMatch, err = squaresMatch(genMoves, secondMoves[0:])
 	if !arraysMatch {

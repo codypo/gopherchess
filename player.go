@@ -5,7 +5,7 @@ import "fmt"
 type Player struct {
 	name   string
 	color  Color
-	pieces [numPiecesPerPlayer]Piece
+	pieces [numPiecesPerPlayer]*Piece
 }
 
 func NewPlayer(color Color, board *Board) *Player {
@@ -26,81 +26,70 @@ func NewPlayer(color Color, board *Board) *Player {
 
 	// Initialize a square and piece data instance we can reuse.
 	s := &Square{x: startSquare, y: startSquare}
-	pd := NewPieceData(color, s, board)
-	pawn := Pawn{data: pd}
+	pawn := NewPiece(color, s, board, PawnType)
 
 	// Populate pawns.
 	for x := startSquare; x <= endSquare; x++ {
 		s = &Square{x: x, y: pawnRow}
-		pd = NewPieceData(color, s, board)
-		pawn = Pawn{data: pd}
+		pawn = NewPiece(color, s, board, PawnType)
 		p.pieces[pieceIndex] = pawn
 		pieceIndex++
 	}
 
 	// Populate rooks.
 	s = &Square{x: startSquare, y: rookRow}
-	pd = NewPieceData(color, s, board)
-	rook := Rook{data: pd}
+	rook := NewPiece(color, s, board, RookType)
 	p.pieces[pieceIndex] = rook
 	pieceIndex++
 
 	// TODO: This pieceIndex part is silly.
 	s = &Square{x: endSquare, y: rookRow}
-	pd = NewPieceData(color, s, board)
-	rook = Rook{data: pd}
+	rook = NewPiece(color, s, board, RookType)
 	p.pieces[pieceIndex] = rook
 	pieceIndex++
 
 	// Populate knights.
 	s = &Square{x: startSquare + 1, y: rookRow}
-	pd = NewPieceData(color, s, board)
-	knight := Knight{data: pd}
+	knight := NewPiece(color, s, board, KnightType)
 	p.pieces[pieceIndex] = knight
 	pieceIndex++
 
 	s = &Square{x: endSquare - 1, y: rookRow}
-	pd = NewPieceData(color, s, board)
-	knight = Knight{data: pd}
+	knight = NewPiece(color, s, board, KnightType)
 	p.pieces[pieceIndex] = knight
 	pieceIndex++
 
 	// Populate bishops.
 	s = &Square{x: startSquare + 2, y: rookRow}
-	pd = NewPieceData(color, s, board)
-	bishop := Bishop{data: pd}
+	bishop := NewPiece(color, s, board, BishopType)
 	p.pieces[pieceIndex] = bishop
 	pieceIndex++
 
 	s = &Square{x: endSquare - 2, y: rookRow}
-	pd = NewPieceData(color, s, board)
-	bishop = Bishop{data: pd}
+	bishop = NewPiece(color, s, board, BishopType)
 	p.pieces[pieceIndex] = bishop
 	pieceIndex++
 
 	// Populate the queen.
 	s = &Square{x: startSquare + 3, y: rookRow}
-	pd = NewPieceData(color, s, board)
-	queen := Queen{data: pd}
+	queen := NewPiece(color, s, board, QueenType)
 	p.pieces[pieceIndex] = queen
 	pieceIndex++
 
 	// Populate the king.
 	s = &Square{x: startSquare + 4, y: rookRow}
-	pd = NewPieceData(color, s, board)
-	king := King{data: pd}
+	king := NewPiece(color, s, board, KingType)
 	p.pieces[pieceIndex] = king
 	pieceIndex++
 
 	return p
 }
 
-func (player Player) getPieceByCoordinate(x int, y int) (Piece, error) {
+func (player Player) getPieceByCoordinate(x int, y int) (*Piece, error) {
 	for _, piece := range player.pieces {
-		if piece.pieceData().matchesCoordinates(x, y) {
+		if piece.matchesCoordinates(x, y) {
 			return piece, nil
 		}
-		//fmt.Printf("   Piece coords %d, %d does not match %d, %d\n", piece.pieceData().getSquare().x, piece.pieceData().getSquare().y, x, y)
 	}
 
 	return nil, fmt.Errorf("No piece found at %d, %d", x, y)
@@ -108,6 +97,6 @@ func (player Player) getPieceByCoordinate(x int, y int) (Piece, error) {
 
 func (p Player) printPieces() {
 	for _, piece := range p.pieces {
-		fmt.Printf("Piece coords %d, %d\n", piece.pieceData().getSquare().x, piece.pieceData().getSquare().y)
+		fmt.Printf("Piece coords %d, %d\n", piece.getSquare().x, piece.getSquare().y)
 	}
 }

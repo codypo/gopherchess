@@ -1,42 +1,32 @@
 package main
 
 type Knight struct {
-	data *PieceData
+	piece *Piece
 }
 
-func (k Knight) move(newSquare Square) bool {
-	return false
-}
-
-func (k Knight) pieceData() *PieceData {
-	return k.data
+func (k Knight) getPiece() *Piece {
+	return k.piece
 }
 
 func (k Knight) generateMoves(start Square) []*Square {
-	moves := make([]*Square, 0)
-
-	move := &Square{x: start.x + 2, y: start.y + 1}
-	moves = append(moves, move)
-	move = &Square{x: start.x + 2, y: start.y - 1}
-	moves = append(moves, move)
-	move = &Square{x: start.x - 2, y: start.y + 1}
-	moves = append(moves, move)
-	move = &Square{x: start.x - 2, y: start.y - 1}
-	moves = append(moves, move)
-
-	move = &Square{x: start.x + 1, y: start.y + 2}
-	moves = append(moves, move)
-	move = &Square{x: start.x + 1, y: start.y - 2}
-	moves = append(moves, move)
-	move = &Square{x: start.x - 1, y: start.y + 2}
-	moves = append(moves, move)
-	move = &Square{x: start.x - 1, y: start.y - 2}
-	moves = append(moves, move)
+	// Unfortunately, knight moves have nothing to do with that Bob Seger song.
+	// Knights can move 2 spots vertically and 1 horizontally, or 2 horizontally
+	// and 1 vertically.
+	moves := []*Square{
+		&Square{x: start.x + 2, y: start.y + 1},
+		&Square{x: start.x + 2, y: start.y - 1},
+		&Square{x: start.x - 2, y: start.y + 1},
+		&Square{x: start.x - 2, y: start.y - 1},
+		&Square{x: start.x + 1, y: start.y + 2},
+		&Square{x: start.x + 1, y: start.y - 2},
+		&Square{x: start.x - 1, y: start.y + 2},
+		&Square{x: start.x - 1, y: start.y - 2},
+	}
 
 	validMoves := make([]*Square, 0)
 
 	for _, move := range moves {
-		status := k.pieceData().evaluateSquare(move)
+		status := k.getPiece().evaluateSquare(move)
 		if status == squareVacant || status == squareOccupiedByOpponent {
 			validMoves = append(validMoves, move)
 		}

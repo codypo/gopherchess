@@ -1,19 +1,15 @@
 package main
 
 type Rook struct {
-	data *PieceData
+	piece *Piece
 }
 
-func (r Rook) move(newSquare Square) bool {
-	return false
-}
-
-func (r Rook) pieceData() *PieceData {
-	return r.data
+func (r Rook) getPiece() *Piece {
+	return r.piece
 }
 
 func (r Rook) generateMoves(start Square) []*Square {
-	return r.pieceData().generateStraightMoves(start)
+	return r.getPiece().generateStraightMoves(start)
 }
 
 func (r Rook) getShorthand() string {

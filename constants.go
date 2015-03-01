@@ -12,6 +12,18 @@ const (
 	squareOccupiedByOpponent = 128 // Random witchcraft.
 )
 
+// Slightly weird naming so to as not conflict with struct names.
+type PieceType int
+
+const (
+	PawnType PieceType = 1 << iota
+	RookType
+	BishopType
+	KnightType
+	QueenType
+	KingType
+)
+
 type Color int
 
 const (

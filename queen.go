@@ -1,20 +1,18 @@
 package main
 
 type Queen struct {
-	data *PieceData
+	piece *Piece
 }
 
-func (q Queen) move(newSquare Square) bool {
-	return false
-}
-
-func (q Queen) pieceData() *PieceData {
-	return q.data
+func (q Queen) getPiece() *Piece {
+	return q.piece
 }
 
 func (q Queen) generateMoves(start Square) []*Square {
-	diagMoves := q.pieceData().generateDiagonalMoves(start)
-	straightMoves := q.pieceData().generateStraightMoves(start)
+	// Queens are mighty can moth vertically, horizontally,
+	// and diagonally.
+	diagMoves := q.getPiece().generateDiagonalMoves(start)
+	straightMoves := q.getPiece().generateStraightMoves(start)
 	return append(diagMoves, straightMoves...)
 }
 
