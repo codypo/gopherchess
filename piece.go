@@ -1,6 +1,8 @@
 package main
 
-//import "fmt"
+import (
+	"fmt"
+)
 
 // The ability to generate moves (e.g., a bishop's moves vs. a
 // knight's moves) is really the only difference between pieces.
@@ -24,10 +26,38 @@ type Piece struct {
 }
 
 func (p *Piece) getSquare() *Square {
+	if p.captured {
+		return nil
+	}
 	return p.moves[len(p.moves)-1]
 }
 
-func (p *Piece) move(square *Square) {
+func (p *Piece) setCaptured() {
+	p.captured = true
+	// Do we need to null out their spot?
+}
+
+// Moves a piece to a square, if allowed.  If that square is
+// occupied by the opponent, thsi will capture the occupant.
+func (p *Piece) move(square *Square) error {
+	moveStatus := p.board.evaluateSquare(p.color, square)
+	switch moveStatus {
+	case squareOccupiedByOpponent:
+		capturedPiece := p.board.getPieceBySquare(square.x, square.y)
+		capturedPiece.setCaptured()
+	case squareVacant:
+		p.moves = append(p.moves, square)
+		break
+	default:
+		return fmt.Errorf("Specified move is not valid.")
+
+	}
+
+	return nil
+}
+
+// Used only for unit tests.
+func (p *Piece) forceMove(square *Square) {
 	p.moves = append(p.moves, square)
 }
 

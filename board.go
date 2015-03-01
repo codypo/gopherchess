@@ -45,28 +45,32 @@ func (b Board) evaluateSquare(c Color, s *Square) int {
 		return squareInvalid
 	}
 	status := squareVacant
-	var me Player
-	var opponent Player
-
-	if c == White {
-		me = b.getPlayer(White)
-		opponent = b.getPlayer(Black)
-	} else {
-		me = b.getPlayer(Black)
-		opponent = b.getPlayer(White)
-	}
 
 	// Does either side have a piece on this square?
-	if myPiece, _ := me.getPieceByCoordinate(s.x, s.y); myPiece != nil {
-		status = squareOccupiedByMe
-	}
-
-	if oppoPiece, _ := opponent.getPieceByCoordinate(s.x, s.y); oppoPiece != nil {
-		status = squareOccupiedByOpponent
+	pieceOnSquare := b.getPieceBySquare(s.x, s.y)
+	if pieceOnSquare != nil {
+		if pieceOnSquare.color == c {
+			status = squareOccupiedByMe
+		} else {
+			status = squareOccupiedByOpponent
+		}
 	}
 
 	// Eventually, we'll want more stuff for check and such.
 	return status
+}
+
+func (b Board) getPieceBySquare(x int, y int) *Piece {
+	// Does either side have a piece on this square?
+	if bPiece, _ := b.getPlayer(Black).getPieceByCoordinate(x, y); bPiece != nil {
+		return bPiece
+	}
+
+	if wPiece, _ := b.getPlayer(White).getPieceByCoordinate(x, y); wPiece != nil {
+		return wPiece
+	}
+
+	return nil
 }
 
 // Print out the current state of the board.  Useful in the event

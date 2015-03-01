@@ -34,3 +34,27 @@ func TestBishopGeneratesValidMoves(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 }
+
+func TestBishopCanCapture(t *testing.T) {
+	b := NewBoard()
+	white := b.getPlayer(White)
+	black := b.getPlayer(Black)
+	wBishop, _ := white.getPieceByCoordinate(3, 1)
+	bPawn, _ := black.getPieceByCoordinate(1, 7)
+
+	// Set the pieces up so that bishop can immediatley capture.
+	bPawn.move(&Square{x: 1, y: 5})
+	if bPawn.captured {
+		t.Errorf("Pawn started out in captured state.")
+	}
+
+	wBishop.forceMove(&Square{x: 3, y: 3})
+	wBishop.move(&Square{x: 1, y: 5})
+	if !bPawn.captured {
+		t.Errorf("Captured pawn not in captured state.")
+	}
+
+	if bPawn.getSquare() != nil {
+		t.Errorf("Captured pawn has a non-nil position.")
+	}
+}
