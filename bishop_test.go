@@ -48,6 +48,12 @@ func TestBishopCanCapture(t *testing.T) {
 		t.Errorf("Pawn started out in captured state.")
 	}
 
+	// Should not be able to capture pieces it cannot access.
+	moveErr := wBishop.move(&Square{x: 8, y: 8})
+	if moveErr == nil {
+		t.Errorf("Invalid move allowed for capture.")
+	}
+
 	wBishop.forceMove(&Square{x: 3, y: 3})
 	wBishop.move(&Square{x: 1, y: 5})
 	if !bPawn.captured {

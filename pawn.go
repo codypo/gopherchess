@@ -17,11 +17,16 @@ func (p Pawn) generateMoves(start Square) []*Square {
 	// If it's the pawn's first move, he can jump 2 squares.
 
 	// TODO: en passant
+	moveDirection := 1
+	if p.piece.color == Black {
+		moveDirection = -1
+	}
+
 	moves := make([]*Square, 1)
-	moves[0] = &Square{x: start.x, y: start.y + 1}
+	moves[0] = &Square{x: start.x, y: start.y + (1 * moveDirection)}
 
 	if len(p.piece.moves) == 1 {
-		moves = append(moves, &Square{x: start.x, y: start.y + 2})
+		moves = append(moves, &Square{x: start.x, y: start.y + (2 * moveDirection)})
 	}
 
 	// TODO: when we add capturing, just chop this and validate the moves

@@ -39,6 +39,21 @@ func (p *Piece) setCaptured() {
 // Moves a piece to a square, if allowed.  If that square is
 // occupied by the opponent, thsi will capture the occupant.
 func (p *Piece) move(square *Square) error {
+	// First, confirm this is a valid move.
+	moveIsValid := false
+	for _, s := range p.mover.generateMoves(*p.getSquare()) {
+		if s.x == square.x && s.y == square.y {
+			moveIsValid = true
+			break
+		}
+	}
+	if !moveIsValid {
+		return fmt.Errorf("Specified move is not valid.")
+	}
+
+	// TODO: this is inefficient.  generateMoves typically
+	// calls evaluateSquare.  generateMoves could instead
+	// return a hash map of square to status.
 	moveStatus := p.board.evaluateSquare(p.color, square)
 	switch moveStatus {
 	case squareOccupiedByOpponent:
