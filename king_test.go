@@ -35,3 +35,32 @@ func TestKingGeneratesValidMoves(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 }
+
+func TestKingCanCapture(t *testing.T) {
+	b := NewBoard()
+	white := b.getPlayer(White)
+	black := b.getPlayer(Black)
+	wKing, _ := white.getPieceByCoordinate(5, 1)
+	bPawn, _ := black.getPieceByCoordinate(7, 7)
+
+	bPawn.move(&Square{x: 7, y: 5})
+	if bPawn.captured {
+		t.Errorf("Pawn started out in captured state.")
+	}
+
+	// Should not be able to capture pieces it cannot access.
+	moveErr := wKing.move(&Square{x: 7, y: 5})
+	if moveErr == nil {
+		t.Errorf("Invalid move allowed for capture.")
+	}
+
+	wKing.forceMove(&Square{x: 6, y: 4})
+	wKing.move(&Square{x: 7, y: 5})
+	if !bPawn.captured {
+		t.Errorf("Captured pawn not in captured state.")
+	}
+
+	if bPawn.getSquare() != nil {
+		t.Errorf("Captured pawn has a non-nil position.")
+	}
+}
