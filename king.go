@@ -30,9 +30,6 @@ func (k King) generateMoves(start Square) []*Square {
 	validMoves := make([]*Square, 0)
 
 	for _, move := range moves {
-		if !move.isValid() {
-			continue
-		}
 		status := k.getPiece().evaluateSquare(move)
 		if status == squareVacant || status == squareOccupiedByOpponent {
 			validMoves = append(validMoves, move)
