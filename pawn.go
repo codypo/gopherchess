@@ -34,13 +34,21 @@ func (p Pawn) generateMoves(start Square) []*Square {
 
 	validMoves := make([]*Square, 0)
 	for _, move := range moves {
-		if !move.isValid() {
-			continue
-		}
 		status := p.getPiece().evaluateSquare(move)
-		if status == squareVacant || status == squareOccupiedByOpponent {
+		if status == squareVacant {
 			validMoves = append(validMoves, move)
 		}
+	}
+
+	// Certain moves are only valid if we can capture an opponent.
+	// In this case, we make a special case for a pawn's diagonal move.
+	captureLeft := &Square{x: start.x - 1, y: start.y + (1 * moveDirection)}
+	if p.getPiece().evaluateSquare(captureLeft) == squareOccupiedByOpponent {
+		validMoves = append(validMoves, captureLeft)
+	}
+	captureRight := &Square{x: start.x + 1, y: start.y + (1 * moveDirection)}
+	if p.getPiece().evaluateSquare(captureRight) == squareOccupiedByOpponent {
+		validMoves = append(validMoves, captureRight)
 	}
 
 	return validMoves
