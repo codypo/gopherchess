@@ -18,11 +18,12 @@ type PieceMover interface {
 // Piece struct encapsulates all of the common data that's
 // known about a piece.  Color, location, past moves, etc.
 type Piece struct {
-	color    Color
-	captured bool
-	moves    []*Square
-	board    *Board
-	mover    PieceMover
+	color     Color
+	captured  bool
+	moves     []*Square
+	board     *Board
+	mover     PieceMover
+	pieceType PieceType
 }
 
 func (p *Piece) getSquare() *Square {
@@ -40,14 +41,7 @@ func (p *Piece) setCaptured() {
 // occupied by the opponent, thsi will capture the occupant.
 func (p *Piece) move(square *Square) error {
 	// First, confirm this is a valid move.
-	moveIsValid := false
-	for _, s := range p.mover.generateMoves(*p.getSquare()) {
-		if s.x == square.x && s.y == square.y {
-			moveIsValid = true
-			break
-		}
-	}
-	if !moveIsValid {
+	if !p.canMoveToSquare(*square) {
 		return fmt.Errorf("Specified move is not valid.")
 	}
 
@@ -90,10 +84,24 @@ func (p Piece) evaluateSquare(square *Square) SquareState {
 	return p.board.evaluateSquare(p.color, square)
 }
 
+// Determines if this piece can move to a given square.
+func (p Piece) canMoveToSquare(square Square) bool {
+	for _, s := range p.mover.generateMoves(*p.getSquare()) {
+		if s.x == square.x && s.y == square.y {
+			return true
+		}
+	}
+
+	return false
+}
+
+// Gets the shorthand notation for a piece, like p for Pawn.
 func (p Piece) getShorthand() string {
 	return p.mover.getShorthand()
 }
 
+// Generate all of the valid moves for a piece, given its
+// starting square.
 func (p Piece) generateMoves(start Square) []*Square {
 	return p.mover.generateMoves(start)
 }
@@ -223,6 +231,7 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 	p.moves = []*Square{square}
 	p.board = board
 
+	p.pieceType = pieceType
 	switch pieceType {
 	case PawnType:
 		p.mover = new(Pawn)

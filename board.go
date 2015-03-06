@@ -80,14 +80,14 @@ func (b Board) prettyPrint() {
 
 	// TODO: should also print out row and column designations,
 	// and distinguish pieces by color.
-	for y := startSquare; y <= endSquare; y++ {
+	for y := endSquare; y >= startSquare; y-- {
 		for x := startSquare; x <= endSquare; x++ {
 			if wp, _ := white.getPieceByCoordinate(x, y); wp != nil {
-				fmt.Printf(" %s ", wp.getShorthand())
+				fmt.Printf(" w%s ", wp.getShorthand())
 			} else if bp, _ := black.getPieceByCoordinate(x, y); bp != nil {
-				fmt.Printf(" %s ", bp.getShorthand())
+				fmt.Printf(" b%s ", bp.getShorthand())
 			} else {
-				fmt.Printf("   ")
+				fmt.Printf("    ")
 			}
 		}
 		fmt.Printf("\n")
@@ -97,5 +97,21 @@ func (b Board) prettyPrint() {
 // Returns the state the board is in.  Interesting returns here are
 // check or check mate.
 func (b Board) getGameState() GameState {
-	return Default
+	wPlayer := b.getPlayer(White)
+	bPlayer := b.getPlayer(Black)
+
+	// TODO: This is inefficient.
+
+	// Find the king.  Can anyone from the opposing side capture
+	// him in 1 move?  If so, check.
+	wKing, _ := wPlayer.getKing()
+	if bPlayer.canMoveToSquare(*wKing.getSquare()) {
+		return WhiteInCheck
+	}
+
+	bKing, _ := bPlayer.getKing()
+	if wPlayer.canMoveToSquare(*bKing.getSquare()) {
+		return BlackInCheck
+	}
+	return GameOn
 }

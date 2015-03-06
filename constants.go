@@ -7,9 +7,9 @@ const (
 	numPiecesPerPlayer = 16
 )
 
-// Slightly weird naming so to as not conflict with struct names.
 type PieceType int
 
+// Slightly weird naming so to as not conflict with struct names.
 const (
 	PawnType PieceType = 1 << iota
 	RookType
@@ -39,7 +39,7 @@ const (
 type GameState int
 
 const (
-	Default GameState = 1 << iota // TODO: Don't like the name Normal.
+	GameOn GameState = 1 << iota
 	WhiteInCheck
 	WhiteInCheckMate
 	BlackInCheck

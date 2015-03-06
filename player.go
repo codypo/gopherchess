@@ -100,3 +100,32 @@ func (p Player) printPieces() {
 		fmt.Printf("Piece coords %d, %d\n", piece.getSquare().x, piece.getSquare().y)
 	}
 }
+
+// Gets the king piece for this player.  Used to determine if player
+// is in check.
+func (p Player) getKing() (*Piece, error) {
+	for _, p := range p.pieces {
+		// TODO: I really hate the PieceType naming.
+		if p.pieceType == KingType {
+			return p, nil
+		}
+	}
+
+	return nil, fmt.Errorf("No king found.  This very, very odd.")
+}
+
+// Can any piece for this player move to a given square?  Used to
+// determine if player is in check.
+func (p Player) canMoveToSquare(s Square) bool {
+	for _, piece := range p.pieces {
+		if piece.captured {
+			continue
+		}
+
+		if piece.canMoveToSquare(s) {
+			return true
+		}
+	}
+
+	return false
+}
