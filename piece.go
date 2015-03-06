@@ -56,10 +56,10 @@ func (p *Piece) move(square *Square) error {
 	// return a hash map of square to status.
 	moveStatus := p.board.evaluateSquare(p.color, square)
 	switch moveStatus {
-	case squareOccupiedByOpponent:
+	case SquareOccupiedByOpponent:
 		capturedPiece := p.board.getPieceBySquare(square.x, square.y)
 		capturedPiece.setCaptured()
-	case squareVacant:
+	case SquareVacant:
 		p.moves = append(p.moves, square)
 		break
 	default:
@@ -86,7 +86,7 @@ func (p Piece) x() int {
 	return p.getSquare().x
 }
 
-func (p Piece) evaluateSquare(square *Square) int {
+func (p Piece) evaluateSquare(square *Square) SquareState {
 	return p.board.evaluateSquare(p.color, square)
 }
 
@@ -114,43 +114,43 @@ func (p Piece) generateDiagonalMoves(start Square) []*Square {
 		if goUpLeft {
 			move := &Square{x: start.x - i, y: start.y + i}
 			status := p.evaluateSquare(move)
-			if status == squareVacant || status == squareOccupiedByOpponent {
+			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
 
 			// You can only go onward if you're looking at a vacant square.
-			goUpLeft = (status == squareVacant)
+			goUpLeft = (status == SquareVacant)
 		}
 
 		// Evaluate the next move down and to the left.
 		if goDownLeft {
 			move := &Square{x: start.x - i, y: start.y - i}
 			status := p.evaluateSquare(move)
-			if status == squareVacant || status == squareOccupiedByOpponent {
+			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
 
-			goDownLeft = (status == squareVacant)
+			goDownLeft = (status == SquareVacant)
 		}
 
 		// Evaluate the next move up and to the right.
 		if goUpRight {
 			move := &Square{x: start.x + i, y: start.y + i}
 			status := p.evaluateSquare(move)
-			if status == squareVacant || status == squareOccupiedByOpponent {
+			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
-			goUpRight = (status == squareVacant)
+			goUpRight = (status == SquareVacant)
 		}
 
 		// Evaluate the next move down and to the right
 		if goDownRight {
 			move := &Square{x: start.x + i, y: start.y - i}
 			status := p.evaluateSquare(move)
-			if status == squareVacant || status == squareOccupiedByOpponent {
+			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
-			goDownRight = (status == squareVacant)
+			goDownRight = (status == SquareVacant)
 		}
 	}
 
@@ -173,43 +173,43 @@ func (p Piece) generateStraightMoves(start Square) []*Square {
 		if goUp {
 			move := &Square{x: start.x, y: start.y + i}
 			status := p.evaluateSquare(move)
-			if status == squareVacant || status == squareOccupiedByOpponent {
+			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
 
 			// You can only go onward if you're looking at a vacant square.
-			goUp = (status == squareVacant)
+			goUp = (status == SquareVacant)
 		}
 
 		// Evaluate the next move down.
 		if goDown {
 			move := &Square{x: start.x, y: start.y - i}
 			status := p.evaluateSquare(move)
-			if status == squareVacant || status == squareOccupiedByOpponent {
+			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
 
-			goDown = (status == squareVacant)
+			goDown = (status == SquareVacant)
 		}
 
 		// Evaluate the next move right.
 		if goRight {
 			move := &Square{x: start.x + i, y: start.y}
 			status := p.evaluateSquare(move)
-			if status == squareVacant || status == squareOccupiedByOpponent {
+			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
-			goRight = (status == squareVacant)
+			goRight = (status == SquareVacant)
 		}
 
 		// Evaluate the next move left.
 		if goLeft {
 			move := &Square{x: start.x - i, y: start.y}
 			status := p.evaluateSquare(move)
-			if status == squareVacant || status == squareOccupiedByOpponent {
+			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
-			goLeft = (status == squareVacant)
+			goLeft = (status == SquareVacant)
 		}
 	}
 

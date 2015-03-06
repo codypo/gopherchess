@@ -29,3 +29,29 @@ func TestBoardNew(t *testing.T) {
 		t.Errorf("Player 1 is not Black.")
 	}
 }
+
+func TestBoardRecognizesWhiteInCheck(t *testing.T) {
+	b := NewBoard()
+	white := b.getPlayer(White)
+	black := b.getPlayer(Black)
+
+	// force the white king to the middle of the board.
+	wKing, _ := white.getPieceByCoordinate(5, 1)
+	wKing.forceMove(&Square{x: 4, y: 4})
+
+	// All good.
+	gameState := b.getGameState()
+	if gameState != Default {
+		t.Errorf("State of game should be default, but is %d", gameState)
+	}
+
+	// force rook into a spot where white king is in check.
+	bRook, _ := black.getPieceByCoordinate(1, 8)
+	bRook.forceMove(&Square{x: 1, y: 4})
+
+	// White's in check, RIGHT?
+	gameState = b.getGameState()
+	if gameState != WhiteInCheck {
+		t.Errorf("State of game should be white in check, but is %d", gameState)
+	}
+}

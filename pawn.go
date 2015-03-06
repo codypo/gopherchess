@@ -16,7 +16,7 @@ func (p Pawn) generateMoves(start Square) []*Square {
 	// Pawn can move vertically 1 square.
 	// If it's the pawn's first move, he can jump 2 squares.
 
-	// TODO: en passant
+	// TODO: en passant and promotion.
 	moveDirection := 1
 	if p.piece.color == Black {
 		moveDirection = -1
@@ -35,7 +35,7 @@ func (p Pawn) generateMoves(start Square) []*Square {
 	validMoves := make([]*Square, 0)
 	for _, move := range moves {
 		status := p.getPiece().evaluateSquare(move)
-		if status == squareVacant {
+		if status == SquareVacant {
 			validMoves = append(validMoves, move)
 		}
 	}
@@ -43,11 +43,11 @@ func (p Pawn) generateMoves(start Square) []*Square {
 	// Certain moves are only valid if we can capture an opponent.
 	// In this case, we make a special case for a pawn's diagonal move.
 	captureLeft := &Square{x: start.x - 1, y: start.y + (1 * moveDirection)}
-	if p.getPiece().evaluateSquare(captureLeft) == squareOccupiedByOpponent {
+	if p.getPiece().evaluateSquare(captureLeft) == SquareOccupiedByOpponent {
 		validMoves = append(validMoves, captureLeft)
 	}
 	captureRight := &Square{x: start.x + 1, y: start.y + (1 * moveDirection)}
-	if p.getPiece().evaluateSquare(captureRight) == squareOccupiedByOpponent {
+	if p.getPiece().evaluateSquare(captureRight) == SquareOccupiedByOpponent {
 		validMoves = append(validMoves, captureRight)
 	}
 

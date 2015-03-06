@@ -5,11 +5,6 @@ const (
 	endSquare          = 8
 	numPlayers         = 2
 	numPiecesPerPlayer = 16
-
-	squareInvalid            = -1
-	squareVacant             = 0
-	squareOccupiedByMe       = 1
-	squareOccupiedByOpponent = 128 // Random witchcraft.
 )
 
 // Slightly weird naming so to as not conflict with struct names.
@@ -30,4 +25,23 @@ const (
 	White Color = 1 << iota
 	Black
 	Undefined
+)
+
+type SquareState int
+
+const (
+	SquareInvalid SquareState = 1 << iota
+	SquareVacant
+	SquareOccupiedByMe
+	SquareOccupiedByOpponent
+)
+
+type GameState int
+
+const (
+	Default GameState = 1 << iota // TODO: Don't like the name Normal.
+	WhiteInCheck
+	WhiteInCheckMate
+	BlackInCheck
+	BlackInCheckMate
 )

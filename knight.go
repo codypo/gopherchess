@@ -31,7 +31,7 @@ func (k Knight) generateMoves(start Square) []*Square {
 
 	for _, move := range moves {
 		status := k.getPiece().evaluateSquare(move)
-		if status == squareVacant || status == squareOccupiedByOpponent {
+		if status == SquareVacant || status == SquareOccupiedByOpponent {
 			validMoves = append(validMoves, move)
 		}
 	}

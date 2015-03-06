@@ -40,24 +40,23 @@ func (b Board) getPlayer(color Color) Player {
 	return b.players[0]
 }
 
-func (b Board) evaluateSquare(c Color, s *Square) int {
+func (b Board) evaluateSquare(c Color, s *Square) SquareState {
 	if !s.isValid() {
-		return squareInvalid
+		return SquareInvalid
 	}
-	status := squareVacant
 
 	// Does either side have a piece on this square?
 	pieceOnSquare := b.getPieceBySquare(s.x, s.y)
 	if pieceOnSquare != nil {
 		if pieceOnSquare.color == c {
-			status = squareOccupiedByMe
+			return SquareOccupiedByMe
 		} else {
-			status = squareOccupiedByOpponent
+			// Can do check check. HAR HAR HAR.
+			return SquareOccupiedByOpponent
 		}
 	}
 
-	// Eventually, we'll want more stuff for check and such.
-	return status
+	return SquareVacant
 }
 
 func (b Board) getPieceBySquare(x int, y int) *Piece {
@@ -93,4 +92,10 @@ func (b Board) prettyPrint() {
 		}
 		fmt.Printf("\n")
 	}
+}
+
+// Returns the state the board is in.  Interesting returns here are
+// check or check mate.
+func (b Board) getGameState() GameState {
+	return Default
 }
