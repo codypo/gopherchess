@@ -12,6 +12,7 @@ func NewBoard() *Board {
 
 	// This feels gross, but it's a way to ensure that 0-indexed array
 	// lines up with silly 1-indexed squares.
+	// TODO: We could actually ditch this.  We don't use these squares.
 	offset := startSquare - 0
 	for x := startSquare; x <= endSquare; x++ {
 		for y := startSquare; y <= endSquare; y++ {
@@ -40,6 +41,9 @@ func (b Board) getPlayer(color Color) Player {
 	return b.players[0]
 }
 
+// Determines the state of a square.  We must know the color
+// of the moving side, so we can determine if the square is
+// occupied.
 func (b Board) evaluateSquare(c Color, s *Square) SquareState {
 	if !s.isValid() {
 		return SquareInvalid
@@ -59,6 +63,7 @@ func (b Board) evaluateSquare(c Color, s *Square) SquareState {
 	return SquareVacant
 }
 
+// Given the coordinates of a square, fetch its occuping piece.
 func (b Board) getPieceBySquare(x int, y int) *Piece {
 	// Does either side have a piece on this square?
 	if bPiece, _ := b.getPlayer(Black).getPieceByCoordinate(x, y); bPiece != nil {
@@ -114,4 +119,13 @@ func (b Board) getGameState() GameState {
 		return BlackInCheck
 	}
 	return GameOn
+}
+
+// Does a deep copy of the board.  Used to assess hypothetical moves.
+func (b Board) deepCopy() Board {
+	c := new(Board)
+	c.players[0] = *b.players[0].deepCopy(c)
+	c.players[1] = *b.players[1].deepCopy(c)
+
+	return *c
 }

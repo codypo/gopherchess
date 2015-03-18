@@ -68,3 +68,28 @@ func TestRookCanCapture(t *testing.T) {
 		t.Errorf("Captured pawn has a non-nil position.")
 	}
 }
+
+func TestRookCannotMoveAndLeadToOwnCheck(t *testing.T) {
+	b := NewBoard()
+	white := b.getPlayer(White)
+	black := b.getPlayer(Black)
+
+	wRook, _ := white.getPieceByCoordinate(8, 1)
+	wKing, _ := white.getKing()
+	bRook, _ := black.getPieceByCoordinate(8, 8)
+
+	// Black rook would have white King in check if white
+	// rook just moved out of the way.  White rook can't
+	// perform that moev, though.
+
+	bRook.forceMove(&Square{x: 8, y: 6})
+	wRook.forceMove(&Square{x: 8, y: 5})
+	wKing.forceMove(&Square{x: 8, y: 4})
+
+	// For the love of Jeebus, stay there, white rook!
+	moveErr := wRook.move(&Square{x: 1, y: 5})
+	if moveErr == nil {
+		t.Errorf("White rook should not be able to move and leave white king in check.")
+	}
+
+}

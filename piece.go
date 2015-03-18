@@ -26,6 +26,8 @@ type Piece struct {
 	pieceType PieceType
 }
 
+// Gets a piece's current square.  If the piece is captured,
+// returns nil.
 func (p *Piece) getSquare() *Square {
 	if p.captured {
 		return nil
@@ -33,6 +35,7 @@ func (p *Piece) getSquare() *Square {
 	return p.moves[len(p.moves)-1]
 }
 
+// You been captured, piece!
 func (p *Piece) setCaptured() {
 	p.captured = true
 }
@@ -68,31 +71,48 @@ func (p *Piece) forceMove(square *Square) {
 	p.moves = append(p.moves, square)
 }
 
+// Does a piece's current square match given coordinates.
 func (p Piece) matchesCoordinates(x int, y int) bool {
 	return (p.getSquare().x == x) && (p.getSquare().y == y)
 }
 
+// Utility func to return a piece's y coordinate.
 func (p Piece) y() int {
 	return p.getSquare().y
 }
 
+// Utility func to return a piece's x coordinate.
 func (p Piece) x() int {
 	return p.getSquare().x
 }
 
+// Determines the state of a square, from the perspective
+// of this piece.
 func (p Piece) evaluateSquare(square *Square) SquareState {
 	return p.board.evaluateSquare(p.color, square)
 }
 
 // Determines if this piece can move to a given square.
 func (p Piece) canMoveToSquare(square Square) bool {
-	for _, s := range p.mover.generateMoves(*p.getSquare()) {
+	for _, s := range p.generateMoves(*p.getSquare()) {
 		if s.x == square.x && s.y == square.y {
 			return true
 		}
 	}
 
 	return false
+}
+
+// Determines if moving piece to specified square results in
+// my side getting checked.  That's not cool.
+func (p Piece) doesMoveEndangerKing(square Square) bool {
+	// Create a copy of the board where we've already made
+	// this move.  Evaluate if my color is in check.
+	boardClone := p.board.deepCopy()
+	if p.color == White {
+		return boardClone.getGameState() == WhiteInCheck
+	}
+	return boardClone.getGameState() == BlackInCheck
 }
 
 // Gets the shorthand notation for a piece, like p for Pawn.
@@ -103,7 +123,15 @@ func (p Piece) getShorthand() string {
 // Generate all of the valid moves for a piece, given its
 // starting square.
 func (p Piece) generateMoves(start Square) []*Square {
-	return p.mover.generateMoves(start)
+	// Go through our list of generated moves.  Verify that
+	// none of these moves endangers our king.
+	moves := make([]*Square, 0)
+	for _, move := range p.mover.generateMoves(*p.getSquare()) {
+		if !p.doesMoveEndangerKing(*move) {
+			moves = append(moves, move)
+		}
+	}
+	return moves
 }
 
 // Generate all valid moves on the board for a given piece in only
@@ -222,6 +250,21 @@ func (p Piece) generateStraightMoves(start Square) []*Square {
 	}
 
 	return moves
+}
+
+func (p Piece) deepCopy(board *Board) *Piece {
+	c := new(Piece)
+	c.color = p.color
+	c.captured = p.captured
+	c.board = board
+	c.mover = p.mover
+	c.mover.setPiece(c)
+
+	// Note that we only copy the square's current position.
+	// Not sure if this is needed.
+	c.moves = []*Square{p.getSquare()}
+
+	return c
 }
 
 func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *Piece {

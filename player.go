@@ -129,3 +129,13 @@ func (p Player) canMoveToSquare(s Square) bool {
 
 	return false
 }
+
+// Performs a deep copy of a player's pieces.
+func (p Player) deepCopy(board *Board) *Player {
+	c := new(Player)
+	for i, piece := range p.pieces {
+		c.pieces[i] = piece.deepCopy(board)
+	}
+
+	return c
+}
