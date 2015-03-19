@@ -54,7 +54,7 @@ func (p *Piece) move(square *Square) error {
 	moveStatus := p.board.evaluateSquare(p.color, square)
 	switch moveStatus {
 	case SquareOccupiedByOpponent:
-		capturedPiece := p.board.getPieceBySquare(square.x, square.y)
+		capturedPiece := p.board.getPieceBySquare(*square)
 		capturedPiece.setCaptured()
 	case SquareVacant:
 		p.moves = append(p.moves, square)
@@ -109,10 +109,16 @@ func (p Piece) doesMoveEndangerKing(square Square) bool {
 	// Create a copy of the board where we've already made
 	// this move.  Evaluate if my color is in check.
 	boardClone := p.board.deepCopy()
-	if p.color == White {
-		return boardClone.getGameState() == WhiteInCheck
-	}
-	return boardClone.getGameState() == BlackInCheck
+	clonePiece := boardClone.getPieceBySquare(*p.getSquare())
+	clonePiece.forceMove(&square)
+	return boardClone.doesMoveLeadToCheck(clonePiece)
+
+	// RECURSION!!!!
+	// doesMoveEndangerKing calls getGameState - must make sure we're not moving into check
+	// getGameState calls player.canMoveToSquare - must make sure oppo player can take king from new spot
+	// player.canMoveToSquare calls piece.canMoveToSquare - must make see if any piece can take king with this change.  Can I exclude moving piece?
+	// piece.canMoveToSquare calls generateMoves - must see if my piece can move to this square.
+	// generateMoves calls doesMoveEndangerKing - must see if I'm exposing king.
 }
 
 // Gets the shorthand notation for a piece, like p for Pawn.
@@ -257,6 +263,7 @@ func (p Piece) deepCopy(board *Board) *Piece {
 	c.color = p.color
 	c.captured = p.captured
 	c.board = board
+	c.pieceType = p.pieceType
 	c.mover = p.mover
 	c.mover.setPiece(c)
 

@@ -50,7 +50,7 @@ func (b Board) evaluateSquare(c Color, s *Square) SquareState {
 	}
 
 	// Does either side have a piece on this square?
-	pieceOnSquare := b.getPieceBySquare(s.x, s.y)
+	pieceOnSquare := b.getPieceBySquare(*s)
 	if pieceOnSquare != nil {
 		if pieceOnSquare.color == c {
 			return SquareOccupiedByMe
@@ -64,7 +64,7 @@ func (b Board) evaluateSquare(c Color, s *Square) SquareState {
 }
 
 // Given the coordinates of a square, fetch its occuping piece.
-func (b Board) getPieceBySquare(x int, y int) *Piece {
+func (b Board) getPieceByCoordinates(x int, y int) *Piece {
 	// Does either side have a piece on this square?
 	if bPiece, _ := b.getPlayer(Black).getPieceByCoordinate(x, y); bPiece != nil {
 		return bPiece
@@ -75,6 +75,11 @@ func (b Board) getPieceBySquare(x int, y int) *Piece {
 	}
 
 	return nil
+}
+
+// Given a square, fetch its occupying piece.
+func (b Board) getPieceBySquare(s Square) *Piece {
+	return b.getPieceByCoordinates(s.x, s.y)
 }
 
 // Print out the current state of the board.  Useful in the event
@@ -121,11 +126,30 @@ func (b Board) getGameState() GameState {
 	return GameOn
 }
 
+// If the moving piece stays in its current position, is its king
+// now in check?  Used for move validation.
+func (b Board) doesMoveLeadToCheck(movingPiece *Piece) bool {
+	// Check only to see if this move puts me in check.
+	oppoPlayer := b.players[0]
+	myPlayer := b.players[1]
+	if movingPiece.color == White {
+		oppoPlayer = b.players[1]
+		myPlayer = b.players[0]
+	}
+
+	myKing, _ := myPlayer.getKing()
+	if oppoPlayer.canMoveToSquare(*myKing.getSquare()) {
+		return true
+	}
+
+	return false
+}
+
 // Does a deep copy of the board.  Used to assess hypothetical moves.
 func (b Board) deepCopy() Board {
 	c := new(Board)
-	c.players[0] = *b.players[0].deepCopy(c)
-	c.players[1] = *b.players[1].deepCopy(c)
+	c.players[0] = *b.players[0].deepCopy(c, White)
+	c.players[1] = *b.players[1].deepCopy(c, Black)
 
 	return *c
 }
