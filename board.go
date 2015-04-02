@@ -116,25 +116,6 @@ func (b Board) getGameState() GameState {
 	return GameOn
 }
 
-// If the moving piece stays in its current position, is its king
-// now in check?  Used for move validation.
-func (b Board) doesMoveLeadToCheck(movingPiece *Piece) bool {
-	// Check only to see if this move puts me in check.
-	oppoPlayer := b.players[0]
-	myPlayer := b.players[1]
-	if movingPiece.color == White {
-		oppoPlayer = b.players[1]
-		myPlayer = b.players[0]
-	}
-
-	myKing, _ := myPlayer.getKing()
-	if oppoPlayer.canMoveToSquare(*myKing.getSquare()) {
-		return true
-	}
-
-	return false
-}
-
 // Is the king now in check?  Use the king's position to evaluate the
 // squares around it and see if attacking pieces are there.
 func (b Board) isKingInCheck(color Color) bool {
