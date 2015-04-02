@@ -144,7 +144,7 @@ func (b Board) isKingInCheck(color Color) bool {
 		}
 		if p.pieceType == PawnType {
 			// Opposing pawns can only go in 1 direction.
-			if m.y-myKing.getSquare().y == oppoPawnDirection {
+			if (myKing.getSquare().y - m.y) == oppoPawnDirection {
 				return true
 			}
 		}
