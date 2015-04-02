@@ -50,9 +50,8 @@ func (b Board) evaluateSquare(c Color, s *Square) SquareState {
 	}
 
 	// Does either side have a piece on this square?
-	pieceOnSquare := b.getPieceBySquare(*s)
-	if pieceOnSquare != nil {
-		if pieceOnSquare.color == c {
+	if piece := b.getPieceBySquare(*s); piece != nil {
+		if piece.color == c {
 			return SquareOccupiedByMe
 		} else {
 			// Can do check check. HAR HAR HAR.
@@ -107,22 +106,13 @@ func (b Board) prettyPrint() {
 // Returns the state the board is in.  Interesting returns here are
 // check or check mate.
 func (b Board) getGameState() GameState {
-	wPlayer := b.getPlayer(White)
-	bPlayer := b.getPlayer(Black)
-
-	// TODO: This is inefficient.
-
-	// Find the king.  Can anyone from the opposing side capture
-	// him in 1 move?  If so, check.
-	wKing, _ := wPlayer.getKing()
-	if bPlayer.canMoveToSquare(*wKing.getSquare()) {
+	if b.isKingInCheck(White) {
 		return WhiteInCheck
 	}
-
-	bKing, _ := bPlayer.getKing()
-	if wPlayer.canMoveToSquare(*bKing.getSquare()) {
+	if b.isKingInCheck(Black) {
 		return BlackInCheck
 	}
+
 	return GameOn
 }
 
@@ -142,6 +132,57 @@ func (b Board) doesMoveLeadToCheck(movingPiece *Piece) bool {
 		return true
 	}
 
+	return false
+}
+
+// Is the king now in check?  Use the king's position to evaluate the
+// squares around it and see if attacking pieces are there.
+func (b Board) isKingInCheck(color Color) bool {
+	// Opposing pawn is descending our y axis.
+	oppoPawnDirection := -1
+
+	// TODO: This is dumb.  Just use color.
+	myPlayer := b.players[0]
+	if color == Black {
+		myPlayer = b.players[1]
+		oppoPawnDirection = 1
+	}
+
+	myKing, _ := myPlayer.getKing()
+
+	// From the king's position, generate diagonal moves.  Do we
+	// see an opposing bishop, pawn, or queen?
+	diagMoves := myKing.generateDiagonalMoves(*myKing.getSquare())
+	for _, m := range diagMoves {
+		p := b.getPieceBySquare(*m)
+		if p == nil {
+			continue
+		}
+		if p.pieceType == BishopType || p.pieceType == QueenType {
+			return true
+		}
+		if p.pieceType == PawnType {
+			// Opposing pawns can only go in 1 direction.
+			if m.y-myKing.getSquare().y == oppoPawnDirection {
+				return true
+			}
+		}
+	}
+
+	// From the king's position, generate straight moves.  Do we
+	// see an opposing rook or queen?
+	straightMoves := myKing.generateStraightMoves(*myKing.getSquare())
+	for _, m := range straightMoves {
+		p := b.getPieceBySquare(*m)
+		if p == nil {
+			continue
+		}
+		if p.pieceType == RookType || p.pieceType == QueenType {
+			return true
+		}
+	}
+
+	// TODO: What about those wacky knights?
 	return false
 }
 

@@ -111,14 +111,7 @@ func (p Piece) doesMoveEndangerKing(square Square) bool {
 	boardClone := p.board.deepCopy()
 	clonePiece := boardClone.getPieceBySquare(*p.getSquare())
 	clonePiece.forceMove(&square)
-	return boardClone.doesMoveLeadToCheck(clonePiece)
-
-	// RECURSION!!!!
-	// doesMoveEndangerKing calls getGameState - must make sure we're not moving into check
-	// getGameState calls player.canMoveToSquare - must make sure oppo player can take king from new spot
-	// player.canMoveToSquare calls piece.canMoveToSquare - must make see if any piece can take king with this change.  Can I exclude moving piece?
-	// piece.canMoveToSquare calls generateMoves - must see if my piece can move to this square.
-	// generateMoves calls doesMoveEndangerKing - must see if I'm exposing king.
+	return boardClone.isKingInCheck(clonePiece.color)
 }
 
 // Gets the shorthand notation for a piece, like p for Pawn.
@@ -132,7 +125,7 @@ func (p Piece) generateMoves(start Square) []*Square {
 	// Go through our list of generated moves.  Verify that
 	// none of these moves endangers our king.
 	moves := make([]*Square, 0)
-	for _, move := range p.mover.generateMoves(*p.getSquare()) {
+	for _, move := range p.mover.generateMoves(start) {
 		if !p.doesMoveEndangerKing(*move) {
 			moves = append(moves, move)
 		}
@@ -209,7 +202,6 @@ func (p Piece) generateStraightMoves(start Square) []*Square {
 	goDown := true
 	goLeft := true
 	goRight := true
-
 	for i := startSquare; i <= endSquare; i++ {
 		// Evaluate the next move up.
 		if goUp {
@@ -298,8 +290,5 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 
 	}
 	p.mover.setPiece(p)
-
-	//fmt.Printf(" 3 my piece is %s ???\n", p)
-
 	return p
 }
