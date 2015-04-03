@@ -4,7 +4,9 @@ import "fmt"
 
 type Board struct {
 	players [numPlayers]Player
-	squares [endSquare][endSquare]Square
+	// Why + 1?  Chess squares are 1-indexed, for some dumb reason.
+	// We embrace that 1-offset rather than subtracting everywhere.
+	squares [endSquare + 1][endSquare + 1]*Piece
 }
 
 func NewBoard() *Board {
@@ -12,12 +14,9 @@ func NewBoard() *Board {
 
 	// This feels gross, but it's a way to ensure that 0-indexed array
 	// lines up with silly 1-indexed squares.
-	// TODO: We could actually ditch this.  We don't use these squares.
-	offset := startSquare - 0
 	for x := startSquare; x <= endSquare; x++ {
 		for y := startSquare; y <= endSquare; y++ {
-			s := Square{x: x, y: y}
-			b.squares[x-offset][y-offset] = s
+			b.squares[x][y] = nil
 		}
 	}
 
@@ -28,6 +27,12 @@ func NewBoard() *Board {
 	b.players[1] = *p1
 
 	return b
+}
+
+// Move the specified piece to the appropriate location in the appropriate
+// square space.
+func (b Board) moveToSquare(piece Piece) {
+	b.squares[piece.getSquare().x][piece.getSquare().y] = &piece
 }
 
 func (b Board) getPlayer(color Color) Player {
@@ -64,6 +69,7 @@ func (b Board) evaluateSquare(c Color, s *Square) SquareState {
 
 // Given the coordinates of a square, fetch its occuping piece.
 func (b Board) getPieceByCoordinates(x int, y int) *Piece {
+	// return b.squares[x][y]
 	// Does either side have a piece on this square?
 	if bPiece, _ := b.getPlayer(Black).getPieceByCoordinate(x, y); bPiece != nil {
 		return bPiece

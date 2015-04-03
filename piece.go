@@ -57,7 +57,7 @@ func (p *Piece) move(square *Square) error {
 		capturedPiece := p.board.getPieceBySquare(*square)
 		capturedPiece.setCaptured()
 	case SquareVacant:
-		p.moves = append(p.moves, square)
+		p.forceMove(square)
 		break
 	default:
 		return fmt.Errorf("Specified move is not valid.")
@@ -66,9 +66,10 @@ func (p *Piece) move(square *Square) error {
 	return nil
 }
 
-// Used only for unit tests.
+// Forces a piece move without any validation.
 func (p *Piece) forceMove(square *Square) {
 	p.moves = append(p.moves, square)
+	p.board.moveToSquare(*p)
 }
 
 // Does a piece's current square match given coordinates.
