@@ -291,3 +291,55 @@ func TestBoardDoesNotRecognizeBlackInCheckByBackwardsPawn(t *testing.T) {
 		t.Errorf("State of game should be black in check, but is %d", gameState)
 	}
 }
+
+func TestBoardRecognizesWhiteInCheckByKnight(t *testing.T) {
+	b := NewBoard()
+	white := b.getPlayer(White)
+	black := b.getPlayer(Black)
+
+	// Force the white king to the middle of the board.
+	wKing, _ := white.getKing()
+	wKing.forceMove(&Square{x: 4, y: 4})
+
+	// All good.
+	gameState := b.getGameState()
+	if gameState != GameOn {
+		t.Errorf("State of game should be default, but is %d", gameState)
+	}
+
+	// Force knight into a spot where white king is in check.
+	bKnight, _ := black.getPieceByCoordinate(2, 8)
+	bKnight.forceMove(&Square{x: 2, y: 5})
+
+	// White's in check, RIGHT?
+	gameState = b.getGameState()
+	if gameState != WhiteInCheck {
+		t.Errorf("State of game should be white in check, but is %d", gameState)
+	}
+}
+
+func TestBoardRecognizesBlackInCheckByKnight(t *testing.T) {
+	b := NewBoard()
+	white := b.getPlayer(White)
+	black := b.getPlayer(Black)
+
+	// Force the king to the middle of the board.
+	bKing, _ := black.getKing()
+	bKing.forceMove(&Square{x: 4, y: 4})
+
+	// All good.
+	gameState := b.getGameState()
+	if gameState != GameOn {
+		t.Errorf("State of game should be default, but is %d", gameState)
+	}
+
+	// Force knight into a spot where king is in check.
+	wKnight, _ := white.getPieceByCoordinate(7, 1)
+	wKnight.forceMove(&Square{x: 5, y: 6})
+
+	// Black's in check, RIGHT?
+	gameState = b.getGameState()
+	if gameState != BlackInCheck {
+		t.Errorf("State of game should be black in check, but is %d", gameState)
+	}
+}

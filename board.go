@@ -163,7 +163,18 @@ func (b Board) isKingInCheck(color Color) bool {
 		}
 	}
 
-	// TODO: What about those wacky knights?
+	// From the king's position, generate knight moves.  Do we see
+	// an opposing knight?
+	knightMoves := myKing.generateKnightMoves(*myKing.getSquare())
+	for _, m := range knightMoves {
+		p := b.getPieceBySquare(*m)
+		if p == nil {
+			continue
+		}
+		if p.pieceType == KnightType {
+			return true
+		}
+	}
 	return false
 }
 

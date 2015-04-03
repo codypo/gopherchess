@@ -192,6 +192,34 @@ func (p Piece) generateDiagonalMoves(start Square) []*Square {
 	return moves
 }
 
+// Generate all valid moves on the board for a knight.
+// Knights can move 2 spots vertically and 1 horizontally, or 2 horizontally
+// and 1 vertically.
+// Unfortunately, knight moves have nothing to do with that Bob Seger song.
+func (p Piece) generateKnightMoves(start Square) []*Square {
+	moves := []*Square{
+		&Square{x: start.x + 2, y: start.y + 1},
+		&Square{x: start.x + 2, y: start.y - 1},
+		&Square{x: start.x - 2, y: start.y + 1},
+		&Square{x: start.x - 2, y: start.y - 1},
+		&Square{x: start.x + 1, y: start.y + 2},
+		&Square{x: start.x + 1, y: start.y - 2},
+		&Square{x: start.x - 1, y: start.y + 2},
+		&Square{x: start.x - 1, y: start.y - 2},
+	}
+
+	validMoves := make([]*Square, 0)
+
+	for _, move := range moves {
+		status := p.evaluateSquare(move)
+		if status == SquareVacant || status == SquareOccupiedByOpponent {
+			validMoves = append(validMoves, move)
+		}
+	}
+
+	return validMoves
+}
+
 // Generate all valid moves on the board for a given piece in only
 // the vertical and horizontal directions directions.
 // Reusable across pieces (queen, rook), so it lives here.
