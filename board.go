@@ -3,47 +3,30 @@ package main
 import "fmt"
 
 type Board struct {
-	players [numPlayers]Player
 	// Why + 1?  Chess squares are 1-indexed, for some dumb reason.
 	// We embrace that 1-offset rather than subtracting everywhere.
 	squares [endSquare + 1][endSquare + 1]*Piece
 }
 
+// Instantiates a new board.
 func NewBoard() *Board {
 	b := new(Board)
-
-	// This feels gross, but it's a way to ensure that 0-indexed array
-	// lines up with silly 1-indexed squares.
-	for x := startSquare; x <= endSquare; x++ {
-		for y := startSquare; y <= endSquare; y++ {
-			b.squares[x][y] = nil
-		}
-	}
-
-	p0 := NewPlayer(White, b)
-	b.players[0] = *p0
-
-	p1 := NewPlayer(Black, b)
-	b.players[1] = *p1
-
+	b.populatePieces(White)
+	b.populatePieces(Black)
 	return b
 }
 
 // Move the specified piece to the appropriate location in the appropriate
 // square space.
-func (b Board) moveToSquare(piece Piece) {
-	b.squares[piece.getSquare().x][piece.getSquare().y] = &piece
-}
-
-func (b Board) getPlayer(color Color) Player {
-	for _, p := range b.players {
-		if p.color == color {
-			return p
-		}
+func (b *Board) updateSquare(piece Piece) {
+	// First, nil out the square this dude was formerly occupying.
+	if len(piece.moves) > 1 {
+		oldSquare := piece.moves[len(piece.moves)-2]
+		b.squares[oldSquare.x][oldSquare.y] = nil
 	}
 
-	// HAAAAAAAAAAAACK
-	return b.players[0]
+	// Then, update the new square.
+	b.squares[piece.x()][piece.y()] = &piece
 }
 
 // Determines the state of a square.  We must know the color
@@ -69,17 +52,7 @@ func (b Board) evaluateSquare(c Color, s *Square) SquareState {
 
 // Given the coordinates of a square, fetch its occuping piece.
 func (b Board) getPieceByCoordinates(x int, y int) *Piece {
-	// return b.squares[x][y]
-	// Does either side have a piece on this square?
-	if bPiece, _ := b.getPlayer(Black).getPieceByCoordinate(x, y); bPiece != nil {
-		return bPiece
-	}
-
-	if wPiece, _ := b.getPlayer(White).getPieceByCoordinate(x, y); wPiece != nil {
-		return wPiece
-	}
-
-	return nil
+	return b.squares[x][y]
 }
 
 // Given a square, fetch its occupying piece.
@@ -90,20 +63,18 @@ func (b Board) getPieceBySquare(s Square) *Piece {
 // Print out the current state of the board.  Useful in the event
 // this thing can ever play a game.
 func (b Board) prettyPrint() {
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
-
 	// TODO: should also print out row and column designations,
 	// and distinguish pieces by color.
 	for y := endSquare; y >= startSquare; y-- {
 		for x := startSquare; x <= endSquare; x++ {
-			if wp, _ := white.getPieceByCoordinate(x, y); wp != nil {
-				fmt.Printf(" w%s ", wp.getShorthand())
-			} else if bp, _ := black.getPieceByCoordinate(x, y); bp != nil {
-				fmt.Printf(" b%s ", bp.getShorthand())
-			} else {
-				fmt.Printf("    ")
+			if p := b.getPieceByCoordinates(x, y); p != nil {
+				if p.color == White {
+					fmt.Printf(" w%s ", p.getShorthand())
+				} else if p.color == Black {
+					fmt.Printf(" b%s ", p.getShorthand())
+				}
 			}
+			fmt.Printf("    ")
 		}
 		fmt.Printf("\n")
 	}
@@ -122,20 +93,30 @@ func (b Board) getGameState() GameState {
 	return GameOn
 }
 
+// Finds the king for a color.  TODO: Ye gods, this is ugly.
+func (b Board) getKing(color Color) *Piece {
+	for x := startSquare; x <= endSquare; x++ {
+		for y := startSquare; y <= endSquare; y++ {
+			if piece := b.squares[x][y]; piece != nil {
+				if piece.pieceType == KingType && piece.color == color {
+					return piece
+				}
+			}
+		}
+	}
+	return nil
+}
+
 // Is the king now in check?  Use the king's position to evaluate the
 // squares around it and see if attacking pieces are there.
 func (b Board) isKingInCheck(color Color) bool {
 	// Opposing pawn is descending our y axis.
 	oppoPawnDirection := -1
-
-	// TODO: This is dumb.  Just use color.
-	myPlayer := b.players[0]
 	if color == Black {
-		myPlayer = b.players[1]
 		oppoPawnDirection = 1
 	}
 
-	myKing, _ := myPlayer.getKing()
+	myKing := b.getKing(color)
 
 	// From the king's position, generate diagonal moves.  Do we
 	// see an opposing bishop, pawn, or queen?
@@ -187,8 +168,86 @@ func (b Board) isKingInCheck(color Color) bool {
 // Does a deep copy of the board.  Used to assess hypothetical moves.
 func (b Board) deepCopy() Board {
 	c := new(Board)
-	c.players[0] = *b.players[0].deepCopy(c, White)
-	c.players[1] = *b.players[1].deepCopy(c, Black)
+	for x := startSquare; x <= endSquare; x++ {
+		for y := startSquare; y <= endSquare; y++ {
+			c.squares[x][y] = b.squares[x][y].deepCopy(c)
+		}
+	}
 
 	return *c
+}
+
+func (b Board) dumpSquares() {
+	for x := startSquare; x <= endSquare; x++ {
+		for y := startSquare; y <= endSquare; y++ {
+			p := b.squares[x][y]
+			if p == nil {
+				fmt.Printf("%d, %d is nil\n", x, y)
+			} else {
+				fmt.Printf("%d, %d exists and is a %s!\n", x, y, p.mover.getShorthand())
+			}
+		}
+	}
+}
+
+// Populate all of the pieces for a color.
+func (b *Board) populatePieces(color Color) {
+	// Piece initialization goes here.
+	pieceIndex := 0
+
+	// p p p p p p p p.
+	// r k b q k b k r.
+	pawnRow := startSquare + 1
+	rookRow := startSquare
+	if color == Black {
+		pawnRow = endSquare - 1
+		rookRow = endSquare
+	}
+
+	s := &Square{x: startSquare, y: startSquare}
+
+	// Populate pawns.
+	for x := startSquare; x <= endSquare; x++ {
+		s = &Square{x: x, y: pawnRow}
+		NewPiece(color, s, b, PawnType)
+		pieceIndex++
+	}
+
+	// Populate rooks.
+	s = &Square{x: startSquare, y: rookRow}
+	NewPiece(color, s, b, RookType)
+	pieceIndex++
+
+	// TODO: This pieceIndex part is silly.
+	s = &Square{x: endSquare, y: rookRow}
+	NewPiece(color, s, b, RookType)
+	pieceIndex++
+
+	// Populate knights.
+	s = &Square{x: startSquare + 1, y: rookRow}
+	NewPiece(color, s, b, KnightType)
+	pieceIndex++
+
+	s = &Square{x: endSquare - 1, y: rookRow}
+	NewPiece(color, s, b, KnightType)
+	pieceIndex++
+
+	// Populate bishops.
+	s = &Square{x: startSquare + 2, y: rookRow}
+	NewPiece(color, s, b, BishopType)
+	pieceIndex++
+
+	s = &Square{x: endSquare - 2, y: rookRow}
+	NewPiece(color, s, b, BishopType)
+	pieceIndex++
+
+	// Populate the queen.
+	s = &Square{x: startSquare + 3, y: rookRow}
+	NewPiece(color, s, b, QueenType)
+	pieceIndex++
+
+	// Populate the king.
+	s = &Square{x: startSquare + 4, y: rookRow}
+	NewPiece(color, s, b, KingType)
+	pieceIndex++
 }

@@ -37,6 +37,7 @@ func (p *Piece) getSquare() *Square {
 
 // You been captured, piece!
 func (p *Piece) setCaptured() {
+	fmt.Printf("I BEEN CAPTURED\n")
 	p.captured = true
 }
 
@@ -56,6 +57,7 @@ func (p *Piece) move(square *Square) error {
 	case SquareOccupiedByOpponent:
 		capturedPiece := p.board.getPieceBySquare(*square)
 		capturedPiece.setCaptured()
+		fmt.Printf("Yo, you captured? %d\n", capturedPiece.captured)
 	case SquareVacant:
 		p.forceMove(square)
 		break
@@ -68,8 +70,13 @@ func (p *Piece) move(square *Square) error {
 
 // Forces a piece move without any validation.
 func (p *Piece) forceMove(square *Square) {
+	if p.moves == nil {
+		p.moves = []*Square{}
+	}
 	p.moves = append(p.moves, square)
-	p.board.moveToSquare(*p)
+	p.board.updateSquare(*p)
+	// fmt.Printf(" FM Force a move by %s to %d, %d\n", p.getShorthand(), p.x(), p.y())
+	// p.board.prettyPrint()
 }
 
 // Does a piece's current square match given coordinates.
@@ -111,7 +118,16 @@ func (p Piece) doesMoveEndangerKing(square Square) bool {
 	// this move.  Evaluate if my color is in check.
 	boardClone := p.board.deepCopy()
 	clonePiece := boardClone.getPieceBySquare(*p.getSquare())
+	fmt.Printf("BARF BARF BARF\n")
+	boardClone.prettyPrint()
+	if !p.getSquare().equals(*clonePiece.getSquare()) {
+		fmt.Printf("AHHHHHH!  I am at %d, %d, clone is at %d, %d.", p.x(), p.y(), clonePiece.x(), clonePiece.y())
+	}
+	//boardClone.prettyPrint()
 	clonePiece.forceMove(&square)
+	if !clonePiece.getSquare().equals(square) {
+		fmt.Printf("WTF MAN.  Clone is at %d, %d but I want him at %d, %d.", clonePiece.x(), clonePiece.y(), square.x, square.y)
+	}
 	return boardClone.isKingInCheck(clonePiece.color)
 }
 
@@ -287,11 +303,7 @@ func (p Piece) deepCopy(board *Board) *Piece {
 	c.pieceType = p.pieceType
 	c.mover = p.mover
 	c.mover.setPiece(c)
-
-	// Note that we only copy the square's current position.
-	// Not sure if this is needed.
-	c.moves = []*Square{p.getSquare()}
-
+	c.forceMove(p.getSquare())
 	return c
 }
 
@@ -299,7 +311,6 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 	p := new(Piece)
 	p.color = color
 	p.captured = false
-	p.moves = []*Square{square}
 	p.board = board
 
 	p.pieceType = pieceType
@@ -319,5 +330,7 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 
 	}
 	p.mover.setPiece(p)
+
+	p.forceMove(square)
 	return p
 }

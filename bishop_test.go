@@ -6,8 +6,7 @@ import (
 
 func TestBishopGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	bishop1, _ := white.getPieceByCoordinate(3, 1)
+	bishop1 := b.getPieceByCoordinates(3, 1)
 
 	// Initially, the white bishop can't move because it's boxed in.
 	moves := bishop1.generateMoves(Square{x: 3, y: 1})
@@ -37,10 +36,8 @@ func TestBishopGeneratesValidMoves(t *testing.T) {
 
 func TestBishopCanCapture(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
-	wBishop, _ := white.getPieceByCoordinate(3, 1)
-	bPawn, _ := black.getPieceByCoordinate(1, 7)
+	wBishop := b.getPieceByCoordinates(3, 1)
+	bPawn := b.getPieceByCoordinates(1, 7)
 
 	// Set the pieces up so that bishop can immediately capture.
 	bPawn.move(&Square{x: 1, y: 5})

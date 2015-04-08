@@ -6,8 +6,7 @@ import (
 
 func TestQueenGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	queen1, _ := white.getPieceByCoordinate(4, 1)
+	queen1 := b.getPieceByCoordinates(4, 1)
 
 	// Initially, the white queen can't move because it's boxed in.
 	moves := queen1.generateMoves(Square{x: 1, y: 1})
@@ -49,10 +48,8 @@ func TestQueenGeneratesValidMoves(t *testing.T) {
 
 func TestQueenCanCapture(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
-	wQueen, _ := white.getPieceByCoordinate(4, 1)
-	bPawn, _ := black.getPieceByCoordinate(7, 7)
+	wQueen := b.getPieceByCoordinates(4, 1)
+	bPawn := b.getPieceByCoordinates(7, 7)
 
 	bPawn.move(&Square{x: 7, y: 5})
 	if bPawn.captured {

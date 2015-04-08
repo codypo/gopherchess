@@ -1,13 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
 func TestRookGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	rook1, _ := white.getPieceByCoordinate(1, 1)
+	//b.prettyPrint()
+	//b.dumpSquares()
+	rook1 := b.getPieceByCoordinates(1, 1)
 
 	// Initially, the white rook can't move because it's boxed in.
 	moves := rook1.generateMoves(Square{x: 1, y: 1})
@@ -42,27 +44,33 @@ func TestRookGeneratesValidMoves(t *testing.T) {
 
 func TestRookCanCapture(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
-	wRook, _ := white.getPieceByCoordinate(8, 1)
-	bPawn, _ := black.getPieceByCoordinate(7, 7)
+	wRook := b.getPieceByCoordinates(8, 1)
+	bPawn := b.getPieceByCoordinates(7, 7)
+	fmt.Printf("1 Can Capture\n")
 
 	bPawn.move(&Square{x: 7, y: 5})
 	if bPawn.captured {
 		t.Errorf("Pawn started out in captured state.")
 	}
+	fmt.Printf("1.1 Can Capture\n")
+	b.prettyPrint()
 
 	// Should not be able to capture pieces it cannot access.
 	moveErr := wRook.move(&Square{x: 7, y: 5})
 	if moveErr == nil {
 		t.Errorf("Invalid move allowed for capture.")
 	}
+	fmt.Printf("1.2 Can Capture\n")
 
 	wRook.forceMove(&Square{x: 7, y: 3})
+	b.prettyPrint()
+	fmt.Printf("1.3 Can Capture\n")
 	wRook.move(&Square{x: 7, y: 5})
+	b.prettyPrint()
 	if !bPawn.captured {
 		t.Errorf("Captured pawn not in captured state.")
 	}
+	fmt.Printf("1.3 Can Capture\n")
 
 	if bPawn.getSquare() != nil {
 		t.Errorf("Captured pawn has a non-nil position.")
@@ -71,12 +79,10 @@ func TestRookCanCapture(t *testing.T) {
 
 func TestRookCannotMoveAndLeadToOwnCheck(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
-	wRook, _ := white.getPieceByCoordinate(8, 1)
-	wKing, _ := white.getKing()
-	bRook, _ := black.getPieceByCoordinate(8, 8)
+	wRook := b.getPieceByCoordinates(8, 1)
+	wKing := b.getKing(White)
+	bRook := b.getPieceByCoordinates(8, 8)
 
 	// Black rook would have white King in check if white
 	// rook just moved out of the way.  White rook can't

@@ -6,8 +6,7 @@ import (
 
 func TestKnightGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	knight1, _ := white.getPieceByCoordinate(2, 1)
+	knight1 := b.getPieceByCoordinates(2, 1)
 
 	// Knights are tricksy and can move immediately.
 	genMoves := knight1.generateMoves(Square{x: 2, y: 1})
@@ -42,10 +41,8 @@ func TestKnightGeneratesValidMoves(t *testing.T) {
 
 func TestKnightCanCapture(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
-	wKnight, _ := white.getPieceByCoordinate(2, 1)
-	bPawn, _ := black.getPieceByCoordinate(7, 7)
+	wKnight := b.getPieceByCoordinates(2, 1)
+	bPawn := b.getPieceByCoordinates(7, 7)
 
 	bPawn.move(&Square{x: 7, y: 5})
 	if bPawn.captured {

@@ -6,8 +6,7 @@ import (
 
 func TestPawnGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	pawn1, _ := white.getPieceByCoordinate(2, 2)
+	pawn1 := b.getPieceByCoordinates(2, 2)
 
 	// Pawns aren't immediately blocked by other pieces. Go nuts, pawns!
 	genMoves := pawn1.generateMoves(Square{x: 2, y: 2})
@@ -36,10 +35,8 @@ func TestPawnGeneratesValidMoves(t *testing.T) {
 
 func TestPawnCanCapture(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
-	wPawn, _ := white.getPieceByCoordinate(2, 2)
-	bPawn, _ := black.getPieceByCoordinate(7, 7)
+	wPawn := b.getPieceByCoordinates(2, 2)
+	bPawn := b.getPieceByCoordinates(7, 7)
 
 	bPawn.move(&Square{x: 7, y: 5})
 	if bPawn.captured {

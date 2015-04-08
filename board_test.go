@@ -16,25 +16,13 @@ func TestBoardNew(t *testing.T) {
 	if totalSquares != 81 {
 		t.Errorf("Board contains %d squares.", totalSquares)
 	}
-
-	if len(b.players) != 2 {
-		t.Errorf("Board contains %d players.", len(b.players))
-	}
-	if b.players[0].color != White {
-		t.Errorf("Player 0 is not White.")
-	}
-	if b.players[1].color != Black {
-		t.Errorf("Player 1 is not Black.")
-	}
 }
 
 func TestBoardRecognizesWhiteInCheckByRook(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the white king to the middle of the board.
-	wKing, _ := white.getKing()
+	wKing := b.getKing(White)
 	wKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -44,7 +32,7 @@ func TestBoardRecognizesWhiteInCheckByRook(t *testing.T) {
 	}
 
 	// Force rook into a spot where white king is in check.
-	bRook, _ := black.getPieceByCoordinate(8, 8)
+	bRook := b.getPieceByCoordinates(8, 8)
 	bRook.forceMove(&Square{x: 8, y: 4})
 
 	// White's in check, RIGHT?
@@ -56,11 +44,9 @@ func TestBoardRecognizesWhiteInCheckByRook(t *testing.T) {
 
 func TestBoardRecognizesBlackInCheckByRook(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the king to the middle of the board.
-	bKing, _ := black.getKing()
+	bKing := b.getKing(Black)
 	bKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -70,7 +56,7 @@ func TestBoardRecognizesBlackInCheckByRook(t *testing.T) {
 	}
 
 	// Force rook into a spot where king is in check.
-	wRook, _ := white.getPieceByCoordinate(1, 1)
+	wRook := b.getPieceByCoordinates(1, 1)
 	wRook.forceMove(&Square{x: 1, y: 4})
 
 	// Black's in check, RIGHT?
@@ -82,11 +68,9 @@ func TestBoardRecognizesBlackInCheckByRook(t *testing.T) {
 
 func TestBoardRecognizesWhiteInCheckByQueen(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the white king to the middle of the board.
-	wKing, _ := white.getKing()
+	wKing := b.getKing(White)
 	wKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -96,7 +80,7 @@ func TestBoardRecognizesWhiteInCheckByQueen(t *testing.T) {
 	}
 
 	// Force queen into a spot where white king is in check.
-	bQueen, _ := black.getPieceByCoordinate(4, 8)
+	bQueen := b.getPieceByCoordinates(4, 8)
 	bQueen.forceMove(&Square{x: 6, y: 6})
 
 	// White's in check, RIGHT?
@@ -108,11 +92,9 @@ func TestBoardRecognizesWhiteInCheckByQueen(t *testing.T) {
 
 func TestBoardRecognizesBlackInCheckByQueen(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the king to the middle of the board.
-	bKing, _ := black.getKing()
+	bKing := b.getKing(Black)
 	bKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -122,7 +104,7 @@ func TestBoardRecognizesBlackInCheckByQueen(t *testing.T) {
 	}
 
 	// Force rook into a spot where king is in check.
-	wQueen, _ := white.getPieceByCoordinate(4, 1)
+	wQueen := b.getPieceByCoordinates(4, 1)
 	wQueen.forceMove(&Square{x: 3, y: 3})
 
 	// Black's in check, RIGHT?
@@ -134,11 +116,9 @@ func TestBoardRecognizesBlackInCheckByQueen(t *testing.T) {
 
 func TestBoardRecognizesWhiteInCheckByBishop(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the white king to the middle of the board.
-	wKing, _ := white.getKing()
+	wKing := b.getKing(White)
 	wKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -148,7 +128,7 @@ func TestBoardRecognizesWhiteInCheckByBishop(t *testing.T) {
 	}
 
 	// Force bishop into a spot where white king is in check.
-	bBishop, _ := black.getPieceByCoordinate(3, 8)
+	bBishop := b.getPieceByCoordinates(3, 8)
 	bBishop.forceMove(&Square{x: 6, y: 6})
 
 	// White's in check, RIGHT?
@@ -160,11 +140,9 @@ func TestBoardRecognizesWhiteInCheckByBishop(t *testing.T) {
 
 func TestBoardRecognizesBlackInCheckByBishop(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the king to the middle of the board.
-	bKing, _ := black.getKing()
+	bKing := b.getKing(Black)
 	bKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -174,7 +152,7 @@ func TestBoardRecognizesBlackInCheckByBishop(t *testing.T) {
 	}
 
 	// Force bishop into a spot where king is in check.
-	wBishop, _ := white.getPieceByCoordinate(6, 1)
+	wBishop := b.getPieceByCoordinates(6, 1)
 	wBishop.forceMove(&Square{x: 5, y: 5})
 
 	// Black's in check, RIGHT?
@@ -186,11 +164,9 @@ func TestBoardRecognizesBlackInCheckByBishop(t *testing.T) {
 
 func TestBoardRecognizesWhiteInCheckByPawn(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the white king to the middle of the board.
-	wKing, _ := white.getKing()
+	wKing := b.getKing(White)
 	wKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -200,7 +176,7 @@ func TestBoardRecognizesWhiteInCheckByPawn(t *testing.T) {
 	}
 
 	// Force pawn into a spot where white king is in check.
-	bPawn, _ := black.getPieceByCoordinate(3, 7)
+	bPawn := b.getPieceByCoordinates(3, 7)
 	bPawn.forceMove(&Square{x: 3, y: 5})
 
 	// White's in check, RIGHT?
@@ -212,11 +188,9 @@ func TestBoardRecognizesWhiteInCheckByPawn(t *testing.T) {
 
 func TestBoardRecognizesBlackInCheckByPawn(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the king to the middle of the board.
-	bKing, _ := black.getKing()
+	bKing := b.getKing(Black)
 	bKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -226,7 +200,7 @@ func TestBoardRecognizesBlackInCheckByPawn(t *testing.T) {
 	}
 
 	// Force pawn into a spot where king is in check.
-	wPawn, _ := white.getPieceByCoordinate(6, 2)
+	wPawn := b.getPieceByCoordinates(6, 2)
 	wPawn.forceMove(&Square{x: 3, y: 3})
 
 	// Black's in check, RIGHT?
@@ -238,11 +212,9 @@ func TestBoardRecognizesBlackInCheckByPawn(t *testing.T) {
 
 func TestBoardDoesNotRecognizeWhiteInCheckByBackwardsPawn(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the white king to the middle of the board.
-	wKing, _ := white.getKing()
+	wKing := b.getKing(White)
 	wKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -252,7 +224,7 @@ func TestBoardDoesNotRecognizeWhiteInCheckByBackwardsPawn(t *testing.T) {
 	}
 
 	// Force pawn into a spot where white king is close to being in check.
-	bPawn, _ := black.getPieceByCoordinate(3, 7)
+	bPawn := b.getPieceByCoordinates(3, 7)
 	bPawn.forceMove(&Square{x: 3, y: 3})
 
 	// White's not in check, RIGHT?  Pawns can't move backwards.
@@ -264,11 +236,9 @@ func TestBoardDoesNotRecognizeWhiteInCheckByBackwardsPawn(t *testing.T) {
 
 func TestBoardDoesNotRecognizeBlackInCheckByBackwardsPawn(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the king to the middle of the board.
-	bKing, _ := black.getKing()
+	bKing := b.getKing(Black)
 	bKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -278,7 +248,7 @@ func TestBoardDoesNotRecognizeBlackInCheckByBackwardsPawn(t *testing.T) {
 	}
 
 	// Force pawn into a spot where king is close to being in check.
-	wPawn, _ := white.getPieceByCoordinate(6, 2)
+	wPawn := b.getPieceByCoordinates(6, 2)
 	wPawn.forceMove(&Square{x: 3, y: 5})
 
 	// Black's not in check, RIGHT?  Pawns can't move backwards.
@@ -290,11 +260,9 @@ func TestBoardDoesNotRecognizeBlackInCheckByBackwardsPawn(t *testing.T) {
 
 func TestBoardRecognizesWhiteInCheckByKnight(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the white king to the middle of the board.
-	wKing, _ := white.getKing()
+	wKing := b.getKing(White)
 	wKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -304,7 +272,7 @@ func TestBoardRecognizesWhiteInCheckByKnight(t *testing.T) {
 	}
 
 	// Force knight into a spot where white king is in check.
-	bKnight, _ := black.getPieceByCoordinate(2, 8)
+	bKnight := b.getPieceByCoordinates(2, 8)
 	bKnight.forceMove(&Square{x: 2, y: 5})
 
 	// White's in check, RIGHT?
@@ -316,11 +284,9 @@ func TestBoardRecognizesWhiteInCheckByKnight(t *testing.T) {
 
 func TestBoardRecognizesBlackInCheckByKnight(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
 
 	// Force the king to the middle of the board.
-	bKing, _ := black.getKing()
+	bKing := b.getKing(Black)
 	bKing.forceMove(&Square{x: 4, y: 4})
 
 	// All good.
@@ -330,12 +296,139 @@ func TestBoardRecognizesBlackInCheckByKnight(t *testing.T) {
 	}
 
 	// Force knight into a spot where king is in check.
-	wKnight, _ := white.getPieceByCoordinate(7, 1)
+	wKnight := b.getPieceByCoordinates(7, 1)
 	wKnight.forceMove(&Square{x: 5, y: 6})
 
 	// Black's in check, RIGHT?
 	gameState = b.getGameState()
 	if gameState != BlackInCheck {
 		t.Errorf("State of game should be black in check, but is %d", gameState)
+	}
+}
+
+func TestNewBoardPopulatesCorrectRooks(t *testing.T) {
+	b := NewBoard()
+	rook_squares := []Square{Square{x: 1, y: 1}, Square{x: 8, y: 1}, Square{x: 1, y: 8}, Square{x: 8, y: 8}}
+	for _, square := range rook_squares {
+		matching_piece := b.squares[square.x][square.y]
+		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
+			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
+		}
+		if matching_piece.getShorthand() != "r" {
+			t.Errorf("Piece is supposed to be a rook!")
+		}
+		if square.y == 1 {
+			if matching_piece.color != White {
+				t.Errorf("Piece is supposed to be white!")
+			}
+		} else {
+			if matching_piece.color != Black {
+				t.Errorf("Piece is supposed to be black!")
+			}
+		}
+	}
+}
+
+func TestNewBoardPopulatesCorrectKnights(t *testing.T) {
+	b := NewBoard()
+	knight_squares := []Square{Square{x: 2, y: 1}, Square{x: 7, y: 1}, Square{x: 3, y: 8}, Square{x: 7, y: 8}}
+	for _, square := range knight_squares {
+		matching_piece := b.squares[square.x][square.y]
+		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
+			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
+		}
+		if matching_piece.getShorthand() != "k" {
+			t.Errorf("Piece is supposed to be a kight!")
+		}
+		if square.y == 1 {
+			if matching_piece.color != White {
+				t.Errorf("Piece is supposed to be white!")
+			}
+		} else {
+			if matching_piece.color != Black {
+				t.Errorf("Piece is supposed to be black!")
+			}
+		}
+	}
+}
+
+func TestNewBoardPopulatesCorrectBishops(t *testing.T) {
+	b := NewBoard()
+	squares := []Square{Square{x: 3, y: 1}, Square{x: 6, y: 1}, Square{x: 3, y: 8}, Square{x: 6, y: 8}}
+	for _, square := range squares {
+		matching_piece := b.squares[square.x][square.y]
+		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
+			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
+		}
+		if matching_piece.getShorthand() != "k" {
+			t.Errorf("Piece is supposed to be a bishop!")
+		}
+		if square.y == 1 {
+			if matching_piece.color != White {
+				t.Errorf("Piece is supposed to be white!")
+			}
+		} else {
+			if matching_piece.color != Black {
+				t.Errorf("Piece is supposed to be black!")
+			}
+		}
+	}
+}
+
+func TestNewBoardPopulatesCorrectKingsAndQueens(t *testing.T) {
+	b := NewBoard()
+	squares := []Square{Square{x: 4, y: 1}, Square{x: 5, y: 1}, Square{x: 4, y: 8}, Square{x: 5, y: 8}}
+	for _, square := range squares {
+		matching_piece := b.squares[square.x][square.y]
+		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
+			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
+		}
+		if square.x == 5 {
+			if matching_piece.getShorthand() != "K" {
+				t.Errorf("Piece is supposed to be a king!")
+			}
+		} else {
+			if matching_piece.getShorthand() != "q" {
+				t.Errorf("Piece is supposed to be a queen!")
+			}
+		}
+		if square.y == 1 {
+			if matching_piece.color != White {
+				t.Errorf("Piece is supposed to be white!")
+			}
+		} else {
+			if matching_piece.color != Black {
+				t.Errorf("Piece is supposed to be black!")
+			}
+		}
+	}
+}
+
+func TestNewBoardPopulatesCorrectPawns(t *testing.T) {
+	b := NewBoard()
+	squares := []Square{Square{x: 1, y: 2}, Square{x: 2, y: 2}, Square{x: 3, y: 2}, Square{x: 4, y: 2}, Square{x: 5, y: 2}, Square{x: 6, y: 2}, Square{x: 7, y: 2}, Square{x: 8, y: 2}, Square{x: 1, y: 7}, Square{x: 2, y: 7}, Square{x: 3, y: 7}, Square{x: 4, y: 7}, Square{x: 5, y: 7}, Square{x: 6, y: 7}, Square{x: 7, y: 7}, Square{x: 8, y: 7}}
+	for _, square := range squares {
+		matching_piece := b.squares[square.x][square.y]
+		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
+			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
+		}
+		if matching_piece.getShorthand() != "p" {
+			t.Errorf("Piece is supposed to be a pawn!")
+		}
+		if square.y == 2 {
+			if matching_piece.color != White {
+				t.Errorf("Piece is supposed to be white!")
+			}
+		} else {
+			if matching_piece.color != Black {
+				t.Errorf("Piece is supposed to be black!")
+			}
+		}
+	}
+}
+
+func BenchmarkNewBoard(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		NewBoard()
 	}
 }

@@ -6,8 +6,7 @@ import (
 
 func TestKingGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	king1, _ := white.getPieceByCoordinate(5, 1)
+	king1 := b.getPieceByCoordinates(5, 1)
 
 	// Initially, the white king can't move because it's boxed in.
 	moves := king1.generateMoves(Square{x: 5, y: 1})
@@ -38,10 +37,8 @@ func TestKingGeneratesValidMoves(t *testing.T) {
 
 func TestKingCanCapture(t *testing.T) {
 	b := NewBoard()
-	white := b.getPlayer(White)
-	black := b.getPlayer(Black)
-	wKing, _ := white.getPieceByCoordinate(5, 1)
-	bPawn, _ := black.getPieceByCoordinate(7, 7)
+	wKing := b.getPieceByCoordinates(5, 1)
+	bPawn := b.getPieceByCoordinates(7, 7)
 
 	bPawn.move(&Square{x: 7, y: 5})
 	if bPawn.captured {
