@@ -331,14 +331,14 @@ func TestNewBoardPopulatesCorrectRooks(t *testing.T) {
 
 func TestNewBoardPopulatesCorrectKnights(t *testing.T) {
 	b := NewBoard()
-	knight_squares := []Square{Square{x: 2, y: 1}, Square{x: 7, y: 1}, Square{x: 3, y: 8}, Square{x: 7, y: 8}}
+	knight_squares := []Square{Square{x: 2, y: 1}, Square{x: 7, y: 1}, Square{x: 2, y: 8}, Square{x: 7, y: 8}}
 	for _, square := range knight_squares {
 		matching_piece := b.squares[square.x][square.y]
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
 		if matching_piece.getShorthand() != "k" {
-			t.Errorf("Piece is supposed to be a kight!")
+			t.Errorf("Piece is supposed to be a knight!")
 		}
 		if square.y == 1 {
 			if matching_piece.color != White {
@@ -360,7 +360,7 @@ func TestNewBoardPopulatesCorrectBishops(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "k" {
+		if matching_piece.getShorthand() != "b" {
 			t.Errorf("Piece is supposed to be a bishop!")
 		}
 		if square.y == 1 {

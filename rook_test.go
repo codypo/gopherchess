@@ -7,8 +7,6 @@ import (
 
 func TestRookGeneratesValidMoves(t *testing.T) {
 	b := NewBoard()
-	//b.prettyPrint()
-	//b.dumpSquares()
 	rook1 := b.getPieceByCoordinates(1, 1)
 
 	// Initially, the white rook can't move because it's boxed in.
@@ -53,7 +51,6 @@ func TestRookCanCapture(t *testing.T) {
 		t.Errorf("Pawn started out in captured state.")
 	}
 	fmt.Printf("1.1 Can Capture\n")
-	b.prettyPrint()
 
 	// Should not be able to capture pieces it cannot access.
 	moveErr := wRook.move(&Square{x: 7, y: 5})
@@ -63,15 +60,17 @@ func TestRookCanCapture(t *testing.T) {
 	fmt.Printf("1.2 Can Capture\n")
 
 	wRook.forceMove(&Square{x: 7, y: 3})
-	b.prettyPrint()
 	fmt.Printf("1.3 Can Capture\n")
 	wRook.move(&Square{x: 7, y: 5})
+	fmt.Printf("Black pawn has %d moves and is currently at %d, %d.  Captured? %d.  PieceType? %d.\n", len(bPawn.moves), bPawn.x(), bPawn.y(), bPawn.captured, bPawn.pieceType)
+	fmt.Printf("White rook is currently at %d, %d and of type %d\n", wRook.x(), wRook.y(), wRook.pieceType)
+	fmt.Printf("BP PP\n")
+	bPawn.board.prettyPrint()
+	fmt.Printf("RO PP\n")
 	b.prettyPrint()
 	if !bPawn.captured {
 		t.Errorf("Captured pawn not in captured state.")
 	}
-	fmt.Printf("1.3 Can Capture\n")
-
 	if bPawn.getSquare() != nil {
 		t.Errorf("Captured pawn has a non-nil position.")
 	}

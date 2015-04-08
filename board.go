@@ -67,14 +67,16 @@ func (b Board) prettyPrint() {
 	// and distinguish pieces by color.
 	for y := endSquare; y >= startSquare; y-- {
 		for x := startSquare; x <= endSquare; x++ {
-			if p := b.getPieceByCoordinates(x, y); p != nil {
+			p := b.getPieceByCoordinates(x, y)
+			if p != nil {
 				if p.color == White {
 					fmt.Printf(" w%s ", p.getShorthand())
 				} else if p.color == Black {
 					fmt.Printf(" b%s ", p.getShorthand())
 				}
+			} else {
+				fmt.Printf("    ")
 			}
-			fmt.Printf("    ")
 		}
 		fmt.Printf("\n")
 	}
@@ -170,6 +172,9 @@ func (b Board) deepCopy() Board {
 	c := new(Board)
 	for x := startSquare; x <= endSquare; x++ {
 		for y := startSquare; y <= endSquare; y++ {
+			if b.squares[x][y] == nil {
+				continue
+			}
 			c.squares[x][y] = b.squares[x][y].deepCopy(c)
 		}
 	}

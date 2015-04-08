@@ -37,7 +37,6 @@ func (p *Piece) getSquare() *Square {
 
 // You been captured, piece!
 func (p *Piece) setCaptured() {
-	fmt.Printf("I BEEN CAPTURED\n")
 	p.captured = true
 }
 
@@ -53,11 +52,18 @@ func (p *Piece) move(square *Square) error {
 	// calls evaluateSquare.  generateMoves could instead
 	// return a hash map of square to status.
 	moveStatus := p.board.evaluateSquare(p.color, square)
+	fmt.Printf("Evaluating a move to %d, %d for %s\n", square.x, square.y, p.getShorthand())
 	switch moveStatus {
 	case SquareOccupiedByOpponent:
 		capturedPiece := p.board.getPieceBySquare(*square)
+		fmt.Printf("Square occupied by an opponent %s at %d, %d!\n", capturedPiece.getShorthand(), capturedPiece.x(), capturedPiece.y())
+		capturedPiece.pieceType = RookType
+		p.pieceType = QueenType
 		capturedPiece.setCaptured()
-		fmt.Printf("Yo, you captured? %d\n", capturedPiece.captured)
+		p.forceMove(square)
+		fmt.Printf("Move forced!\n")
+		fmt.Printf("Opponent is now captured? %d  Opponent type is %d\n", capturedPiece.captured, capturedPiece.pieceType)
+		break
 	case SquareVacant:
 		p.forceMove(square)
 		break
@@ -76,12 +82,6 @@ func (p *Piece) forceMove(square *Square) {
 	p.moves = append(p.moves, square)
 	p.board.updateSquare(*p)
 	// fmt.Printf(" FM Force a move by %s to %d, %d\n", p.getShorthand(), p.x(), p.y())
-	// p.board.prettyPrint()
-}
-
-// Does a piece's current square match given coordinates.
-func (p Piece) matchesCoordinates(x int, y int) bool {
-	return (p.getSquare().x == x) && (p.getSquare().y == y)
 }
 
 // Utility func to return a piece's y coordinate.
@@ -118,12 +118,9 @@ func (p Piece) doesMoveEndangerKing(square Square) bool {
 	// this move.  Evaluate if my color is in check.
 	boardClone := p.board.deepCopy()
 	clonePiece := boardClone.getPieceBySquare(*p.getSquare())
-	fmt.Printf("BARF BARF BARF\n")
-	boardClone.prettyPrint()
 	if !p.getSquare().equals(*clonePiece.getSquare()) {
 		fmt.Printf("AHHHHHH!  I am at %d, %d, clone is at %d, %d.", p.x(), p.y(), clonePiece.x(), clonePiece.y())
 	}
-	//boardClone.prettyPrint()
 	clonePiece.forceMove(&square)
 	if !clonePiece.getSquare().equals(square) {
 		fmt.Printf("WTF MAN.  Clone is at %d, %d but I want him at %d, %d.", clonePiece.x(), clonePiece.y(), square.x, square.y)
