@@ -44,31 +44,27 @@ func TestRookCanCapture(t *testing.T) {
 	b := NewBoard()
 	wRook := b.getPieceByCoordinates(8, 1)
 	bPawn := b.getPieceByCoordinates(7, 7)
-	fmt.Printf("1 Can Capture\n")
+	fmt.Printf("BP 1.  %T: &i=%p IIII=%v\n", bPawn, &bPawn, bPawn)
 
 	bPawn.move(&Square{x: 7, y: 5})
-	if bPawn.captured {
+	if bPawn.isCaptured() {
 		t.Errorf("Pawn started out in captured state.")
 	}
-	fmt.Printf("1.1 Can Capture\n")
+	fmt.Printf("BP 1.1  %T: &i=%p IIII=%v\n", bPawn, &bPawn, bPawn)
 
 	// Should not be able to capture pieces it cannot access.
 	moveErr := wRook.move(&Square{x: 7, y: 5})
 	if moveErr == nil {
 		t.Errorf("Invalid move allowed for capture.")
 	}
-	fmt.Printf("1.2 Can Capture\n")
 
 	wRook.forceMove(&Square{x: 7, y: 3})
-	fmt.Printf("1.3 Can Capture\n")
 	wRook.move(&Square{x: 7, y: 5})
-	fmt.Printf("Black pawn has %d moves and is currently at %d, %d.  Captured? %d.  PieceType? %d.\n", len(bPawn.moves), bPawn.x(), bPawn.y(), bPawn.captured, bPawn.pieceType)
-	fmt.Printf("White rook is currently at %d, %d and of type %d\n", wRook.x(), wRook.y(), wRook.pieceType)
-	fmt.Printf("BP PP\n")
-	bPawn.board.prettyPrint()
-	fmt.Printf("RO PP\n")
-	b.prettyPrint()
-	if !bPawn.captured {
+	fmt.Printf("BP 1.4  %T: &i=%p IIII=%v\n", bPawn, &bPawn, bPawn)
+	//b.dumpSquares()
+	//b.prettyPrint()
+
+	if !bPawn.isCaptured() {
 		t.Errorf("Captured pawn not in captured state.")
 	}
 	if bPawn.getSquare() != nil {

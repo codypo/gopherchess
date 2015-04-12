@@ -13,20 +13,24 @@ func NewBoard() *Board {
 	b := new(Board)
 	b.populatePieces(White)
 	b.populatePieces(Black)
+
 	return b
 }
 
 // Move the specified piece to the appropriate location in the appropriate
 // square space.
-func (b *Board) updateSquare(piece Piece) {
+func (b *Board) updateSquare(piece *Piece) {
 	// First, nil out the square this dude was formerly occupying.
 	if len(piece.moves) > 1 {
 		oldSquare := piece.moves[len(piece.moves)-2]
 		b.squares[oldSquare.x][oldSquare.y] = nil
+		fmt.Printf("Time to nil out %d, %d\n", oldSquare.x, oldSquare.y)
 	}
 
 	// Then, update the new square.
-	b.squares[piece.x()][piece.y()] = &piece
+	b.squares[piece.x()][piece.y()] = piece
+	//fmt.Printf("US Moving %s to %d, %d.\n", piece.getShorthand(), piece.x(), piece.y())
+	//b.prettyPrint()
 }
 
 // Determines the state of a square.  We must know the color
@@ -189,7 +193,7 @@ func (b Board) dumpSquares() {
 			if p == nil {
 				fmt.Printf("%d, %d is nil\n", x, y)
 			} else {
-				fmt.Printf("%d, %d exists and is a %s!\n", x, y, p.mover.getShorthand())
+				fmt.Printf("DS %d, %d is %T: &i=%p IIII=%v\n", p.x(), p.y(), p, &p, p)
 			}
 		}
 	}

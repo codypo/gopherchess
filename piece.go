@@ -37,7 +37,13 @@ func (p *Piece) getSquare() *Square {
 
 // You been captured, piece!
 func (p *Piece) setCaptured() {
+	// p.forceMove(&Square{x: 3, y: 3})
 	p.captured = true
+	// hack test
+}
+
+func (p Piece) isCaptured() bool {
+	return p.captured
 }
 
 // Moves a piece to a square, if allowed.  If that square is
@@ -56,13 +62,10 @@ func (p *Piece) move(square *Square) error {
 	switch moveStatus {
 	case SquareOccupiedByOpponent:
 		capturedPiece := p.board.getPieceBySquare(*square)
-		fmt.Printf("Square occupied by an opponent %s at %d, %d!\n", capturedPiece.getShorthand(), capturedPiece.x(), capturedPiece.y())
-		capturedPiece.pieceType = RookType
-		p.pieceType = QueenType
-		capturedPiece.setCaptured()
+		//fmt.Printf("FM 2.  %T: &i=%p i=%v\n", capturedPiece, &capturedPiece, capturedPiece)
 		p.forceMove(square)
-		fmt.Printf("Move forced!\n")
-		fmt.Printf("Opponent is now captured? %d  Opponent type is %d\n", capturedPiece.captured, capturedPiece.pieceType)
+		capturedPiece.setCaptured()
+		//fmt.Printf("FM 2.1  %T: &i=%p i=%v\n", capturedPiece, &capturedPiece, capturedPiece)
 		break
 	case SquareVacant:
 		p.forceMove(square)
@@ -80,8 +83,8 @@ func (p *Piece) forceMove(square *Square) {
 		p.moves = []*Square{}
 	}
 	p.moves = append(p.moves, square)
-	p.board.updateSquare(*p)
-	// fmt.Printf(" FM Force a move by %s to %d, %d\n", p.getShorthand(), p.x(), p.y())
+	p.board.updateSquare(p)
+	// fmt.Printf(" FM Force a move by %s to %d, %d.  Piece data is %v\n", p.getShorthand(), p.x(), p.y(), p)
 }
 
 // Utility func to return a piece's y coordinate.
