@@ -24,7 +24,6 @@ func (b *Board) updateSquare(piece *Piece) {
 	if len(piece.moves) > 1 {
 		oldSquare := piece.moves[len(piece.moves)-2]
 		b.squares[oldSquare.x][oldSquare.y] = nil
-		fmt.Printf("Time to nil out %d, %d\n", oldSquare.x, oldSquare.y)
 	}
 
 	// Then, update the new square.
@@ -129,7 +128,7 @@ func (b Board) isKingInCheck(color Color) bool {
 	diagMoves := myKing.generateDiagonalMoves(*myKing.getSquare())
 	for _, m := range diagMoves {
 		p := b.getPieceBySquare(*m)
-		if p == nil {
+		if p == nil || p.color == color {
 			continue
 		}
 		if p.pieceType == BishopType || p.pieceType == QueenType {
@@ -148,7 +147,7 @@ func (b Board) isKingInCheck(color Color) bool {
 	straightMoves := myKing.generateStraightMoves(*myKing.getSquare())
 	for _, m := range straightMoves {
 		p := b.getPieceBySquare(*m)
-		if p == nil {
+		if p == nil || p.color == color {
 			continue
 		}
 		if p.pieceType == RookType || p.pieceType == QueenType {
@@ -161,7 +160,7 @@ func (b Board) isKingInCheck(color Color) bool {
 	knightMoves := myKing.generateKnightMoves(*myKing.getSquare())
 	for _, m := range knightMoves {
 		p := b.getPieceBySquare(*m)
-		if p == nil {
+		if p == nil || p.color == color {
 			continue
 		}
 		if p.pieceType == KnightType {

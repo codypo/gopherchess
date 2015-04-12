@@ -58,7 +58,6 @@ func (p *Piece) move(square *Square) error {
 	// calls evaluateSquare.  generateMoves could instead
 	// return a hash map of square to status.
 	moveStatus := p.board.evaluateSquare(p.color, square)
-	fmt.Printf("Evaluating a move to %d, %d for %s\n", square.x, square.y, p.getShorthand())
 	switch moveStatus {
 	case SquareOccupiedByOpponent:
 		capturedPiece := p.board.getPieceBySquare(*square)
@@ -121,13 +120,7 @@ func (p Piece) doesMoveEndangerKing(square Square) bool {
 	// this move.  Evaluate if my color is in check.
 	boardClone := p.board.deepCopy()
 	clonePiece := boardClone.getPieceBySquare(*p.getSquare())
-	if !p.getSquare().equals(*clonePiece.getSquare()) {
-		fmt.Printf("AHHHHHH!  I am at %d, %d, clone is at %d, %d.", p.x(), p.y(), clonePiece.x(), clonePiece.y())
-	}
 	clonePiece.forceMove(&square)
-	if !clonePiece.getSquare().equals(square) {
-		fmt.Printf("WTF MAN.  Clone is at %d, %d but I want him at %d, %d.", clonePiece.x(), clonePiece.y(), square.x, square.y)
-	}
 	return boardClone.isKingInCheck(clonePiece.color)
 }
 

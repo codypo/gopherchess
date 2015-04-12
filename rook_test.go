@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -44,13 +43,11 @@ func TestRookCanCapture(t *testing.T) {
 	b := NewBoard()
 	wRook := b.getPieceByCoordinates(8, 1)
 	bPawn := b.getPieceByCoordinates(7, 7)
-	fmt.Printf("BP 1.  %T: &i=%p IIII=%v\n", bPawn, &bPawn, bPawn)
 
 	bPawn.move(&Square{x: 7, y: 5})
 	if bPawn.isCaptured() {
 		t.Errorf("Pawn started out in captured state.")
 	}
-	fmt.Printf("BP 1.1  %T: &i=%p IIII=%v\n", bPawn, &bPawn, bPawn)
 
 	// Should not be able to capture pieces it cannot access.
 	moveErr := wRook.move(&Square{x: 7, y: 5})
@@ -60,9 +57,6 @@ func TestRookCanCapture(t *testing.T) {
 
 	wRook.forceMove(&Square{x: 7, y: 3})
 	wRook.move(&Square{x: 7, y: 5})
-	fmt.Printf("BP 1.4  %T: &i=%p IIII=%v\n", bPawn, &bPawn, bPawn)
-	//b.dumpSquares()
-	//b.prettyPrint()
 
 	if !bPawn.isCaptured() {
 		t.Errorf("Captured pawn not in captured state.")
