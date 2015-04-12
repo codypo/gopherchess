@@ -28,8 +28,6 @@ func (b *Board) updateSquare(piece *Piece) {
 
 	// Then, update the new square.
 	b.squares[piece.x()][piece.y()] = piece
-	//fmt.Printf("US Moving %s to %d, %d.\n", piece.getShorthand(), piece.x(), piece.y())
-	//b.prettyPrint()
 }
 
 // Determines the state of a square.  We must know the color

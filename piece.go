@@ -37,9 +37,7 @@ func (p *Piece) getSquare() *Square {
 
 // You been captured, piece!
 func (p *Piece) setCaptured() {
-	// p.forceMove(&Square{x: 3, y: 3})
 	p.captured = true
-	// hack test
 }
 
 func (p Piece) isCaptured() bool {
@@ -61,10 +59,8 @@ func (p *Piece) move(square *Square) error {
 	switch moveStatus {
 	case SquareOccupiedByOpponent:
 		capturedPiece := p.board.getPieceBySquare(*square)
-		//fmt.Printf("FM 2.  %T: &i=%p i=%v\n", capturedPiece, &capturedPiece, capturedPiece)
 		p.forceMove(square)
 		capturedPiece.setCaptured()
-		//fmt.Printf("FM 2.1  %T: &i=%p i=%v\n", capturedPiece, &capturedPiece, capturedPiece)
 		break
 	case SquareVacant:
 		p.forceMove(square)
@@ -83,7 +79,6 @@ func (p *Piece) forceMove(square *Square) {
 	}
 	p.moves = append(p.moves, square)
 	p.board.updateSquare(p)
-	// fmt.Printf(" FM Force a move by %s to %d, %d.  Piece data is %v\n", p.getShorthand(), p.x(), p.y(), p)
 }
 
 // Utility func to return a piece's y coordinate.
