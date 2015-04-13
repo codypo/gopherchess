@@ -5,7 +5,9 @@ import "fmt"
 type Board struct {
 	// Why + 1?  Chess squares are 1-indexed, for some dumb reason.
 	// We embrace that 1-offset rather than subtracting everywhere.
-	squares [endSquare + 1][endSquare + 1]*Piece
+	squares   [endSquare + 1][endSquare + 1]*Piece
+	whiteKing *Piece
+	blackKing *Piece
 }
 
 // Instantiates a new board.
@@ -28,6 +30,15 @@ func (b *Board) updateSquare(piece *Piece) {
 
 	// Then, update the new square.
 	b.squares[piece.x()][piece.y()] = piece
+
+	// If this happens to be a king, update its pointer.
+	if piece.pieceType == KingType {
+		if piece.color == White {
+			b.whiteKing = piece
+		} else {
+			b.blackKing = piece
+		}
+	}
 }
 
 // Determines the state of a square.  We must know the color
@@ -96,18 +107,12 @@ func (b Board) getGameState() GameState {
 	return GameOn
 }
 
-// Finds the king for a color.  TODO: Ye gods, this is ugly.
+// Finds the king for a color.
 func (b Board) getKing(color Color) *Piece {
-	for x := startSquare; x <= endSquare; x++ {
-		for y := startSquare; y <= endSquare; y++ {
-			if piece := b.squares[x][y]; piece != nil {
-				if piece.pieceType == KingType && piece.color == color {
-					return piece
-				}
-			}
-		}
+	if color == White {
+		return b.whiteKing
 	}
-	return nil
+	return b.blackKing
 }
 
 // Is the king now in check?  Use the king's position to evaluate the
@@ -198,8 +203,10 @@ func (b Board) dumpSquares() {
 
 // Populate all of the pieces for a color.
 func (b *Board) populatePieces(color Color) {
-	// Piece initialization goes here.
 	pieceIndex := 0
+
+	// Note that NewPiece handles the positioning of the piece
+	// on the board, which populates the squares arrays.
 
 	// p p p p p p p p.
 	// r k b q k b k r.
