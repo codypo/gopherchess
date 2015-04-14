@@ -98,9 +98,25 @@ func (b Board) prettyPrint() {
 // check or check mate.
 func (b Board) getGameState() GameState {
 	if b.isKingInCheck(White) {
+		// If white is in check and its king has no moves it can make to escape,
+		// it's mated.
+		// TODO: What about a draw?  Think there's an edge case here.
+		whiteKing := b.getKing(White)
+		possibleMoves := whiteKing.generateMoves(*whiteKing.getSquare())
+		if len(possibleMoves) == 0 {
+			return WhiteCheckmated
+		}
 		return WhiteInCheck
 	}
 	if b.isKingInCheck(Black) {
+		// If black is in check and its can has no moves it can make to escape,
+		// it's mated.
+		// TODO: What about somebody blocking the check?
+		blackKing := b.getKing(Black)
+		possibleMoves := blackKing.generateMoves(*blackKing.getSquare())
+		if len(possibleMoves) == 0 {
+			return BlackCheckmated
+		}
 		return BlackInCheck
 	}
 

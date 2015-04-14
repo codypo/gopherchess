@@ -432,3 +432,59 @@ func BenchmarkNewBoard(b *testing.B) {
 		NewBoard()
 	}
 }
+
+func TestBoardRecognizesSimpleCheckmateOnWhite(t *testing.T) {
+	b := NewBoard()
+
+	// Force the white king to the side of the board.
+	wKing := b.getKing(White)
+	wKing.forceMove(&Square{x: 8, y: 3})
+
+	// All good.
+	gameState := b.getGameState()
+	if gameState != GameOn {
+		t.Errorf("State of game should be default, but is %d", gameState)
+	}
+
+	// Force rook into a spot where white king is in check.
+	bRook := b.getPieceByCoordinates(8, 8)
+	bRook.forceMove(&Square{x: 8, y: 5})
+
+	// Now king is checkmated.
+	bRook2 := b.getPieceByCoordinates(1, 8)
+	bRook2.forceMove(&Square{x: 7, y: 6})
+
+	// White's mated, RIGHT?
+	gameState = b.getGameState()
+	if gameState != WhiteCheckmated {
+		t.Errorf("State of game should be white is checkmated, but is %d", gameState)
+	}
+}
+
+func TestBoardRecognizesSimpleCheckmateOnBlack(t *testing.T) {
+	b := NewBoard()
+
+	// Force the black king to the side of the board.
+	bKing := b.getKing(Black)
+	bKing.forceMove(&Square{x: 1, y: 6})
+
+	// All good.
+	gameState := b.getGameState()
+	if gameState != GameOn {
+		t.Errorf("State of game should be default, but is %d", gameState)
+	}
+
+	// Force rook into a spot where black king is in check.
+	wRook := b.getPieceByCoordinates(1, 1)
+	wRook.forceMove(&Square{x: 1, y: 3})
+
+	// Now king is checkmated.
+	wRook2 := b.getPieceByCoordinates(8, 1)
+	wRook2.forceMove(&Square{x: 2, y: 3})
+
+	// Black's mated, RIGHT?
+	gameState = b.getGameState()
+	if gameState != BlackCheckmated {
+		t.Errorf("State of game should be black is checkmated, but is %d", gameState)
+	}
+}

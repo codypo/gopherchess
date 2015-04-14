@@ -41,7 +41,7 @@ type GameState int
 const (
 	GameOn GameState = 1 << iota
 	WhiteInCheck
-	WhiteInCheckMate
+	WhiteCheckmated
 	BlackInCheck
-	BlackInCheckMate
+	BlackCheckmated
 )
