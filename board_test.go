@@ -427,6 +427,37 @@ func TestNewBoardPopulatesCorrectPawns(t *testing.T) {
 	}
 }
 
+func TestNewBoardPopulatesColoredTrackingArrays(t *testing.T) {
+	b := NewBoard()
+	// Iterate through the arrays which track pieces by color.
+	// Is everything there?
+	for i, wPiece := range b.whitePieces {
+		x := (i % endSquare)
+		y := 0
+		if i >= endSquare {
+			y = 1
+		}
+		mPiece := b.squares[x+1][y+1]
+		if wPiece != mPiece {
+			t.Errorf("Piece at index %d is at %d, %d while matching piece is at %d, %d.", i, wPiece.x(), wPiece.y(), mPiece.x(), mPiece.y())
+		}
+	}
+	// Note that the ordering in the tracking arrays matches
+	// piece location as you go up the y axis.  That's why black
+	// has pawns ordered first in its tracking array.
+	for i, bPiece := range b.blackPieces {
+		x := (i % endSquare)
+		y := 7
+		if i >= endSquare {
+			y = 6
+		}
+		mPiece := b.squares[x+1][y+1]
+		if bPiece != mPiece {
+			t.Errorf("Piece at index %d is at %d, %d while matching piece is at %d, %d.", i, bPiece.x(), bPiece.y(), mPiece.x(), mPiece.y())
+		}
+	}
+}
+
 func BenchmarkNewBoard(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		NewBoard()
@@ -449,6 +480,11 @@ func TestBoardRecognizesSimpleCheckmateOnWhite(t *testing.T) {
 	// Force rook into a spot where white king is in check.
 	bRook := b.getPieceByCoordinates(8, 8)
 	bRook.forceMove(&Square{x: 8, y: 5})
+
+	gameState = b.getGameState()
+	if gameState != WhiteInCheck {
+		t.Errorf("State of game should be white in check, but is %d", gameState)
+	}
 
 	// Now king is checkmated.
 	bRook2 := b.getPieceByCoordinates(1, 8)
@@ -478,6 +514,11 @@ func TestBoardRecognizesSimpleCheckmateOnBlack(t *testing.T) {
 	wRook := b.getPieceByCoordinates(1, 1)
 	wRook.forceMove(&Square{x: 1, y: 3})
 
+	gameState = b.getGameState()
+	if gameState != BlackInCheck {
+		t.Errorf("State of game should be black in check, but is %d", gameState)
+	}
+
 	// Now king is checkmated.
 	wRook2 := b.getPieceByCoordinates(8, 1)
 	wRook2.forceMove(&Square{x: 2, y: 3})
@@ -486,5 +527,38 @@ func TestBoardRecognizesSimpleCheckmateOnBlack(t *testing.T) {
 	gameState = b.getGameState()
 	if gameState != BlackCheckmated {
 		t.Errorf("State of game should be black is checkmated, but is %d", gameState)
+	}
+}
+
+func TestBoardRecognizesBlockedMateOnWhite(t *testing.T) {
+	b := NewBoard()
+
+	// Force the white king to the side of the board.
+	wKing := b.getKing(White)
+	wKing.forceMove(&Square{x: 8, y: 3})
+
+	// Force the bishop into a spot where it can block the check.
+	wBishop := b.getPieceByCoordinates(6, 1)
+	wBishop.forceMove(&Square{x: 6, y: 3})
+
+	// All good.
+	gameState := b.getGameState()
+	if gameState != GameOn {
+		t.Errorf("State of game should be default, but is %d", gameState)
+	}
+
+	// Force rook into a spot where white king is in check.
+	bRook := b.getPieceByCoordinates(8, 8)
+	bRook.forceMove(&Square{x: 8, y: 5})
+
+	// Now, if the bishop weren't there, the king is checkmated.  But the bishop is there.
+	bRook2 := b.getPieceByCoordinates(1, 8)
+	bRook2.forceMove(&Square{x: 7, y: 6})
+
+	// White's only in check, RIGHT?
+	gameState = b.getGameState()
+	b.prettyPrint()
+	if gameState != WhiteInCheck {
+		t.Errorf("State of game should be white is checked, but is %d", gameState)
 	}
 }

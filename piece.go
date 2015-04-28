@@ -127,9 +127,13 @@ func (p Piece) getShorthand() string {
 // Generate all of the valid moves for a piece, given its
 // starting square.
 func (p Piece) generateMoves(start Square) []*Square {
+	moves := make([]*Square, 0)
+	if p.isCaptured() {
+		return moves
+	}
+
 	// Go through our list of generated moves.  Verify that
 	// none of these moves endangers our king.
-	moves := make([]*Square, 0)
 	for _, move := range p.mover.generateMoves(start) {
 		if !p.doesMoveEndangerKing(*move) {
 			moves = append(moves, move)

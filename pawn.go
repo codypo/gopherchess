@@ -21,23 +21,21 @@ func (p Pawn) generateMoves(start Square) []*Square {
 	if p.piece.color == Black {
 		moveDirection = -1
 	}
-
-	moves := make([]*Square, 1)
-	moves[0] = &Square{x: start.x, y: start.y + (1 * moveDirection)}
-
-	if len(p.piece.moves) == 1 {
-		moves = append(moves, &Square{x: start.x, y: start.y + (2 * moveDirection)})
-	}
-
-	// TODO: when we add capturing, just chop this and validate the moves
-	// one by one, since the capture rules are weird.
-
 	validMoves := make([]*Square, 0)
-	for _, move := range moves {
-		status := p.getPiece().evaluateSquare(move)
-		if status == SquareVacant {
-			validMoves = append(validMoves, move)
+
+	oneSpotAhead := &Square{x: start.x, y: start.y + (1 * moveDirection)}
+	if p.getPiece().evaluateSquare(oneSpotAhead) == SquareVacant {
+		validMoves = append(validMoves, oneSpotAhead)
+
+		// If it's the pawn's first move AND the two spots immediately in front of it
+		// are vacant, it can move two spots ahead.
+		if len(p.piece.moves) == 1 {
+			twoSpotsAhead := &Square{x: start.x, y: start.y + (2 * moveDirection)}
+			if p.getPiece().evaluateSquare(twoSpotsAhead) == SquareVacant {
+				validMoves = append(validMoves, twoSpotsAhead)
+			}
 		}
+
 	}
 
 	// Certain moves are only valid if we can capture an opponent.

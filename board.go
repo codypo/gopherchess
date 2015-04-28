@@ -5,9 +5,11 @@ import "fmt"
 type Board struct {
 	// Why + 1?  Chess squares are 1-indexed, for some dumb reason.
 	// We embrace that 1-offset rather than subtracting everywhere.
-	squares   [endSquare + 1][endSquare + 1]*Piece
-	whiteKing *Piece
-	blackKing *Piece
+	squares     [endSquare + 1][endSquare + 1]*Piece
+	whiteKing   *Piece
+	blackKing   *Piece
+	whitePieces [numPiecesPerPlayer]*Piece
+	blackPieces [numPiecesPerPlayer]*Piece
 }
 
 // Instantiates a new board.
@@ -97,29 +99,32 @@ func (b Board) prettyPrint() {
 // Returns the state the board is in.  Interesting returns here are
 // check or check mate.
 func (b Board) getGameState() GameState {
+	// TODO: Collapse this method.
 	if b.isKingInCheck(White) {
-		// If white is in check and its king has no moves it can make to escape,
-		// it's mated.
-		// TODO: What about a draw?  Think there's an edge case here.
-		whiteKing := b.getKing(White)
-		possibleMoves := whiteKing.generateMoves(*whiteKing.getSquare())
-		if len(possibleMoves) == 0 {
-			return WhiteCheckmated
+		// If any piece has a valid move, then white is not mated.
+		for _, wPiece := range b.whitePieces {
+			possibleMoves := wPiece.generateMoves(*wPiece.getSquare())
+			fmt.Printf("Checking piece at %d, %d.  Possible moves is len %d.\n", wPiece.x(), wPiece.y(), len(possibleMoves))
+			if len(possibleMoves) > 0 {
+				fmt.Printf("WDude at %d, %d can evade check with move to %d, %d!\n", wPiece.x(), wPiece.y(), possibleMoves[0].x, possibleMoves[0].y)
+				return WhiteInCheck
+			}
 		}
-		return WhiteInCheck
+		return WhiteCheckmated
 	}
 	if b.isKingInCheck(Black) {
-		// If black is in check and its can has no moves it can make to escape,
-		// it's mated.
-		// TODO: What about somebody blocking the check?
-		blackKing := b.getKing(Black)
-		possibleMoves := blackKing.generateMoves(*blackKing.getSquare())
-		if len(possibleMoves) == 0 {
-			return BlackCheckmated
+		// If any piece has a valid move, then white is not mated.
+		for _, bPiece := range b.blackPieces {
+			possibleMoves := bPiece.generateMoves(*bPiece.getSquare())
+			if len(possibleMoves) > 0 {
+				fmt.Printf("BDude at %d, %d can evade check with move to %d, %d!\n", bPiece.x(), bPiece.y(), possibleMoves[0].x, possibleMoves[0].y)
+				return BlackInCheck
+			}
 		}
-		return BlackInCheck
+		return BlackCheckmated
 	}
 
+	// TODO: What about a draw?  Think there's an edge case here.
 	return GameOn
 }
 
@@ -228,9 +233,11 @@ func (b *Board) populatePieces(color Color) {
 	// r k b q k b k r.
 	pawnRow := startSquare + 1
 	rookRow := startSquare
+	pieceArr := &b.whitePieces
 	if color == Black {
 		pawnRow = endSquare - 1
 		rookRow = endSquare
+		pieceArr = &b.blackPieces
 	}
 
 	s := &Square{x: startSquare, y: startSquare}
@@ -279,4 +286,12 @@ func (b *Board) populatePieces(color Color) {
 	s = &Square{x: startSquare + 4, y: rookRow}
 	NewPiece(color, s, b, KingType)
 	pieceIndex++
+
+	// Populate the arrays used to track each color's pieces.
+	for i := startSquare; i <= endSquare; i++ {
+		// Ugh, stupid 1 offset.  We want a zero indexed array here.
+		noOffset := i - 1
+		pieceArr[noOffset] = b.squares[i][rookRow]
+		pieceArr[noOffset+endSquare] = b.squares[i][pawnRow]
+	}
 }
