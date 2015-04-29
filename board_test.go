@@ -557,7 +557,6 @@ func TestBoardRecognizesBlockedMateOnWhite(t *testing.T) {
 
 	// White's only in check, RIGHT?
 	gameState = b.getGameState()
-	b.prettyPrint()
 	if gameState != WhiteInCheck {
 		t.Errorf("State of game should be white is checked, but is %d", gameState)
 	}

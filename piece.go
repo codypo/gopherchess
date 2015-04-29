@@ -52,9 +52,6 @@ func (p *Piece) move(square *Square) error {
 		return fmt.Errorf("Specified move is not valid.")
 	}
 
-	// TODO: this is inefficient.  generateMoves typically
-	// calls evaluateSquare.  generateMoves could instead
-	// return a hash map of square to status.
 	moveStatus := p.board.evaluateSquare(p.color, square)
 	switch moveStatus {
 	case SquareOccupiedByOpponent:
@@ -116,7 +113,8 @@ func (p Piece) doesMoveEndangerKing(square Square) bool {
 	boardClone := p.board.deepCopy()
 	clonePiece := boardClone.getPieceBySquare(*p.getSquare())
 	clonePiece.forceMove(&square)
-	return boardClone.isKingInCheck(clonePiece.color)
+	inCheck := boardClone.isKingInCheck(clonePiece.color)
+	return inCheck
 }
 
 // Gets the shorthand notation for a piece, like p for Pawn.
@@ -184,6 +182,7 @@ func (p Piece) generateDiagonalMoves(start Square) []*Square {
 			if status == SquareVacant || status == SquareOccupiedByOpponent {
 				moves = append(moves, move)
 			}
+
 			goUpRight = (status == SquareVacant)
 		}
 
@@ -287,26 +286,8 @@ func (p Piece) generateStraightMoves(start Square) []*Square {
 	return moves
 }
 
-func (p Piece) deepCopy(board *Board) *Piece {
-	c := new(Piece)
-	c.color = p.color
-	c.captured = p.captured
-	c.board = board
-	c.pieceType = p.pieceType
-	c.mover = p.mover
-	c.mover.setPiece(c)
-	c.forceMove(p.getSquare())
-	return c
-}
-
-func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *Piece {
-	p := new(Piece)
-	p.color = color
-	p.captured = false
-	p.board = board
-
-	p.pieceType = pieceType
-	switch pieceType {
+func (p *Piece) createMover() {
+	switch p.pieceType {
 	case PawnType:
 		p.mover = new(Pawn)
 	case RookType:
@@ -322,7 +303,28 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 
 	}
 	p.mover.setPiece(p)
+}
 
+// Performs a deep copy of a piece.  Used to vet hypothetical moves.
+func (p Piece) deepCopy(board *Board) *Piece {
+	c := new(Piece)
+	c.board = board
+	c.color = p.color
+	c.captured = p.captured
+	c.pieceType = p.pieceType
+	c.createMover()
+	c.forceMove(p.getSquare())
+	return c
+}
+
+// Creates a new piece with all required params supplied.
+func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *Piece {
+	p := new(Piece)
+	p.color = color
+	p.captured = false
+	p.board = board
+	p.pieceType = pieceType
+	p.createMover()
 	p.forceMove(square)
 	return p
 }

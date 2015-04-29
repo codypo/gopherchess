@@ -104,9 +104,7 @@ func (b Board) getGameState() GameState {
 		// If any piece has a valid move, then white is not mated.
 		for _, wPiece := range b.whitePieces {
 			possibleMoves := wPiece.generateMoves(*wPiece.getSquare())
-			fmt.Printf("Checking piece at %d, %d.  Possible moves is len %d.\n", wPiece.x(), wPiece.y(), len(possibleMoves))
 			if len(possibleMoves) > 0 {
-				fmt.Printf("WDude at %d, %d can evade check with move to %d, %d!\n", wPiece.x(), wPiece.y(), possibleMoves[0].x, possibleMoves[0].y)
 				return WhiteInCheck
 			}
 		}
@@ -117,7 +115,6 @@ func (b Board) getGameState() GameState {
 		for _, bPiece := range b.blackPieces {
 			possibleMoves := bPiece.generateMoves(*bPiece.getSquare())
 			if len(possibleMoves) > 0 {
-				fmt.Printf("BDude at %d, %d can evade check with move to %d, %d!\n", bPiece.x(), bPiece.y(), possibleMoves[0].x, possibleMoves[0].y)
 				return BlackInCheck
 			}
 		}
