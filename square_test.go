@@ -17,14 +17,9 @@ func TestPawnsPopulatedCorrectly(t *testing.T) {
 func TestSquareColor(t *testing.T) {
 	for i := -10; i < 10; i++ {
 		s := Square{x: i, y: i}
-		c, err := s.color()
+		c := s.color()
 
 		if s.isValid() {
-			// Color should only return an error if the square is invalid.
-			if err != nil || c == Undefined {
-				t.Errorf("%d, %d is a valid square, but returning a bad color.", i, i)
-			}
-
 			// Even squares are light.
 			if i%2 == 0 && c != White {
 				t.Errorf("%d, %d is not white.", i, i)
@@ -33,10 +28,6 @@ func TestSquareColor(t *testing.T) {
 			// Odd squares are dark.
 			if i%2 != 0 && c != Black {
 				t.Errorf("%d, %d is not black.", i, i)
-			}
-		} else {
-			if c != Undefined {
-				t.Errorf("Invalid square %d, %d has a valid color.", i, i)
 			}
 		}
 	}

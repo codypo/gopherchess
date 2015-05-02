@@ -11,7 +11,7 @@ type PieceType int
 
 // Slightly weird naming so to as not conflict with struct names.
 const (
-	PawnType PieceType = 1 << iota
+	PawnType PieceType = iota
 	RookType
 	BishopType
 	KnightType
@@ -22,15 +22,14 @@ const (
 type Color int
 
 const (
-	White Color = 1 << iota
+	White Color = iota
 	Black
-	Undefined
 )
 
 type SquareState int
 
 const (
-	SquareInvalid SquareState = 1 << iota
+	SquareInvalid SquareState = iota
 	SquareVacant
 	SquareOccupiedByMe
 	SquareOccupiedByOpponent
@@ -39,7 +38,7 @@ const (
 type GameState int
 
 const (
-	GameOn GameState = 1 << iota
+	GameOn GameState = iota
 	WhiteInCheck
 	WhiteCheckmated
 	BlackInCheck
