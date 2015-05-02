@@ -561,3 +561,35 @@ func TestBoardRecognizesBlockedMateOnWhite(t *testing.T) {
 		t.Errorf("State of game should be white is checked, but is %d", gameState)
 	}
 }
+
+func TestBoardRecognizesBlockedMateOnBlack(t *testing.T) {
+	b := NewBoard()
+
+	// Force the black king to the side of the board.
+	bKing := b.getKing(Black)
+	bKing.forceMove(&Square{x: 1, y: 6})
+
+	// Force the bishop into a spot where it can block the check.
+	bBishop := b.getPieceByCoordinates(6, 8)
+	bBishop.forceMove(&Square{x: 3, y: 6})
+
+	// All good.
+	gameState := b.getGameState()
+	if gameState != GameOn {
+		t.Errorf("State of game should be default, but is %d", gameState)
+	}
+
+	// Force rook into a spot where black king is in check.
+	wRook := b.getPieceByCoordinates(1, 1)
+	wRook.forceMove(&Square{x: 1, y: 4})
+
+	// Now, if the bishop weren't there, the king is checkmated.  But the bishop is there.
+	wRook2 := b.getPieceByCoordinates(8, 8)
+	wRook2.forceMove(&Square{x: 2, y: 5})
+
+	// Black's only in check, SI?
+	gameState = b.getGameState()
+	if gameState != BlackInCheck {
+		t.Errorf("State of game should be black is checked, but is %d", gameState)
+	}
+}
