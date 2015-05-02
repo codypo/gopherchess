@@ -17,5 +17,5 @@ func (k Knight) generateMoves(start Square) []*Square {
 }
 
 func (k Knight) getShorthand() string {
-	return "k"
+	return "N"
 }

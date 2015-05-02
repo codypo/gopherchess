@@ -12,6 +12,9 @@ type Board struct {
 
 	// Unordered array of pieces, indexed by color.
 	colorPieces [2][numPiecesPerPlayer]*Piece
+	players     [2]string
+
+	moveCount int
 }
 
 // Instantiates a new board.
@@ -19,6 +22,7 @@ func NewBoard() *Board {
 	b := new(Board)
 	b.populatePieces(White)
 	b.populatePieces(Black)
+	b.moveCount = 0
 
 	return b
 }
@@ -75,9 +79,11 @@ func (b Board) getPieceBySquare(s Square) *Piece {
 // Print out the current state of the board.  Useful in the event
 // this thing can ever play a game.
 func (b Board) prettyPrint() {
-	// TODO: should also print out row and column designations,
-	// and distinguish pieces by color.
+	fmt.Printf("\nWhite player: %s, Black player: %s\n", b.players[White], b.players[Black])
+
+	fmt.Printf("   a   b   c   d   e   f   g   h\n")
 	for y := endSquare; y >= startSquare; y-- {
+		fmt.Printf("%d ", y)
 		for x := startSquare; x <= endSquare; x++ {
 			p := b.getPieceByCoordinates(x, y)
 			if p != nil {
@@ -89,6 +95,7 @@ func (b Board) prettyPrint() {
 			} else {
 				fmt.Printf("    ")
 			}
+
 		}
 		fmt.Printf("\n")
 	}
@@ -286,4 +293,17 @@ func (b *Board) populatePieces(color Color) {
 		pieceArr[noOffset] = b.squares[i][rookRow]
 		pieceArr[noOffset+endSquare] = b.squares[i][pawnRow]
 	}
+}
+
+// Allows you to set a player name.  Used for playing actual games.
+func (b *Board) setPlayerName(color Color, name string) {
+	b.players[color] = name
+}
+
+// Which player moves next?  Used for actual games.
+func (b Board) getPlayerWithNextMove() string {
+	if b.moveCount%2 == 0 {
+		return b.players[White]
+	}
+	return b.players[Black]
 }

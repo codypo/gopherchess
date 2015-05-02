@@ -17,5 +17,5 @@ func (r Rook) generateMoves(start Square) []*Square {
 }
 
 func (r Rook) getShorthand() string {
-	return "r"
+	return "R"
 }

@@ -18,5 +18,5 @@ func (b Bishop) generateMoves(start Square) []*Square {
 }
 
 func (b Bishop) getShorthand() string {
-	return "b"
+	return "B"
 }

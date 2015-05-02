@@ -314,7 +314,7 @@ func TestNewBoardPopulatesCorrectRooks(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "r" {
+		if matching_piece.getShorthand() != "R" {
 			t.Errorf("Piece is supposed to be a rook!")
 		}
 		if square.y == 1 {
@@ -337,7 +337,7 @@ func TestNewBoardPopulatesCorrectKnights(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "k" {
+		if matching_piece.getShorthand() != "N" {
 			t.Errorf("Piece is supposed to be a knight!")
 		}
 		if square.y == 1 {
@@ -360,7 +360,7 @@ func TestNewBoardPopulatesCorrectBishops(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "b" {
+		if matching_piece.getShorthand() != "B" {
 			t.Errorf("Piece is supposed to be a bishop!")
 		}
 		if square.y == 1 {
@@ -388,7 +388,7 @@ func TestNewBoardPopulatesCorrectKingsAndQueens(t *testing.T) {
 				t.Errorf("Piece is supposed to be a king!")
 			}
 		} else {
-			if matching_piece.getShorthand() != "q" {
+			if matching_piece.getShorthand() != "Q" {
 				t.Errorf("Piece is supposed to be a queen!")
 			}
 		}
@@ -412,7 +412,7 @@ func TestNewBoardPopulatesCorrectPawns(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "p" {
+		if matching_piece.getShorthand() != "P" {
 			t.Errorf("Piece is supposed to be a pawn!")
 		}
 		if square.y == 2 {

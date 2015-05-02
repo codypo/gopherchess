@@ -43,4 +43,5 @@ const (
 	WhiteCheckmated
 	BlackInCheck
 	BlackCheckmated
+	Draw
 )

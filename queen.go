@@ -21,5 +21,5 @@ func (q Queen) generateMoves(start Square) []*Square {
 }
 
 func (q Queen) getShorthand() string {
-	return "q"
+	return "Q"
 }
