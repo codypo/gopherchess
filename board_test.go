@@ -431,7 +431,7 @@ func TestNewBoardPopulatesColoredTrackingArrays(t *testing.T) {
 	b := NewBoard()
 	// Iterate through the arrays which track pieces by color.
 	// Is everything there?
-	for i, wPiece := range b.whitePieces {
+	for i, wPiece := range b.colorPieces[White] {
 		x := (i % endSquare)
 		y := 0
 		if i >= endSquare {
@@ -445,7 +445,7 @@ func TestNewBoardPopulatesColoredTrackingArrays(t *testing.T) {
 	// Note that the ordering in the tracking arrays matches
 	// piece location as you go up the y axis.  That's why black
 	// has pawns ordered first in its tracking array.
-	for i, bPiece := range b.blackPieces {
+	for i, bPiece := range b.colorPieces[Black] {
 		x := (i % endSquare)
 		y := 7
 		if i >= endSquare {

@@ -5,11 +5,13 @@ import "fmt"
 type Board struct {
 	// Why + 1?  Chess squares are 1-indexed, for some dumb reason.
 	// We embrace that 1-offset rather than subtracting everywhere.
-	squares     [endSquare + 1][endSquare + 1]*Piece
-	whiteKing   *Piece
-	blackKing   *Piece
-	whitePieces [numPiecesPerPlayer]*Piece
-	blackPieces [numPiecesPerPlayer]*Piece
+	squares [endSquare + 1][endSquare + 1]*Piece
+
+	// Easy access to kings, indexed by color.
+	kings [2]*Piece
+
+	// Unordered array of pieces, indexed by color.
+	colorPieces [2][numPiecesPerPlayer]*Piece
 }
 
 // Instantiates a new board.
@@ -35,11 +37,7 @@ func (b *Board) updateSquare(piece *Piece) {
 
 	// If this happens to be a king, update its pointer.
 	if piece.pieceType == KingType {
-		if piece.color == White {
-			b.whiteKing = piece
-		} else {
-			b.blackKing = piece
-		}
+		b.kings[piece.color] = piece
 	}
 }
 
@@ -100,25 +98,26 @@ func (b Board) prettyPrint() {
 // check or check mate.
 func (b Board) getGameState() GameState {
 	// TODO: Collapse this method.
-	if b.isKingInCheck(White) {
-		// If any piece has a valid move, then white is not mated.
-		for _, wPiece := range b.whitePieces {
-			possibleMoves := wPiece.generateMoves(*wPiece.getSquare())
-			if len(possibleMoves) > 0 {
-				return WhiteInCheck
+	colors := []Color{White, Black}
+	for _, color := range colors {
+		if b.isKingInCheck(color) {
+			// If any piece has a valid move, then color is not mated.
+			for _, piece := range b.colorPieces[color] {
+				possibleMoves := piece.generateMoves(*piece.getSquare())
+				if len(possibleMoves) > 0 {
+					if color == White {
+						return WhiteInCheck
+					} else {
+						return BlackInCheck
+					}
+				}
+			}
+			if color == White {
+				return WhiteCheckmated
+			} else {
+				return BlackCheckmated
 			}
 		}
-		return WhiteCheckmated
-	}
-	if b.isKingInCheck(Black) {
-		// If any piece has a valid move, then white is not mated.
-		for _, bPiece := range b.blackPieces {
-			possibleMoves := bPiece.generateMoves(*bPiece.getSquare())
-			if len(possibleMoves) > 0 {
-				return BlackInCheck
-			}
-		}
-		return BlackCheckmated
 	}
 
 	// TODO: What about a draw?  Think there's an edge case here.
@@ -127,10 +126,7 @@ func (b Board) getGameState() GameState {
 
 // Finds the king for a color.
 func (b Board) getKing(color Color) *Piece {
-	if color == White {
-		return b.whiteKing
-	}
-	return b.blackKing
+	return b.kings[color]
 }
 
 // Is the king now in check?  Use the king's position to evaluate the
@@ -230,11 +226,10 @@ func (b *Board) populatePieces(color Color) {
 	// r k b q k b k r.
 	pawnRow := startSquare + 1
 	rookRow := startSquare
-	pieceArr := &b.whitePieces
+	pieceArr := &b.colorPieces[color]
 	if color == Black {
 		pawnRow = endSquare - 1
 		rookRow = endSquare
-		pieceArr = &b.blackPieces
 	}
 
 	s := &Square{x: startSquare, y: startSquare}
