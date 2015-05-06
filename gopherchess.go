@@ -66,9 +66,12 @@ func processMove(b *Board) {
 	var move string
 	for {
 		_, err := fmt.Scanf("%s", &move)
-		if err == nil && len(move) > 0 {
+		result, err := b.attemptUserMove(move)
+		if result && err == nil {
 			break
 		}
+
+		fmt.Printf("Bad move, buster: %s\n", err.Error())
 
 	}
 

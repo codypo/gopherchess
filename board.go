@@ -90,7 +90,11 @@ func (b Board) prettyPrint() {
 		for x := startSquare; x <= endSquare; x++ {
 			p := b.getPieceByCoordinates(x, y)
 			if p != nil {
-				fmt.Printf(" %s%s ", p.color, p.pieceType)
+				if p.color == White {
+					fmt.Printf(" w%s ", string(p.pieceType))
+				} else if p.color == Black {
+					fmt.Printf(" b%s ", string(p.pieceType))
+				}
 			} else {
 				fmt.Printf("    ")
 			}
@@ -309,7 +313,7 @@ func (b Board) getPlayerWithNextMove() string {
 
 // Attempt to move a piece to a user-provided location.
 func (b Board) attemptUserMove(move string) (bool, error) {
-
+	// TODO: Maybe this belongs in gopherchess.go?  Not really related to board.
 	minMoveLength := 3
 	if len(move) < minMoveLength {
 		return false, errors.New("Move must be at least 3 characters.")
@@ -317,15 +321,7 @@ func (b Board) attemptUserMove(move string) (bool, error) {
 
 	// First, validate piece type.
 	pieceType := move[0]
-	allowedTypes := []PieceType{PawnType, RookType, BishopType, KnightType, QueenType, KingType}
-	foundType := false
-	for _, p := range allowedTypes {
-		if byte(p) == pieceType {
-			foundType = true
-			break
-		}
-	}
-	if !foundType {
+	if !isPieceNotationValid(pieceType) {
 		return false, errors.New("Notation specifies an invalid piece type.")
 	}
 

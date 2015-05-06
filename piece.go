@@ -322,3 +322,17 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 	p.forceMove(square)
 	return p
 }
+
+// Determines if the notation for a piece is valid.
+func isPieceNotationValid(pieceType byte) bool {
+	allowedTypes := []PieceType{PawnType, RookType, BishopType, KnightType, QueenType, KingType}
+	foundType := false
+	for _, p := range allowedTypes {
+		if byte(p) == pieceType {
+			foundType = true
+			break
+		}
+	}
+
+	return foundType
+}
