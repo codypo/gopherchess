@@ -16,7 +16,3 @@ func (b Bishop) generateMoves(start Square) []*Square {
 	// Bishops can only move diagonally.
 	return b.getPiece().generateDiagonalMoves(start)
 }
-
-func (b Bishop) getShorthand() string {
-	return "B"
-}

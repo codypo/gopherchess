@@ -15,7 +15,3 @@ func (r Rook) getPiece() *Piece {
 func (r Rook) generateMoves(start Square) []*Square {
 	return r.getPiece().generateStraightMoves(start)
 }
-
-func (r Rook) getShorthand() string {
-	return "R"
-}

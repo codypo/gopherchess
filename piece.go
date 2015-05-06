@@ -10,7 +10,6 @@ import (
 // implement.
 type PieceMover interface {
 	generateMoves(start Square) []*Square
-	getShorthand() string
 	getPiece() *Piece
 	setPiece(piece *Piece)
 }
@@ -115,11 +114,6 @@ func (p Piece) doesMoveEndangerKing(square Square) bool {
 	clonePiece.forceMove(&square)
 	inCheck := boardClone.isKingInCheck(clonePiece.color)
 	return inCheck
-}
-
-// Gets the shorthand notation for a piece, like p for Pawn.
-func (p Piece) getShorthand() string {
-	return p.mover.getShorthand()
 }
 
 // Generate all of the valid moves for a piece, given its

@@ -314,7 +314,7 @@ func TestNewBoardPopulatesCorrectRooks(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "R" {
+		if matching_piece.pieceType != RookType {
 			t.Errorf("Piece is supposed to be a rook!")
 		}
 		if square.y == 1 {
@@ -337,7 +337,7 @@ func TestNewBoardPopulatesCorrectKnights(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "N" {
+		if matching_piece.pieceType != KnightType {
 			t.Errorf("Piece is supposed to be a knight!")
 		}
 		if square.y == 1 {
@@ -360,7 +360,7 @@ func TestNewBoardPopulatesCorrectBishops(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "B" {
+		if matching_piece.pieceType != BishopType {
 			t.Errorf("Piece is supposed to be a bishop!")
 		}
 		if square.y == 1 {
@@ -384,11 +384,11 @@ func TestNewBoardPopulatesCorrectKingsAndQueens(t *testing.T) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
 		if square.x == 5 {
-			if matching_piece.getShorthand() != "K" {
+			if matching_piece.pieceType != KingType {
 				t.Errorf("Piece is supposed to be a king!")
 			}
 		} else {
-			if matching_piece.getShorthand() != "Q" {
+			if matching_piece.pieceType != QueenType {
 				t.Errorf("Piece is supposed to be a queen!")
 			}
 		}
@@ -412,7 +412,7 @@ func TestNewBoardPopulatesCorrectPawns(t *testing.T) {
 		if !(matching_piece.x() == square.x && matching_piece.y() == square.y) {
 			t.Errorf("Piece at index %d, %d reports position as %d, %d", square.x, square.y, matching_piece.x(), matching_piece.y())
 		}
-		if matching_piece.getShorthand() != "P" {
+		if matching_piece.pieceType != PawnType {
 			t.Errorf("Piece is supposed to be a pawn!")
 		}
 		if square.y == 2 {

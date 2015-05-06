@@ -38,7 +38,3 @@ func (k King) generateMoves(start Square) []*Square {
 
 	return validMoves
 }
-
-func (k King) getShorthand() string {
-	return "K"
-}

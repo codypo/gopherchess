@@ -15,7 +15,3 @@ func (k Knight) getPiece() *Piece {
 func (k Knight) generateMoves(start Square) []*Square {
 	return k.getPiece().generateKnightMoves(start)
 }
-
-func (k Knight) getShorthand() string {
-	return "N"
-}

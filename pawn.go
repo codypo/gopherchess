@@ -51,7 +51,3 @@ func (p Pawn) generateMoves(start Square) []*Square {
 
 	return validMoves
 }
-
-func (p Pawn) getShorthand() string {
-	return "P"
-}

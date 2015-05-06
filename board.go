@@ -90,11 +90,7 @@ func (b Board) prettyPrint() {
 		for x := startSquare; x <= endSquare; x++ {
 			p := b.getPieceByCoordinates(x, y)
 			if p != nil {
-				if p.color == White {
-					fmt.Printf(" w%s ", p.getShorthand())
-				} else if p.color == Black {
-					fmt.Printf(" b%s ", p.getShorthand())
-				}
+				fmt.Printf(" %s%s ", p.color, p.pieceType)
 			} else {
 				fmt.Printf("    ")
 			}
