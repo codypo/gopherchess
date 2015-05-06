@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Board struct {
 	// Why + 1?  Chess squares are 1-indexed, for some dumb reason.
@@ -306,4 +309,35 @@ func (b Board) getPlayerWithNextMove() string {
 		return b.players[White]
 	}
 	return b.players[Black]
+}
+
+// Attempt to move a piece to a user-provided location.
+func (b Board) attemptUserMove(move string) (bool, error) {
+
+	minMoveLength := 3
+	if len(move) < minMoveLength {
+		return false, errors.New("Move must be at least 3 characters.")
+	}
+
+	// First, validate piece type.
+	pieceType := move[0]
+	allowedTypes := []PieceType{PawnType, RookType, BishopType, KnightType, QueenType, KingType}
+	foundType := false
+	for _, p := range allowedTypes {
+		if byte(p) == pieceType {
+			foundType = true
+			break
+		}
+	}
+	if !foundType {
+		return false, errors.New("Notation specifies an invalid piece type.")
+	}
+
+	// Then, validate the destination square.
+	square := move[1:3]
+	if !isSquareNotationValid(square) {
+		return false, errors.New("Notation specifies an invalid square.")
+	}
+
+	return true, nil
 }

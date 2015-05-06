@@ -593,3 +593,50 @@ func TestBoardRecognizesBlockedMateOnBlack(t *testing.T) {
 		t.Errorf("State of game should be black is checked, but is %d", gameState)
 	}
 }
+
+func TestBoardRejectsAttemptedUserMoveToBadSquare(t *testing.T) {
+	b := NewBoard()
+
+	// Bad square, based on vertical index.
+	badMove := "Na0"
+	success, err := b.attemptUserMove(badMove)
+	if success || err == nil {
+		t.Errorf("Bad user move allowed to %s.", badMove)
+	}
+
+	// Bad square, based on horizontal index.
+	badMove = "Km6"
+	success, err = b.attemptUserMove(badMove)
+	if success || err == nil {
+		t.Errorf("Bad user move allowed to %s.", badMove)
+	}
+
+	// Good square, bad piece.
+	badMove = "Za1"
+	success, err = b.attemptUserMove(badMove)
+	if success || err == nil {
+		t.Errorf("Bad user move allowed to %s.", badMove)
+	}
+
+	// Crazy jibber jabber.
+	badMove = "barf"
+	success, err = b.attemptUserMove(badMove)
+	if success || err == nil {
+		t.Errorf("Bad user move allowed to %s.", badMove)
+	}
+
+	// Crazy jibber jabber, round 2.
+	badMove = "33333"
+	success, err = b.attemptUserMove(badMove)
+	if success || err == nil {
+		t.Errorf("Bad user move allowed to %s.", badMove)
+	}
+	// Empty string, clearly.
+	badMove = ""
+	success, err = b.attemptUserMove(badMove)
+	if success || err == nil {
+		t.Errorf("Bad user move allowed to %s.", badMove)
+	}
+
+	// TODO: Don't need to specify piece for pawns.
+}
