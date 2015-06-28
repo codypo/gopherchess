@@ -323,16 +323,14 @@ func NewPiece(color Color, square *Square, board *Board, pieceType PieceType) *P
 	return p
 }
 
-// Determines if the notation for a piece is valid.
-func isPieceNotationValid(pieceType byte) bool {
+// Gets a piece type based on algebraic notation.
+func getPieceTypeFromNotation(pieceType byte) (PieceType, error) {
 	allowedTypes := []PieceType{PawnType, RookType, BishopType, KnightType, QueenType, KingType}
-	foundType := false
 	for _, p := range allowedTypes {
 		if byte(p) == pieceType {
-			foundType = true
-			break
+			return p, nil
 		}
 	}
 
-	return foundType
+	return UnknownPieceType, fmt.Errorf("%s does not match a known piece.", pieceType)
 }

@@ -8,6 +8,8 @@ const (
 	// Offset between 0 and a in ascii table, offset by 1 for
 	// algebraic notation.  Magic!
 	asciiOffsetForX = 48
+
+	UnknownPieceType = '?'
 )
 
 type PieceType byte

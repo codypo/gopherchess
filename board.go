@@ -305,10 +305,15 @@ func (b *Board) setPlayerName(color Color, name string) {
 
 // Which player moves next?  Used for actual games.
 func (b Board) getPlayerWithNextMove() string {
+	return b.players[b.getColorWithNextMove()]
+}
+
+// Which color moves next?
+func (b Board) getColorWithNextMove() Color {
 	if b.moveCount%2 == 0 {
-		return b.players[White]
+		return White
 	}
-	return b.players[Black]
+	return Black
 }
 
 // Attempt to move a piece to a user-provided location.
@@ -320,16 +325,33 @@ func (b Board) attemptUserMove(move string) (bool, error) {
 	}
 
 	// First, validate piece type.
-	pieceType := move[0]
-	if !isPieceNotationValid(pieceType) {
+	notationPiece := move[0]
+	pieceType, err := getPieceTypeFromNotation(notationPiece)
+	if err != nil {
 		return false, errors.New("Notation specifies an invalid piece type.")
 	}
 
 	// Then, validate the destination square.
-	square := move[1:3]
-	if !isSquareNotationValid(square) {
+	notationSquare := move[1:3]
+	square, err := getSquareFromNotation(notationSquare)
+	if err != nil {
 		return false, errors.New("Notation specifies an invalid square.")
 	}
 
-	return true, nil
+	// Next, find the piece and that can move to the destination square.
+	movingColor := b.getColorWithNextMove()
+	movingColorPieces := b.colorPieces[movingColor]
+	for _, p := range movingColorPieces {
+		if p.pieceType != pieceType {
+			continue
+		}
+
+		// We have found the square! Let's make a move.
+		moveErr := p.move(square)
+		if moveErr == nil {
+			return true, nil
+		}
+	}
+
+	return false, errors.New("No piece found who can move to specified square.")
 }

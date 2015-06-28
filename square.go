@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -28,8 +29,8 @@ func (s1 Square) equals(s2 Square) bool {
 	return (s1.x == s2.x) && (s1.y == s2.y)
 }
 
-// Determines if the notation for a square is valid.
-func isSquareNotationValid(square string) bool {
+// Gets a square based on algebraic notation.
+func getSquareFromNotation(square string) (*Square, error) {
 	// Convert 'a1' into x: 1, y: 1
 
 	// First, turn something 'a' into an int.
@@ -39,7 +40,12 @@ func isSquareNotationValid(square string) bool {
 	// Atoi is shorthand for ParseInt.  Naming is not so intuitive.
 	y, err := strconv.Atoi(square[1:2])
 	if err != nil {
-		return false
+		return nil, fmt.Errorf("%s does not match a known square.", square)
 	}
-	return Square{x: x, y: y}.isValid()
+	s := &Square{x: x, y: y}
+	if !s.isValid() {
+		return nil, fmt.Errorf("%s does not match a known square.", square)
+	}
+
+	return s, nil
 }

@@ -637,6 +637,21 @@ func TestBoardRejectsAttemptedUserMoveToBadSquare(t *testing.T) {
 	if success || err == nil {
 		t.Errorf("Bad user move allowed to %s.", badMove)
 	}
-
 	// TODO: Don't need to specify piece for pawns.
+}
+
+func TestBoardAppliesUserMoveToGoodSquare(t *testing.T) {
+	b := NewBoard()
+	wKnight := b.getPieceByCoordinates(2, 1)
+
+	goodMove := "Na3"
+	success, err := b.attemptUserMove(goodMove)
+	if !success || err != nil {
+		t.Errorf("Good user move to %s not allowed!", goodMove)
+	}
+
+	knightPos := wKnight.getSquare()
+	if knightPos.x != 1 || knightPos.y != 3 {
+		t.Errorf("User move was not correctly applied; current square is %d, %d", knightPos.x, knightPos.y)
+	}
 }
